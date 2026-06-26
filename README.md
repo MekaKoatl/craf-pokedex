@@ -1,73 +1,35 @@
-# React + TypeScript + Vite
+# CRAF Pokédex — Migración a React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Migración del proyecto Pokédex de Vanilla JS/HTML a React.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Vite** + **React 19** + **TypeScript**
+- **React Router** — navegación entre páginas
+- **TanStack Query (React Query)** — fetching y caché de la PokéAPI (Supongo)
+- **Tailwind CSS v4** — estilos
 
-## React Compiler
+## Progreso
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [x] **Setup del proyecto** — Vite + React + TypeScript
+- [x] **Dependencias** — React Router, React Query y Tailwind CSS v4
+- [x] **Providers** — QueryClient, Router y Favoritos conectados en `main.tsx`
+- [x] **Tipos** — `PokemonEntry` (dataset local) y `Pokemon` (PokéAPI) en `types/pokemon.ts`
+- [x] **Datos y utilidades** — `pokemon-data.ts`, `constants.ts` y `regional.ts` portados desde el proyecto original
+- [x] **Capa de API** — `api.ts` con los fetchers de la PokéAPI
+- [x] **Primer hook** — `usePokemon` con caché automática vía React Query
+- [ ] **FavoritesContext** — estado global de favoritos (localStorage)
+- [ ] **Componentes base** — FavButton, badges, DexCard
+- [ ] **Sistema de filtros**
+- [ ] **Páginas** — Favorites, Home, DXG, Details
 
-## Expanding the ESLint configuration
+## Estructura
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+\`\`\`
+src/
+  data/        · pokemon-data.ts (dataset local)
+  types/       · pokemon.ts (tipos)
+  lib/         · constants.ts, regional.ts, api.ts
+  hooks/       · usePokemon.ts
+  context/     · FavoritesContext.tsx
+\`\`\`
