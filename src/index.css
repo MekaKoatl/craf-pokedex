@@ -1,1 +1,70 @@
 @import "tailwindcss";
+
+/* ── DEX CARD ─────────────────────────── */
+.dex-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: visible;
+  position: relative;
+  text-decoration: none;
+}
+.dex-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.dex-card img { width: 90px; height: 90px; object-fit: contain; }
+.dex-card-name { font-size: 0.85rem; font-weight: 600; color: #111827; margin-top: 0.4rem; }
+.dex-card-dexnum { font-size: 0.75rem; font-weight: 400; color: #11182798; margin-top: 0.4rem; }
+.dex-card-types { display: flex; margin-top: 0.4rem; flex-wrap: wrap; justify-content: center; gap: 2px; }
+
+/* ── TYPE BADGES ─────────────────────────── */
+.type-badge {
+  font-size: 0.65rem; font-weight: 600; padding: 0.15rem 0.5rem;
+  color: #fff; text-transform: capitalize; min-width: 50px; text-align: center;
+}
+.type-fire { background-color: #f08030; }
+.type-water { background-color: #6890f0; }
+.type-grass { background-color: #78c850; }
+.type-electric { background-color: #f8d030; color: #111827; }
+.type-ice { background-color: #98d8d8; }
+.type-fighting { background-color: #c03028; }
+.type-poison { background-color: #a040a0; }
+.type-ground { background-color: #e0c068; color: #111827; }
+.type-flying { background-color: #a890f0; }
+.type-psychic { background-color: #f85888; }
+.type-bug { background-color: #a8b820; }
+.type-rock { background-color: #b8a038; }
+.type-ghost { background-color: #705898; }
+.type-dragon { background-color: #7038f8; }
+.type-dark { background-color: #705848; }
+.type-steel { background-color: #b8b8d0; color: #111827; }
+.type-fairy { background-color: #ee99ac; }
+.type-normal { background-color: #a8a878; }
+
+/* ── FORM BADGES ─────────────────────────── */
+.form-badges { position: absolute; top: 8px; right: 8px; display: flex; gap: 3px; z-index: 10; }
+.form-badge { font-size: 10px; font-weight: 600; padding: 2px 5px; border-radius: 4px; line-height: 1.4; }
+.form-badge-M { background: #b5d4f4; color: #0c447c; }
+.form-badge-R { background: #c0dd97; color: #27500a; }
+.form-badge-B { background: #f4c0d1; color: #72243e; }
+.form-badge-G { background: #fac775; color: #633806; }
+.form-badge-Legend { background: #fde68a; color: #92400e; }
+.form-badge-Mythic { background: #e9d5ff; color: #6b21a8; }
+.form-badge-Baby { background: #fce7f3; color: #9d174d; }
+
+/* ── FAV BUTTON ─────────────────────────── */
+.fav-btn {
+  position: absolute; bottom: 8px; right: 8px; background: none; border: none;
+  font-size: 1.5rem; color: #d1d5db; cursor: pointer;
+  transition: color 0.2s, transform 0.15s; line-height: 1; padding: 2px; z-index: 10;
+}
+.fav-btn:hover { color: #ef4444; transform: scale(1.2); }
+.fav-btn.fav-active { color: #ef4444; }
