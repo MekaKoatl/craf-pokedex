@@ -21,7 +21,7 @@ export function Navbar() {
               className="w-8 h-8"
             />
             <h1 className="text-lg sm:text-2xl font-bold tracking-wide whitespace-nowrap">
-              CRAF Pokédex
+              MekaDragon's Pokédex
             </h1>
           </div>
         </Link>
