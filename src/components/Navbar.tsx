@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 
 const links = [
   { to: "/", label: "Home" },
-  { to: "/dxg", label: "General Dex Gallery" },
+  { to: "/dxg", label: "Dex Search" },
   { to: "/favorites", label: "Favorites" },
 ];
 
