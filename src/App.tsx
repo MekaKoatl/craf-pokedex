@@ -1,14 +1,23 @@
-import { usePokemon } from './hooks/usePokemon'
-import { DexCard } from './components/DexCard'
+import { Routes, Route } from 'react-router-dom'
+import { Navbar } from './components/Navbar'
+
+// TEMPO
+function Home() { return <div className="p-8 text-gray-900">Home (????)</div> }
+function DexGallery() { return <div className="p-8 text-gray-900">DXG (?????)</div> }
+function Details() { return <div className="p-8 text-gray-900">Details (????)</div> }
+function Favorites() { return <div className="p-8 text-gray-900">Favorites (????)</div> }
 
 function App() {
-  const { data, isLoading } = usePokemon(25)
-  if (isLoading || !data) return <p className="p-8">Cargando...</p>
-
   return (
-    <div className="p-8" style={{ maxWidth: 250 }}>
-      <DexCard pokemon={data} />
-    </div>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dxg" element={<DexGallery />} />
+        <Route path="/details/:id" element={<Details />} />
+        <Route path="/favorites" element={<Favorites />} />
+      </Routes>
+    </>
   )
 }
 

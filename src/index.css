@@ -198,3 +198,27 @@
 .fav-btn.fav-active {
   color: #ef4444;
 }
+
+/* ── NAV MÓVIL ─────────────────────────── */
+#mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #dc2626;
+  align-items: flex-end;
+}
+#mobile-menu.open {
+  display: flex;
+}
+#hamburger-btn {
+  display: none;
+}
+@media (max-width: 639px) {
+  #hamburger-btn {
+    display: block;
+  }
+  #nav-links {
+    display: none;
+  }
+}
