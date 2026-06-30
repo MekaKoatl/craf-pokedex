@@ -14,3 +14,17 @@ export async function fetchPokemonById(id: string | number): Promise<Pokemon | n
   if (!res.ok) return null
   return res.json()
 }
+
+export async function fetchInBatches<T, R>(
+  items: T[],
+  fetchFn: (item: T) => Promise<R>,
+  batchSize = 20
+): Promise<R[]> {
+  const results: R[] = []
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize)
+    const batchResults = await Promise.all(batch.map(fetchFn))
+    results.push(...batchResults)
+  }
+  return results
+}
