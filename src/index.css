@@ -288,14 +288,13 @@
   transform: translateY(-50%);
   z-index: 1;
 }
-@keyframes pokeball-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
+
+@keyframes card-fade-in {
+  from {
+    opacity: 0;
   }
 }
+
 .loading-text {
   color: #9ca3af;
   font-size: 0.875rem;
@@ -335,8 +334,13 @@
   border: 2px solid #e5e7eb;
   opacity: 0.2;
   transform: scale(0.8);
-  transition: opacity 0.4s ease, transform 0.4s ease, border 0.4s ease, background-color 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    border 0.4s ease,
+    background-color 0.4s ease;
   text-decoration: none;
+  animation: card-fade-in 0.4s ease;
 }
 .carousel-card.center {
   opacity: 1;
@@ -345,24 +349,39 @@
   border: 4px double #ef4444;
 }
 @media (min-width: 640px) {
-  .carousel-card { flex: 0 0 170px; height: 170px; }
+  .carousel-card {
+    flex: 0 0 170px;
+    height: 170px;
+  }
 }
 .carousel-card img {
-  width: 80px; height: 80px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   image-rendering: pixelated;
-  transition: width 0.4s ease, height 0.4s ease;
+  transition:
+    width 0.4s ease,
+    height 0.4s ease;
 }
-.carousel-card.center img { width: 120px; height: 120px; }
+.carousel-card.center img {
+  width: 120px;
+  height: 120px;
+}
 .carousel-card span {
-  font-size: 0.75rem; font-weight: 600; color: #374151;
-  margin-top: 0.5rem; text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 0.5rem;
+  text-align: center;
 }
-.carousel-card.center span { font-size: 0.85rem; }
+.carousel-card.center span {
+  font-size: 0.85rem;
+}
 
 .carousel-arrow {
   flex-shrink: 0;
-  width: 36px; height: 36px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #fff;
   border: 2px solid #e5e7eb;
@@ -372,7 +391,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
   z-index: 10;
   user-select: none;
 }
@@ -382,13 +404,34 @@
   color: #fff;
 }
 @media (max-width: 639px) {
-  .carousel-section { gap: 0.5rem; overflow: hidden; width: 100%; }
-  .carousel-wrapper {
-    overflow: hidden; height: 200px; width: 0; flex: 1;
-    display: flex; align-items: center; justify-content: center;
+  .carousel-section {
+    gap: 0.5rem;
+    overflow: hidden;
+    width: 100%;
   }
-  .carousel-track { justify-content: center; }
-  .carousel-card { display: none; }
-  .carousel-card.center { display: flex; flex: 0 0 160px; height: 160px; }
-  .carousel-arrow { width: 28px; height: 28px; font-size: 0.85rem; }
+  .carousel-wrapper {
+    overflow: hidden;
+    height: 200px;
+    width: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-track {
+    justify-content: center;
+  }
+  .carousel-card {
+    display: none;
+  }
+  .carousel-card.center {
+    display: flex;
+    flex: 0 0 160px;
+    height: 160px;
+  }
+  .carousel-arrow {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
 }
