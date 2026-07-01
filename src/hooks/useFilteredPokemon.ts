@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { filterPokemonData } from '../lib/filterpokemon'
+import { filterPokemonData } from '../lib/filterPokemon'
 import { fetchPokemonById, fetchInBatches } from '../lib/api'
 import type { FilterState } from './useFilters'
 import type { Pokemon } from '../types/pokemon'
