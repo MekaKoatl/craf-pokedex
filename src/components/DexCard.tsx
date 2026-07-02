@@ -14,14 +14,15 @@ export function DexCard({ pokemon }: { pokemon: Pokemon }) {
       ?.front_default || staticSprite;
 
   const entry = POKEMON_DATA.find((e) => e.id === pokemon.id);
-  const forms = entry?.forms ?? [];
+  const baseForms = entry?.forms ?? [];
+  const forms =
+    entry?.isRegional && !baseForms.includes("R")
+      ? [...baseForms, "R" as const]
+      : baseForms;
   const displayName = getRegionalDisplayName(pokemon.name);
 
   return (
-    <Link
-      to={`/details/${pokemon.id}`}
-      className="dex-card"
-    >
+    <Link to={`/details/${pokemon.id}`} className="dex-card">
       {forms.length > 0 && (
         <div className="form-badges">
           {forms.map((f) => (

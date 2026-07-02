@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FilterPanel } from "./FilterPanel";
 import type { FilterState } from "../../hooks/useFilters";
 
@@ -55,7 +56,7 @@ interface FilterBarProps {
   ) => void;
   clearGroup: <K extends keyof FilterState>(group: K) => void;
   clearAll: () => void;
-  showEvoAndForms?: boolean; // DXG los muestra; Home y Favoritos no
+  showEvoAndForms?: boolean;
 }
 
 export function FilterBar({
@@ -65,6 +66,16 @@ export function FilterBar({
   clearAll,
   showEvoAndForms = false,
 }: FilterBarProps) {
+  // 
+  const [openPanel, setOpenPanel] = useState<string | null>(null);
+
+  // Helpers para no repetir
+  const panelProps = (name: string) => ({
+    isOpen: openPanel === name,
+    onOpen: () => setOpenPanel(name),
+    onClose: () => setOpenPanel(null),
+  });
+
   return (
     <div className="filter-bar">
       <FilterPanel
@@ -74,6 +85,7 @@ export function FilterBar({
         activeValues={filters.types}
         onToggle={(v) => toggle("types", v as string)}
         onClear={() => clearGroup("types")}
+        {...panelProps("type")}
       />
       <FilterPanel
         label="Region"
@@ -81,6 +93,7 @@ export function FilterBar({
         activeValues={filters.regions}
         onToggle={(v) => toggle("regions", v as string)}
         onClear={() => clearGroup("regions")}
+        {...panelProps("region")}
       />
       <FilterPanel
         label="Generation"
@@ -88,6 +101,7 @@ export function FilterBar({
         activeValues={filters.gens}
         onToggle={(v) => toggle("gens", v as number)}
         onClear={() => clearGroup("gens")}
+        {...panelProps("gen")}
       />
 
       {showEvoAndForms && (
@@ -98,6 +112,7 @@ export function FilterBar({
             activeValues={filters.evos}
             onToggle={(v) => toggle("evos", v as number)}
             onClear={() => clearGroup("evos")}
+            {...panelProps("evo")}
           />
           <FilterPanel
             label="Forms"
@@ -105,6 +120,7 @@ export function FilterBar({
             activeValues={filters.forms}
             onToggle={(v) => toggle("forms", v as string)}
             onClear={() => clearGroup("forms")}
+            {...panelProps("forms")}
           />
         </>
       )}

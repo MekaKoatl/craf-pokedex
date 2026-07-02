@@ -295,6 +295,15 @@
   }
 }
 
+@keyframes pokeball-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .loading-text {
   color: #9ca3af;
   font-size: 0.875rem;

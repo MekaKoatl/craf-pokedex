@@ -1,9 +1,8 @@
-import { useState } from 'react'
-import { FilterPill } from './FilterPill'
+import { FilterPill } from "./FilterPill";
 
 export interface PillOption {
-  value: string | number
-  label: string
+  value: string | number;
+  label: string;
 }
 
 export function FilterPanel({
@@ -11,33 +10,40 @@ export function FilterPanel({
   options,
   activeValues,
   isType = false,
+  isOpen,
+  onOpen,
+  onClose,
   onToggle,
   onClear,
 }: {
-  label: string
-  options: PillOption[]
-  activeValues: (string | number)[]
-  isType?: boolean
-  onToggle: (value: string | number) => void
-  onClear: () => void
+  label: string;
+  options: PillOption[];
+  activeValues: (string | number)[];
+  isType?: boolean;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onToggle: (value: string | number) => void;
+  onClear: () => void;
 }) {
-  const [open, setOpen] = useState(false)
-  const hasActive = activeValues.length > 0
+  const hasActive = activeValues.length > 0;
 
   return (
     <div className="filter-dropdown-wrapper">
       <button
-        className={`filter-dropdown-btn${hasActive ? ' filter-btn-active' : ''}`}
-        onClick={() => setOpen((v) => !v)}
+        className={`filter-dropdown-btn${hasActive ? " filter-btn-active" : ""}`}
+        onClick={() => (isOpen ? onClose() : onOpen())}
       >
         {label} ▾
       </button>
 
-      {open && (
+      {isOpen && (
         <div className="filter-dropdown-panel">
           <div className="panel-label-row">
             <div className="panel-label">{label}</div>
-            <button className="panel-close-btn" onClick={() => setOpen(false)}>✕</button>
+            <button className="panel-close-btn" onClick={onClose}>
+              ✕
+            </button>
           </div>
           <div className="panel-pills-row">
             {options.map((opt) => (
@@ -52,11 +58,15 @@ export function FilterPanel({
             ))}
           </div>
           <div className="panel-footer">
-            <button className="panel-apply-btn" onClick={() => setOpen(false)}>Apply</button>
-            <button className="panel-clear-link" onClick={onClear}>Clear</button>
+            <button className="panel-apply-btn" onClick={onClose}>
+              Apply
+            </button>
+            <button className="panel-clear-link" onClick={onClear}>
+              Clear
+            </button>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
