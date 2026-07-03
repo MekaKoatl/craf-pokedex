@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getPokemon, fetchPokemonById } from "../../lib/api";
+import { fetchPokemonById } from "../../lib/api";
 import { getRegionalDisplayName } from "../../lib/regional";
 import {
   getEvoCondition,
