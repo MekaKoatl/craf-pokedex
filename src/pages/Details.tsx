@@ -83,7 +83,9 @@ export function Details() {
         ></button>
       </div>
 
-      <SpriteGallery pokemon={pokemon} />
+      <SpriteGallery key={pokemon.id} pokemon={pokemon} />
+
+      <hr className="border-gray-200 my-6" />
 
       {/* Tipos / Generación / Habitat */}
       <div className="grid grid-cols-3 gap-4 mb-8">
@@ -114,12 +116,17 @@ export function Details() {
         </div>
       </div>
 
+      <hr className="border-gray-200 my-6" />
+
       {/* Evolutions */}
       <EvoChain
         chain={data.evoChain}
         currentName={data.speciesName}
         currentId={pokemon.id}
+        suffix={data.suffix}
       />
+
+      <hr className="border-gray-200 my-6" />
 
       {/* Flavor */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
@@ -128,6 +135,8 @@ export function Details() {
         </h3>
         <p className="text-gray-700 text-sm leading-relaxed">{flavor}</p>
       </div>
+
+      <hr className="border-gray-200 my-6" />
 
       {/* Altura / Peso / Habilidades */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -167,11 +176,15 @@ export function Details() {
 
       <MoreInfoPanel pokemon={pokemon} species={species} />
 
+      <hr className="border-gray-200 my-6" />
+
       <RegionalForms
         pokemonName={pokemon.name}
         isRegional={data.isRegional}
         speciesName={data.speciesName}
       />
+
+      <hr className="border-gray-200 my-6" />
 
       {/* Stats */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
