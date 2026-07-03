@@ -25,12 +25,13 @@ export function Favorites() {
     queryKey: ['favorites', favorites],
     queryFn: async () => {
       const results = await Promise.all(favorites.map((id) => fetchPokemonById(id)))
-      return results.filter((p): p is Pokemon => p !== null).sort((a, b) => a.id - b.id)
+      return results
+        .filter((p): p is Pokemon => p !== null)
+        .sort((a, b) => a.id - b.id)
     },
     enabled: favorites.length > 0,
   })
 
-  // Filtro en memoria: nombre + filtros (usando el dataset local para type/region/gen)
   const q = search.trim().toLowerCase()
   const filtered = (data ?? []).filter((p) => {
     if (q && !getRegionalDisplayName(p.name).toLowerCase().includes(q) && !p.name.includes(q)) return false
@@ -50,8 +51,11 @@ export function Favorites() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">♥ Favorites</h2>
-        <button onClick={handleClearAll} className="text-sm text-gray-400 hover:text-red-500 transition font-semibold">
+        <h2 className="text-2xl font-bold text-gray-900">Favorites</h2>
+        <button
+          onClick={handleClearAll}
+          className="text-sm text-gray-400 hover:text-red-500 transition font-semibold"
+        >
           Remove all favorites
         </button>
       </div>

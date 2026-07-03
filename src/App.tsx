@@ -3,12 +3,7 @@ import { Navbar } from "./components/Navbar";
 import { Favorites } from "./pages/Favorites";
 import { DexGallery } from './pages/DexGallery'
 import { Home } from './pages/Home'
-
-// TEMPO
-
-function Details() {
-  return <div className="p-8 text-gray-900">Details (????)</div>;
-}
+import { Details } from './pages/Details'
 
 function App() {
   return (
