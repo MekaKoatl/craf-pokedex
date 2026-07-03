@@ -669,3 +669,130 @@
   background: none;
   border: none;
 }
+
+/* ── CADENA EVOLUTIVA DE DETALLES ─────────────────── */
+.evo-chain-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 1rem 0;
+}
+
+.evo-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  min-width: 90px;
+}
+
+.evo-node:not(.evo-node-current):hover {
+  border-color: #fca5a5;
+  background: #fff;
+}
+
+.evo-node-current {
+  border: 2px solid #ef4444;
+  background: #fff;
+}
+
+.evo-node-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+.evo-node-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+}
+.evo-node-cond {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  text-align: center;
+}
+.evo-no-evo {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* Flecha (desktop) */
+.evo-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 50px;
+  position: relative;
+}
+
+.evo-arrow-tip {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #d1d5db;
+  margin-top: -2px;
+  align-self: flex-end;
+}
+
+.evo-arrow-label {
+  font-size: 0.65rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  position: absolute;
+  top: calc(100% + 2px);
+}
+
+.evo-branch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* Cadena evolutiva mobil*/
+@media (max-width: 639px) {
+  .evo-chain-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .evo-arrow {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    gap: 0;
+  }
+
+  .evo-arrow-tip {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid #d1d5db;
+    border-bottom: none;
+    margin-top: 0;
+    align-self: center;
+  }
+
+  .evo-arrow-label {
+    position: static;
+    margin-top: 2px;
+  }
+  .evo-branch-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -5,6 +5,10 @@ import { getRegionalDisplayName } from "../lib/regional";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { TypeBadge } from "../components/badges/TypeBadge";
 import { StatBars } from "../components/details/StatBar";
+import { SpriteGallery } from "../components/details/SpriteGallery";
+import { EvoChain } from "../components/details/EvoChain";
+import { RegionalForms } from "../components/details/RegionalForms";
+import { MoreInfoPanel } from "../components/details/MorInfoPanel";
 
 const GEN_MAP: Record<string, string> = {
   "generation-i": "I",
@@ -54,10 +58,6 @@ export function Details() {
   const displayName = getRegionalDisplayName(pokemon.name);
   const genus =
     species.genera.find((g) => g.language.name === "en")?.genus ?? "";
-  const mainSprite =
-    pokemon.sprites.other?.["official-artwork"]?.front_default ||
-    pokemon.sprites.front_default ||
-    "";
   const active = isFavorite(pokemon.id);
 
   return (
@@ -77,19 +77,13 @@ export function Details() {
         </div>
         <button
           onClick={() => toggleFavorite(pokemon.id)}
-          className={`mt-2 fav-btn${active ? " fav-active" : ""}`}
+          className={`mt-2 fav-btn${active ? " fav-active" : "+"}`}
           style={{ position: "static", fontSize: "1.5rem" }}
           title="Favorite"
         ></button>
       </div>
 
-      <div className="flex-1 bg-gray-100 rounded-xl flex items-center justify-center min-h-[300px] mb-8">
-        <img
-          src={mainSprite}
-          alt={pokemon.name}
-          className="w-64 h-64 object-contain"
-        />
-      </div>
+      <SpriteGallery pokemon={pokemon} />
 
       {/* Tipos / Generación / Habitat */}
       <div className="grid grid-cols-3 gap-4 mb-8">
@@ -120,6 +114,13 @@ export function Details() {
         </div>
       </div>
 
+      {/* Evolutions */}
+      <EvoChain
+        chain={data.evoChain}
+        currentName={data.speciesName}
+        currentId={pokemon.id}
+      />
+
       {/* Flavor */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
         <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-3">
@@ -132,7 +133,7 @@ export function Details() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
-            Height
+            Avg. Height
           </h3>
           <p className="text-gray-700 text-sm">
             {(pokemon.height / 10).toFixed(1)} m
@@ -140,7 +141,7 @@ export function Details() {
         </div>
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
-            Weight
+            Avg. Weight
           </h3>
           <p className="text-gray-700 text-sm">
             {(pokemon.weight / 10).toFixed(1)} kg
@@ -163,6 +164,14 @@ export function Details() {
           </div>
         </div>
       </div>
+
+      <MoreInfoPanel pokemon={pokemon} species={species} />
+
+      <RegionalForms
+        pokemonName={pokemon.name}
+        isRegional={data.isRegional}
+        speciesName={data.speciesName}
+      />
 
       {/* Stats */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">

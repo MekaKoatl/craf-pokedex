@@ -81,3 +81,23 @@ export interface Species {
   base_happiness: number | null;
   growth_rate: NamedResource | null;
 }
+
+export interface EvoDetail {
+  min_level: number | null;
+  item: NamedResource | null;
+  trigger: NamedResource | null;
+  min_happiness: number | null;
+  time_of_day: string;
+  known_move: NamedResource | null;
+  held_item: NamedResource | null;
+}
+
+export interface EvoNode {
+  species: NamedResource;
+  evolution_details: EvoDetail[];
+  evolves_to: EvoNode[];
+}
+
+export interface EvolutionChain {
+  chain: EvoNode;
+}
