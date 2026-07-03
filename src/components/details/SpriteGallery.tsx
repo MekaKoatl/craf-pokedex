@@ -4,10 +4,13 @@ import { ImageModal } from "./ImageModal";
 
 export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
   const sprites = [
+    {
+      src: pokemon.sprites.other?.["official-artwork"]?.front_default,
+      label: "Artwork",
+    },
+    { src: pokemon.sprites.other?.["home"]?.front_default, label: "Home" },
     { src: pokemon.sprites.front_default, label: "Front" },
     { src: pokemon.sprites.back_default, label: "Back" },
-    { src: pokemon.sprites.front_shiny, label: "Shiny" },
-    { src: pokemon.sprites.back_shiny, label: "Back Shiny" },
     {
       src: pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated
         ?.front_default,
@@ -18,16 +21,13 @@ export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
         ?.back_default,
       label: "Back Animated",
     },
-    { src: pokemon.sprites.other?.["home"]?.front_default, label: "Home" },
-    { src: pokemon.sprites.other?.["home"]?.front_shiny, label: "Home Shiny" },
-    {
-      src: pokemon.sprites.other?.["official-artwork"]?.front_default,
-      label: "Artwork",
-    },
     {
       src: pokemon.sprites.other?.["official-artwork"]?.front_shiny,
       label: "Artwork Shiny",
     },
+    { src: pokemon.sprites.other?.["home"]?.front_shiny, label: "Home Shiny" },
+    { src: pokemon.sprites.front_shiny, label: "Shiny" },
+    { src: pokemon.sprites.back_shiny, label: "Back Shiny" },
   ].filter((s): s is { src: string; label: string } => Boolean(s.src));
 
   const uniqueSprites = sprites.filter(
@@ -50,7 +50,7 @@ export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
         />
         <ImageModal src={main} alt={pokemon.name} />
       </div>
-      <div className="grid grid-cols-3 gap-2 content-start">
+      <div className="grid grid-cols-3 gap-2 content-start sm:w-72 flex-shrink-0">
         {uniqueSprites.map((s) => (
           <img
             key={s.label}
