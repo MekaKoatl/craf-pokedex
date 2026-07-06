@@ -9,6 +9,7 @@ import { SpriteGallery } from "../components/details/SpriteGallery";
 import { EvoChain } from "../components/details/EvoChain";
 import { RegionalForms } from "../components/details/RegionalForms";
 import { MoreInfoPanel } from "../components/details/MorInfoPanel";
+import { AltFormsAccordion } from "../components/details/AltFormsAccordion";
 
 const GEN_MAP: Record<string, string> = {
   "generation-i": "I",
@@ -193,6 +194,8 @@ export function Details() {
         </h3>
         <StatBars stats={pokemon.stats} />
       </div>
+
+      <AltFormsAccordion species={species} baseStats={pokemon.stats} />
     </main>
   );
 }

@@ -796,3 +796,121 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Alt Forms - Details ----------------------------------- */
+.form-alt-card {
+  background: #fff;
+  border: 0.5px solid #e5e7eb;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.form-alt-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 14px 10px;
+}
+.form-alt-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+}
+.form-alt-tag-mega {
+  background: #b5d4f4;
+  color: #0c447c;
+}
+.form-alt-tag-gmax {
+  background: #f4c0d1;
+  color: #72243e;
+}
+.form-alt-sprite {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+.form-alt-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+}
+.form-alt-types {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.form-alt-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-top: 0.5px solid #e5e7eb;
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  user-select: none;
+}
+.form-alt-toggle:hover {
+  background: #f9fafb;
+}
+.form-alt-accordion {
+  padding: 12px 14px;
+  border-top: 0.5px solid #e5e7eb;
+  background: #f9fafb;
+}
+.form-alt-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.form-alt-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-alt-stat-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: #9ca3af;
+  width: 48px;
+  flex-shrink: 0;
+}
+.form-alt-stat-val {
+  font-size: 10px;
+  font-weight: 600;
+  color: #374151;
+  width: 24px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.form-alt-stat-bg {
+  flex: 1;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+}
+.form-alt-stat-bar {
+  height: 4px;
+  border-radius: 2px;
+}
+.form-alt-acc-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+.form-alt-ability {
+  font-size: 11px;
+  background: #fff;
+  border: 0.5px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: #374151;
+  display: inline-block;
+  text-transform: capitalize;
+}
