@@ -4,6 +4,7 @@ import { getPokemon } from "../../lib/api";
 import { getRegionalDisplayName } from "../../lib/regional";
 import { TypeBadge } from "../badges/TypeBadge";
 import type { Species, PokemonFull } from "../../types/pokemon";
+import { cdnSprite } from "../../lib/sprites";
 
 const STAT_COLORS: Record<string, string> = {
   hp: "#ef4444",
@@ -49,7 +50,7 @@ function FormCard({
         </span>
         <img
           className="form-alt-sprite"
-          src={p.sprites.other?.["official-artwork"]?.front_default ?? ""}
+          src={cdnSprite(p.sprites.other?.["official-artwork"]?.front_default)}
           alt={p.name}
         />
         <span className="form-alt-name">{getRegionalDisplayName(p.name)}</span>

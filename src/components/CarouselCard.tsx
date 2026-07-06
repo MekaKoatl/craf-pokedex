@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import type { Pokemon } from '../types/pokemon'
 import { getRegionalDisplayName } from '../lib/regional'
+import { cdnSprite } from '../lib/sprites'
 
 export function CarouselCard({ pokemon, isCenter }: { pokemon: Pokemon; isCenter: boolean }) {
-  const staticSprite = pokemon.sprites.front_default ?? ''
+  const staticSprite = cdnSprite(pokemon.sprites.front_default)
   const animatedSprite =
-    pokemon.sprites.versions?.['generation-v']?.['black-white']?.animated?.front_default ||
+    cdnSprite(pokemon.sprites.versions?.['generation-v']?.['black-white']?.animated?.front_default) ||
     staticSprite
 
   return (

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPokemonById } from "../../lib/api";
 import { getRegionalDisplayName } from "../../lib/regional";
+import { cdnSprite } from "../../lib/sprites";
 import {
   getEvoCondition,
   buildLinearPath,
@@ -21,7 +22,7 @@ function EvoNodeCard({
   const inner = (
     <>
       <img
-        src={p.sprites.front_default ?? ""}
+        src={cdnSprite(p.sprites.front_default)}
         alt={p.name}
         className="evo-node-img"
       />
@@ -99,7 +100,9 @@ export function EvoChain({
         pokes[step.name] ? (
           <div key={step.name} className="flex items-center">
             {i > 0 && (
-              <Arrow cond={getEvoCondition(path[i - 1].nextDetail ?? undefined)} />
+              <Arrow
+                cond={getEvoCondition(path[i - 1].nextDetail ?? undefined)}
+              />
             )}
             <EvoNodeCard
               p={pokes[step.name]}
@@ -118,20 +121,26 @@ export function EvoChain({
               {pokes[child.species.name] && (
                 <div className="flex items-center">
                   <Arrow cond={getEvoCondition(child.evolution_details[0])} />
-                  <EvoNodeCard p={pokes[child.species.name]} isCurrent={false} />
-                </div>
-              )}
-              {grandchildren.length === 1 && pokes[grandchildren[0].species.name] && (
-                <div className="flex items-center">
-                  <Arrow
-                    cond={getEvoCondition(grandchildren[0].evolution_details[0])}
-                  />
                   <EvoNodeCard
-                    p={pokes[grandchildren[0].species.name]}
+                    p={pokes[child.species.name]}
                     isCurrent={false}
                   />
                 </div>
               )}
+              {grandchildren.length === 1 &&
+                pokes[grandchildren[0].species.name] && (
+                  <div className="flex items-center">
+                    <Arrow
+                      cond={getEvoCondition(
+                        grandchildren[0].evolution_details[0],
+                      )}
+                    />
+                    <EvoNodeCard
+                      p={pokes[grandchildren[0].species.name]}
+                      isCurrent={false}
+                    />
+                  </div>
+                )}
             </>
           );
         })()}
