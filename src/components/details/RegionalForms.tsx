@@ -34,7 +34,7 @@ export function RegionalForms({
       <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-4">
         Regional Forms
       </h3>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {forms.map((p) => (
           <DexCard key={p.id} pokemon={p} />
         ))}

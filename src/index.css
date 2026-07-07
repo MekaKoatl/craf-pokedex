@@ -914,3 +914,14 @@
   display: inline-block;
   text-transform: capitalize;
 }
+
+.more-info-btn {
+  background: #f9fafb;
+  color: #9ca3af;
+  border: 1px solid #e5e7eb;
+}
+.more-info-btn.open {
+  background: #fef2f2;
+  color: #ef4444;
+  border-color: #fecaca;
+}

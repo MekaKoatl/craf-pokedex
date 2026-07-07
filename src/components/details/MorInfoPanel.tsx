@@ -97,13 +97,17 @@ export function MoreInfoPanel({
     <div className="mb-8">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-gray-400 border border-gray-200 rounded-xl hover:border-gray-300 hover:text-gray-600 transition bg-gray-50"
+        className={`w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-xl transition ${
+          open
+            ? "bg-red-50 border-red-200 text-red-500 hover:bg-red-100"
+            : "bg-gray-50 border-gray-200 text-gray-400 hover:border-gray-300 hover:text-gray-600"
+        }`}
       >
         {open ? "Less Info −" : "More Info +"}
       </button>
 
       {open && (
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-4 bg:red">
           <Card label="Egg Groups">
             <span className="capitalize">{eggGroups}</span>
           </Card>

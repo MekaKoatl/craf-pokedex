@@ -1,5 +1,7 @@
 import { useParams } from "react-router-dom";
 import { usePokemonDetails } from "../hooks/usePokemonDetails";
+import heartBase from "../assets/heartbase.png";
+import heartFull from "../assets/heartfull.png";
 import { useFavorites } from "../hooks/useFavorites";
 import { getRegionalDisplayName } from "../lib/regional";
 import { LoadingSpinner } from "../components/LoadingSpinner";
@@ -78,10 +80,16 @@ export function Details() {
         </div>
         <button
           onClick={() => toggleFavorite(pokemon.id)}
-          className={`mt-2 fav-btn${active ? " fav-active" : "+"}`}
-          style={{ position: "static", fontSize: "1.5rem" }}
+          className="mt-2 fav-btn"
+          style={{ position: "static" }}
           title="Favorite"
-        ></button>
+        >
+          <img
+            src={active ? heartFull : heartBase}
+            alt="favorite"
+            style={{ width: "1.8rem", height: "1.8rem" }}
+          />
+        </button>
       </div>
 
       <SpriteGallery key={pokemon.id} pokemon={pokemon} />
