@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
+import { BackToTop } from "./components/BackToTop";
 import { Favorites } from "./pages/Favorites";
 import { DexGallery } from './pages/DexGallery'
 import { Home } from './pages/Home'
@@ -15,6 +16,7 @@ function App() {
         <Route path="/details/:id" element={<Details />} />
         <Route path="/favorites" element={<Favorites />} />
       </Routes>
+      <BackToTop />
     </>
   );
 }

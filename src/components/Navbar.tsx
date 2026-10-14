@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 const links = [
@@ -9,6 +9,15 @@ const links = [
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Cierra el menú si la ventana pasa a tamaño escritorio
+  useEffect(() => {
+    function onResize() {
+      if (window.innerWidth >= 640) setMenuOpen(false);
+    }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   return (
     <nav className="bg-red-600 shadow-lg text-white">

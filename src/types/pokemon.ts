@@ -32,6 +32,12 @@ export interface Pokemon {
           };
         };
       };
+      "generation-vii"?: {
+        icons?: { front_default: string | null };
+      };
+      "generation-viii"?: {
+        icons?: { front_default: string | null };
+      };
     };
   };
 }
@@ -62,6 +68,12 @@ export interface PokemonFull extends Pokemon {
             back_default: string | null;
           };
         };
+      };
+      "generation-vii"?: {
+        icons?: { front_default: string | null };
+      };
+      "generation-viii"?: {
+        icons?: { front_default: string | null };
       };
     };
   };
@@ -103,5 +115,5 @@ export interface EvolutionChain {
 }
 
 export interface Species {
-  varieties: { is_default: boolean; pokemon: NamedResource }[]
+  varieties: { is_default: boolean; pokemon: NamedResource }[];
 }

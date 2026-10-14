@@ -5,16 +5,38 @@ import { ImageModal } from "./ImageModal";
 
 export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
   const sprites = [
-    { src: pokemon.sprites.other?.["official-artwork"]?.front_default, label: "Artwork" },
+    {
+      src: pokemon.sprites.other?.["official-artwork"]?.front_default,
+      label: "Artwork",
+    },
     { src: pokemon.sprites.other?.["home"]?.front_default, label: "Home" },
     { src: pokemon.sprites.front_default, label: "Front" },
     { src: pokemon.sprites.back_default, label: "Back" },
-    { src: pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated?.front_default, label: "Front Animated" },
-    { src: pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated?.back_default, label: "Back Animated" },
-    { src: pokemon.sprites.other?.["official-artwork"]?.front_shiny, label: "Artwork Shiny" },
+    {
+      src: pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated
+        ?.front_default,
+      label: "Front Animated",
+    },
+    {
+      src: pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated
+        ?.back_default,
+      label: "Back Animated",
+    },
+    {
+      src: pokemon.sprites.other?.["official-artwork"]?.front_shiny,
+      label: "Artwork Shiny",
+    },
     { src: pokemon.sprites.other?.["home"]?.front_shiny, label: "Home Shiny" },
     { src: pokemon.sprites.front_shiny, label: "Shiny" },
     { src: pokemon.sprites.back_shiny, label: "Back Shiny" },
+    {
+      src: pokemon.sprites.versions?.["generation-viii"]?.icons?.front_default,
+      label: "Box Icon",
+    },
+    {
+      src: pokemon.sprites.versions?.["generation-vii"]?.icons?.front_default,
+      label: "Box Icon (Gen 7)",
+    },
   ]
     .map((s) => ({ ...s, src: cdnSprite(s.src) }))
     .filter((s): s is { src: string; label: string } => Boolean(s.src));
@@ -32,7 +54,11 @@ export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
   return (
     <div className="flex flex-col sm:flex-row gap-4 mb-8">
       <div className="flex-1 bg-gray-100 rounded-xl flex items-center justify-center min-h-[300px] relative">
-        <img src={main} alt={pokemon.name} className="w-64 h-64 object-contain" />
+        <img
+          src={main}
+          alt={pokemon.name}
+          className="w-64 h-64 object-contain"
+        />
         <ImageModal src={main} alt={pokemon.name} />
       </div>
       <div className="grid grid-cols-3 gap-2 content-start sm:w-72 flex-shrink-0">

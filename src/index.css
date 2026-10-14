@@ -795,6 +795,10 @@
   .evo-branch-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .evo-step {
+    flex-direction: column;
+  }
 }
 
 /* Alt Forms - Details ----------------------------------- */
@@ -913,4 +917,97 @@
   color: #374151;
   display: inline-block;
   text-transform: capitalize;
+}
+
+/* ── SPRITE TICKER ─────────────────────────── */
+.ticker-section {
+  position: relative;
+  padding: 4rem 0;
+}
+.ticker-mask {
+  overflow: hidden;
+  width: 100%;
+}
+.ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: max-content;
+  animation: ticker-scroll 60s linear infinite;
+}
+.ticker-track.paused {
+  animation-play-state: paused;
+}
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-item {
+  flex: 0 0 auto;
+  width: 68px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.75;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.ticker-item:hover {
+  opacity: 1;
+  transform: scale(1.25);
+}
+.ticker-item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+/* Tarjeta flotante */
+.ticker-card {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: -0.75rem;
+  transform: translateX(-50%);
+  z-index: 30;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  text-decoration: none;
+  animation: card-fade-in 0.15s ease;
+}
+.ticker-card-num {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9ca3af;
+}
+.ticker-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.ticker-card-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111827;
+}
+.ticker-card-types {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
 }

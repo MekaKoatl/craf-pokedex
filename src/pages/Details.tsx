@@ -78,10 +78,13 @@ export function Details() {
         </div>
         <button
           onClick={() => toggleFavorite(pokemon.id)}
-          className={`mt-2 fav-btn${active ? " fav-active" : "+"}`}
+          className={`mt-2 fav-btn${active ? " fav-active" : ""}`}
           style={{ position: "static", fontSize: "1.5rem" }}
           title="Favorite"
-        ></button>
+          aria-label="Favorite"
+        >
+          ♥
+        </button>
       </div>
 
       <SpriteGallery key={pokemon.id} pokemon={pokemon} />
@@ -89,7 +92,7 @@ export function Details() {
       <hr className="border-gray-200 my-6" />
 
       {/* Tipos / Generación / Habitat */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
             Type

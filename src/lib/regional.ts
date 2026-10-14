@@ -1,4 +1,6 @@
 import { REGIONAL_SUFFIX_LIST, REGIONAL_PREFIX_MAP, TOTAL_POKEMON } from './constants'
+import { POKEMON_DATA } from '../data/pokemon-data'
+import type { PokemonEntry } from '../types/pokemon'
 
 // "raichu-alola" → "Alolan Raichu"
 export function getRegionalDisplayName(name: string): string {
@@ -10,4 +12,14 @@ export function getRegionalDisplayName(name: string): string {
 
 export function getRandomPokemonId(): number {
   return Math.floor(Math.random() * TOTAL_POKEMON) + 1
+}
+
+// Devuelve las entradas regionales del dataset cuyo nombre base coincide
+// Ej: "raichu" → [{ name: "raichu-alola", ... }]
+export function getRegionalFormsOf(baseName: string): PokemonEntry[] {
+  return POKEMON_DATA.filter((e) => {
+    if (!e.isRegional) return false
+    const suffix = REGIONAL_SUFFIX_LIST.find((s) => e.name.endsWith(s))
+    return suffix ? e.name.slice(0, -suffix.length) === baseName : false
+  })
 }

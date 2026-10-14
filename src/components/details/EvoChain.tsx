@@ -98,7 +98,7 @@ export function EvoChain({
     <div className="evo-chain-wrapper">
       {path.map((step, i) =>
         pokes[step.name] ? (
-          <div key={step.name} className="flex items-center">
+          <div key={step.name} className="flex items-center evo-step">
             {i > 0 && (
               <Arrow
                 cond={getEvoCondition(path[i - 1].nextDetail ?? undefined)}
@@ -119,7 +119,7 @@ export function EvoChain({
           return (
             <>
               {pokes[child.species.name] && (
-                <div className="flex items-center">
+                <div className="flex items-center evo-step">
                   <Arrow cond={getEvoCondition(child.evolution_details[0])} />
                   <EvoNodeCard
                     p={pokes[child.species.name]}
@@ -129,7 +129,7 @@ export function EvoChain({
               )}
               {grandchildren.length === 1 &&
                 pokes[grandchildren[0].species.name] && (
-                  <div className="flex items-center">
+                  <div className="flex items-center evo-step">
                     <Arrow
                       cond={getEvoCondition(
                         grandchildren[0].evolution_details[0],

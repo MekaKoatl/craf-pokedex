@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPokemon, fetchPokemonById } from "../../lib/api";
-import { REGIONAL_SUFFIX_LIST } from "../../lib/constants";
+import { getRegionalFormsOf } from "../../lib/regional";
 import { DexCard } from "../DexCard";
 import type { Pokemon } from "../../types/pokemon";
 
@@ -13,18 +13,25 @@ export function RegionalForms({
   isRegional: boolean;
   speciesName: string;
 }) {
+  // Qué formas regionales existen según el dataset local (sin pedir nada a la API)
+  const entries = isRegional ? [] : getRegionalFormsOf(pokemonName);
+
   const { data: forms } = useQuery({
     queryKey: ["regional-forms", pokemonName],
     queryFn: async () => {
+      // Si YA estamos en una forma regional, mostramos la forma base
       if (isRegional) {
         const base = await getPokemon(speciesName);
         return [base];
       }
+      // Si no, pedimos solo las que sabemos que existen (por id, nunca 404)
       const results = await Promise.all(
-        REGIONAL_SUFFIX_LIST.map((s) => fetchPokemonById(`${pokemonName}${s}`)),
+        entries.map((e) => fetchPokemonById(e.id)),
       );
       return results.filter((p): p is Pokemon => p !== null);
     },
+    // No corre si no hay nada que buscar
+    enabled: isRegional || entries.length > 0,
   });
 
   if (!forms || forms.length === 0) return null;
