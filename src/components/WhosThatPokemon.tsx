@@ -8,18 +8,21 @@ import { TypeBadge } from "./badges/TypeBadge";
 
 type Status = "hidden" | "guessing" | "revealed" | "solved";
 
+function readStatus(key: string): Status {
+  try {
+    return (localStorage.getItem(key) as Status) || "hidden";
+  } catch {
+    return "hidden";
+  }
+}
+
 export function WhosThatPokemon() {
   const { data } = useDailyPokemon();
-  const storageKey = `craf-wtp-${getTodayKey()}`;
+  // El día vive en el estado, así React puede reaccionar cuando cambia
+  const [dayKey, setDayKey] = useState(getTodayKey);
+  const storageKey = `craf-wtp-${dayKey}`;
 
-  // Si ya lo resolvió hoy, arranca destapado
-  const [status, setStatus] = useState<Status>(() => {
-    try {
-      return (localStorage.getItem(storageKey) as Status) || "hidden";
-    } catch {
-      return "hidden";
-    }
-  });
+  const [status, setStatus] = useState<Status>(() => readStatus(storageKey));
   const [guess, setGuess] = useState("");
   const [wrong, setWrong] = useState(false);
   const [left, setLeft] = useState(msUntilMidnight);
@@ -35,11 +38,22 @@ export function WhosThatPokemon() {
     }
   }, [status, storageKey]);
 
-  // Contador cada segundo
+  
+  // Contador cada segundo; al cruzar la medianoche reinicia el juego
   useEffect(() => {
-    const t = setInterval(() => setLeft(msUntilMidnight()), 1000);
+    const t = setInterval(() => {
+      setLeft(msUntilMidnight());
+
+      const hoy = getTodayKey();
+      if (hoy !== dayKey) {
+        setDayKey(hoy);
+        setStatus(readStatus(`craf-wtp-${hoy}`));
+        setGuess("");
+        setWrong(false);
+      }
+    }, 1000);
     return () => clearInterval(t);
-  }, []);
+  }, [dayKey]);
 
   if (!data) return null;
 
@@ -58,7 +72,10 @@ export function WhosThatPokemon() {
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     const limpio = guess.trim().toLowerCase();
-    if (limpio === pokemon.name.toLowerCase() || limpio === name.toLowerCase()) {
+    if (
+      limpio === pokemon.name.toLowerCase() ||
+      limpio === name.toLowerCase()
+    ) {
       setStatus("solved");
     } else {
       setWrong(true);
@@ -103,7 +120,10 @@ export function WhosThatPokemon() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleGuess} className="flex gap-2 justify-center sm:justify-start">
+                <form
+                  onSubmit={handleGuess}
+                  className="flex gap-2 justify-center sm:justify-start"
+                >
                   <input
                     value={guess}
                     onChange={(e) => {
@@ -143,7 +163,9 @@ export function WhosThatPokemon() {
                   #{String(pokemon.id).padStart(3, "0")} — {name}
                 </h2>
               </Link>
-              <p className="text-sm opacity-90 mt-2 leading-relaxed">{flavor}</p>
+              <p className="text-sm opacity-90 mt-2 leading-relaxed">
+                {flavor}
+              </p>
               <div className="flex gap-2 mt-3 justify-center sm:justify-start">
                 {pokemon.types.map((t) => (
                   <TypeBadge key={t.type.name} type={t.type.name} />

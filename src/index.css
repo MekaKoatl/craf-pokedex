@@ -317,7 +317,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 2rem 0;
+  padding: 3.25rem 0;
 }
 .carousel-wrapper {
   width: 100%;
@@ -927,6 +927,7 @@
 .ticker-mask {
   overflow: hidden;
   width: 100%;
+  padding: 0.75rem 0;
 }
 .ticker-track {
   display: flex;
@@ -1010,4 +1011,28 @@
   display: flex;
   gap: 2px;
   justify-content: center;
+}
+
+/* Esqueleto mientras carga */
+.ticker-skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.ticker-skeleton {
+  flex: 0 0 auto;
+  width: 68px;
+  height: 56px;
+  border-radius: 0.5rem;
+  background: #f3f4f6;
+  animation: ticker-pulse 1.2s ease-in-out infinite;
+}
+@keyframes ticker-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
