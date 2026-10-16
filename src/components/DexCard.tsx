@@ -7,6 +7,7 @@ import { cdnSprite } from "../lib/sprites";
 import { TypeBadge } from "./badges/TypeBadge";
 import { FormBadge } from "./badges/FormBadge";
 import { FavButton } from "./FavButton";
+import { SpriteImg } from "./SpriteImg";
 
 export function DexCard({ pokemon }: { pokemon: Pokemon }) {
   const [hovered, setHovered] = useState(false);
@@ -16,7 +17,7 @@ export function DexCard({ pokemon }: { pokemon: Pokemon }) {
   const animatedSprite =
     cdnSprite(
       pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated
-        ?.front_default
+        ?.front_default,
     ) || staticSprite;
 
   const entry = POKEMON_DATA.find((e) => e.id === pokemon.id);
@@ -42,9 +43,13 @@ export function DexCard({ pokemon }: { pokemon: Pokemon }) {
       )}
       <span className="dex-card-dexnum">#{pokemon.id}</span>
       <div className="dex-card-sprite">
-        <img className="sprite-static" src={staticSprite} alt={pokemon.name} />
+        <SpriteImg
+          className="sprite-static"
+          src={staticSprite}
+          alt={pokemon.name}
+        />
         {hovered && (
-          <img
+          <SpriteImg
             className="sprite-animated"
             src={animatedSprite}
             alt=""

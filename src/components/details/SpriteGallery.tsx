@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { PokemonFull } from "../../types/pokemon";
 import { cdnSprite } from "../../lib/sprites";
 import { ImageModal } from "./ImageModal";
+import { SpriteImg } from "../SpriteImg";
 
 export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
   const sprites = [
@@ -54,7 +55,7 @@ export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
   return (
     <div className="flex flex-col sm:flex-row gap-4 mb-8">
       <div className="flex-1 bg-gray-100 rounded-xl flex items-center justify-center min-h-[300px] relative">
-        <img
+        <SpriteImg
           src={main}
           alt={pokemon.name}
           className="w-64 h-64 object-contain"
@@ -63,7 +64,7 @@ export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
       </div>
       <div className="grid grid-cols-3 gap-2 content-start sm:w-72 flex-shrink-0">
         {uniqueSprites.map((s) => (
-          <img
+          <SpriteImg
             key={s.label}
             src={s.src}
             alt={s.label}
