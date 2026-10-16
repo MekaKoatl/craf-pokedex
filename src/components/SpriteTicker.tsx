@@ -5,6 +5,7 @@ import { getRegionalDisplayName } from "../lib/regional";
 import { cdnSprite, boxIconUrl } from "../lib/sprites";
 import { TypeBadge } from "./badges/TypeBadge";
 import type { Pokemon } from "../types/pokemon";
+import { SpriteImg } from "./SpriteImg";
 
 // Sprite más grande para la tarjeta: animado si existe
 function bigSpriteOf(p: Pokemon): string {
@@ -84,7 +85,7 @@ export function SpriteTicker() {
           style={{ left: `${active.x}px` }}
         >
           <span className="ticker-card-num">#{active.p.id}</span>
-          <img
+          <SpriteImg
             src={bigSpriteOf(active.p)}
             alt=""
             onError={(e) => handleImgError(e, active.p)}

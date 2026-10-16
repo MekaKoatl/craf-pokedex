@@ -9,6 +9,7 @@ import {
   getChildren,
 } from "../../lib/evolution";
 import type { EvolutionChain, Pokemon } from "../../types/pokemon";
+import { SpriteImg } from "../SpriteImg";
 
 function EvoNodeCard({
   p,
@@ -21,7 +22,7 @@ function EvoNodeCard({
 }) {
   const inner = (
     <>
-      <img
+      <SpriteImg
         src={cdnSprite(p.sprites.front_default)}
         alt={p.name}
         className="evo-node-img"

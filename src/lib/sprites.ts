@@ -38,3 +38,8 @@ export function imageExists(url: string, timeoutMs = 2500): Promise<boolean> {
     img.src = url;
   });
 }
+
+
+// Unown animado, se usa como indicador de "cargando" en los sprites
+export const LOADING_SPRITE =
+  "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/versions/generation-v/black-white/animated/201.gif";
