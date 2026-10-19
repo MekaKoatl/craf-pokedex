@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { PokemonFull } from "../../types/pokemon";
-import { cdnSprite } from "../../lib/sprites";
+import { cdnSprite, boxIconUrl, hasBoxIcon } from "../../lib/sprites";
 import { ImageModal } from "./ImageModal";
 import { SpriteImg } from "../SpriteImg";
 
@@ -31,12 +31,8 @@ export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
     { src: pokemon.sprites.front_shiny, label: "Shiny" },
     { src: pokemon.sprites.back_shiny, label: "Back Shiny" },
     {
-      src: pokemon.sprites.versions?.["generation-viii"]?.icons?.front_default,
+      src: hasBoxIcon(pokemon.id) ? boxIconUrl(pokemon.id) : null,
       label: "Box Icon",
-    },
-    {
-      src: pokemon.sprites.versions?.["generation-vii"]?.icons?.front_default,
-      label: "Box Icon (Gen 7)",
     },
   ]
     .map((s) => ({ ...s, src: cdnSprite(s.src) }))

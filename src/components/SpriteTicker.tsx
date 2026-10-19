@@ -111,7 +111,7 @@ export function SpriteTicker() {
               aria-label={p.name}
               onMouseEnter={(e) => handleEnter(p, e)}
             >
-              <img src={boxIconUrl(p.id)} alt="" />
+              <SpriteImg src={boxIconUrl(p.id)} alt="" />
             </Link>
           ))}
         </div>

@@ -8,6 +8,18 @@ import { TypeBadge } from "./badges/TypeBadge";
 
 type Status = "hidden" | "guessing" | "revealed" | "solved";
 
+const GEN_MAP: Record<string, string> = {
+  "generation-i": "I",
+  "generation-ii": "II",
+  "generation-iii": "III",
+  "generation-iv": "IV",
+  "generation-v": "V",
+  "generation-vi": "VI",
+  "generation-vii": "VII",
+  "generation-viii": "VIII",
+  "generation-ix": "IX",
+};
+
 function readStatus(key: string): Status {
   try {
     return (localStorage.getItem(key) as Status) || "hidden";
@@ -38,7 +50,6 @@ export function WhosThatPokemon() {
     }
   }, [status, storageKey]);
 
-  
   // Contador cada segundo; al cruzar la medianoche reinicia el juego
   useEffect(() => {
     const t = setInterval(() => {
@@ -66,6 +77,10 @@ export function WhosThatPokemon() {
     species.flavor_text_entries
       .find((e) => e.language.name === "en")
       ?.flavor_text.replace(/\f|\n/g, " ") ?? "";
+  const genus =
+    species.genera.find((g) => g.language.name === "en")?.genus ?? "";
+  const gen = GEN_MAP[species.generation?.name ?? ""] ?? "?";
+  const habitat = species.habitat?.name ?? "Unknown";
 
   const isOpen = status === "revealed" || status === "solved";
 
@@ -85,14 +100,24 @@ export function WhosThatPokemon() {
   return (
     <section className="max-w-4xl mx-auto px-4 pt-8">
       <div className="bg-red-600 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
-        {/* Silueta o sprite */}
-        <div className="w-44 h-44 flex-shrink-0 flex items-center justify-center">
-          <img
-            src={sprite}
-            alt={isOpen ? name : "Silueta"}
-            className="w-full h-full object-contain transition-all duration-500"
-            style={{ filter: isOpen ? "none" : "brightness(0)" }}
-          />
+        {/* Columna izquierda: sprite y, al revelar, los tipos */}
+        <div className="flex flex-col items-center gap-3 flex-shrink-0">
+          <div className="wtp-sprite-box">
+            <img
+              src={sprite}
+              alt={isOpen ? name : "Silueta"}
+              className="w-full h-full object-contain transition-all duration-500 relative"
+              style={{ filter: isOpen ? "none" : "brightness(0)" }}
+            />
+          </div>
+
+          {isOpen && (
+            <div className="wtp-types flex gap-2 justify-center">
+              {pokemon.types.map((t) => (
+                <TypeBadge key={t.type.name} type={t.type.name} />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Panel derecho */}
@@ -158,18 +183,22 @@ export function WhosThatPokemon() {
                   You got it!
                 </p>
               )}
+
               <Link to={`/details/${pokemon.id}`}>
-                <h2 className="text-3xl font-bold hover:underline">
-                  #{String(pokemon.id).padStart(3, "0")} — {name}
+                <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight hover:underline">
+                  #{String(pokemon.id).padStart(2, "0")} {name}
                 </h2>
               </Link>
-              <p className="text-sm opacity-90 mt-2 leading-relaxed">
-                {flavor}
-              </p>
-              <div className="flex gap-2 mt-3 justify-center sm:justify-start">
-                {pokemon.types.map((t) => (
-                  <TypeBadge key={t.type.name} type={t.type.name} />
-                ))}
+
+              {genus && (
+                <p className="italic text-white/70 text-sm mt-1">{genus}</p>
+              )}
+
+              <p className="text-sm mt-3 leading-relaxed">{flavor}</p>
+
+              <div className="flex flex-wrap gap-x-8 gap-y-1 mt-4 text-xs font-bold italic justify-center sm:justify-start">
+                <span>First appeared in: Gen {gen}</span>
+                <span className="capitalize">Habitat: {habitat}</span>
               </div>
             </>
           )}
