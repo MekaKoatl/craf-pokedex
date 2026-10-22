@@ -50,6 +50,8 @@ export function Abilities() {
         (a, b) => (genMap[a] ?? 99) - (genMap[b] ?? 99) || a.localeCompare(b),
       );
     }
+    if (sorted && sortDir === "desc") out = [...out].reverse();
+
     // La que viene de Details se adelanta, así cae en la primera página
     if (focus && out.includes(focus)) {
       out = [focus, ...out.filter((n) => n !== focus)];
@@ -83,7 +85,7 @@ export function Abilities() {
     return sortDir === "asc" ? "▲" : "▼";
   }
 
-    function clearAll() {
+  function clearAll() {
     setSearch("");
     setOpenAbility(null);
     setLetter(null);
