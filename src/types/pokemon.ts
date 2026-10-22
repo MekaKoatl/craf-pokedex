@@ -47,18 +47,28 @@ export interface PokemonFull extends Pokemon {
   weight: number;
   base_experience: number | null;
   location_area_encounters: string;
+  species: NamedResource;
   abilities: { ability: NamedResource; is_hidden: boolean }[];
   stats: { base_stat: number; stat: NamedResource }[];
   sprites: Pokemon["sprites"] & {
     back_default: string | null;
     front_shiny: string | null;
     back_shiny: string | null;
+    front_female: string | null;
+    back_female: string | null;
+    front_shiny_female: string | null;
+    back_shiny_female: string | null;
     other?: {
       "official-artwork"?: {
         front_default: string | null;
         front_shiny: string | null;
       };
-      home?: { front_default: string | null; front_shiny: string | null };
+      home?: {
+        front_default: string | null;
+        front_shiny: string | null;
+        front_female: string | null;
+        front_shiny_female: string | null;
+      };
     };
     versions?: Pokemon["sprites"]["versions"] & {
       "generation-v"?: {
@@ -66,6 +76,8 @@ export interface PokemonFull extends Pokemon {
           animated?: {
             front_default: string | null;
             back_default: string | null;
+            front_female: string | null;
+            back_female: string | null;
           };
         };
       };
@@ -95,13 +107,24 @@ export interface Species {
 }
 
 export interface EvoDetail {
-  min_level: number | null;
-  item: NamedResource | null;
-  trigger: NamedResource | null;
+  gender: number | null;
+  held_item: { name: string; url: string } | null;
+  item: { name: string; url: string } | null;
+  known_move: { name: string; url: string } | null;
+  known_move_type: { name: string; url: string } | null;
+  location: { name: string; url: string } | null;
+  min_affection: number | null;
+  min_beauty: number | null;
   min_happiness: number | null;
+  min_level: number | null;
+  needs_overworld_rain: boolean;
+  party_species: { name: string; url: string } | null;
+  party_type: { name: string; url: string } | null;
+  relative_physical_stats: number | null;
   time_of_day: string;
-  known_move: NamedResource | null;
-  held_item: NamedResource | null;
+  trade_species: { name: string; url: string } | null;
+  trigger: { name: string; url: string } | null;
+  turn_upside_down: boolean;
 }
 
 export interface EvoNode {

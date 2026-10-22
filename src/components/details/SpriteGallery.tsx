@@ -4,35 +4,68 @@ import { cdnSprite, boxIconUrl, hasBoxIcon } from "../../lib/sprites";
 import { ImageModal } from "./ImageModal";
 import { SpriteImg } from "../SpriteImg";
 
-export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
+// Atajos a los cuatro lugares donde viven los sprites
+function parts(p?: PokemonFull | null) {
+  return {
+    s: p?.sprites,
+    art: p?.sprites.other?.["official-artwork"],
+    home: p?.sprites.other?.["home"],
+    anim: p?.sprites.versions?.["generation-v"]?.["black-white"]?.animated,
+  };
+}
+
+export function SpriteGallery({
+  pokemon,
+  female,
+}: {
+  pokemon: PokemonFull;
+  female?: PokemonFull | null;
+}) {
+  const m = parts(pokemon);
+  const w = parts(female);
+
+  // Cada hueco ♀ se resuelve de dos maneras: con el campo _female del
+  // propio Pokémon (Pyroar) o con el sprite de la variedad hembra
+  // (Meowstic). El ?? toma el que exista.
   const sprites = [
+    { src: m.art?.front_default, label: "Artwork" },
+    { src: w.art?.front_default, label: "Artwork ♀" },
+    { src: m.home?.front_default, label: "Home" },
+    { src: m.home?.front_female ?? w.home?.front_default, label: "Home ♀" },
+    { src: m.s?.front_default, label: "Front" },
+    { src: m.s?.back_default, label: "Back" },
+    { src: m.s?.front_female ?? w.s?.front_default, label: "Front ♀" },
+    { src: m.s?.back_female ?? w.s?.back_default, label: "Back ♀" },
+    { src: m.anim?.front_default, label: "Front Animated" },
+    { src: m.anim?.back_default, label: "Back Animated" },
     {
-      src: pokemon.sprites.other?.["official-artwork"]?.front_default,
-      label: "Artwork",
-    },
-    { src: pokemon.sprites.other?.["home"]?.front_default, label: "Home" },
-    { src: pokemon.sprites.front_default, label: "Front" },
-    { src: pokemon.sprites.back_default, label: "Back" },
-    {
-      src: pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated
-        ?.front_default,
-      label: "Front Animated",
-    },
-    {
-      src: pokemon.sprites.versions?.["generation-v"]?.["black-white"]?.animated
-        ?.back_default,
-      label: "Back Animated",
+      src: m.anim?.front_female ?? w.anim?.front_default,
+      label: "Front Animated ♀",
     },
     {
-      src: pokemon.sprites.other?.["official-artwork"]?.front_shiny,
-      label: "Artwork Shiny",
+      src: m.anim?.back_female ?? w.anim?.back_default,
+      label: "Back Animated ♀",
     },
-    { src: pokemon.sprites.other?.["home"]?.front_shiny, label: "Home Shiny" },
-    { src: pokemon.sprites.front_shiny, label: "Shiny" },
-    { src: pokemon.sprites.back_shiny, label: "Back Shiny" },
+
+    { src: m.art?.front_shiny, label: "Artwork Shiny" },
+    { src: w.art?.front_shiny, label: "Artwork Shiny ♀" },
+    { src: m.home?.front_shiny, label: "Home Shiny" },
+    {
+      src: m.home?.front_shiny_female ?? w.home?.front_shiny,
+      label: "Home Shiny ♀",
+    },
+    { src: m.s?.front_shiny, label: "Shiny" },
+    { src: m.s?.back_shiny, label: "Back Shiny" },
+    { src: m.s?.front_shiny_female ?? w.s?.front_shiny, label: "Shiny ♀" },
+    { src: m.s?.back_shiny_female ?? w.s?.back_shiny, label: "Back Shiny ♀" },
+
     {
       src: hasBoxIcon(pokemon.id) ? boxIconUrl(pokemon.id) : null,
       label: "Box Icon",
+    },
+    {
+      src: female && hasBoxIcon(female.id) ? boxIconUrl(female.id) : null,
+      label: "Box Icon ♀",
     },
   ]
     .map((s) => ({ ...s, src: cdnSprite(s.src) }))
@@ -43,30 +76,40 @@ export function SpriteGallery({ pokemon }: { pokemon: PokemonFull }) {
   );
 
   const artwork =
-    cdnSprite(pokemon.sprites.other?.["official-artwork"]?.front_default) ||
-    cdnSprite(pokemon.sprites.front_default) ||
-    "";
+    cdnSprite(m.art?.front_default) || cdnSprite(m.s?.front_default) || "";
   const [main, setMain] = useState(artwork);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 mb-8">
-      <div className="flex-1 bg-gray-100 rounded-xl flex items-center justify-center min-h-[300px] relative">
+    <div className="mb-8">
+      {/* Imagen principal */}
+      <div className="bg-gray-100 rounded-xl flex items-center justify-center min-h-[320px] relative">
         <SpriteImg
           src={main}
           alt={pokemon.name}
-          className="w-64 h-64 object-contain"
+          className="w-72 h-72 object-contain"
         />
         <ImageModal src={main} alt={pokemon.name} />
       </div>
-      <div className="grid grid-cols-3 gap-2 content-start sm:w-72 flex-shrink-0">
+
+      {/* Selector horizontal */}
+      <div className="sprite-strip mt-3 flex gap-2 overflow-x-auto pb-2">
         {uniqueSprites.map((s) => (
-          <SpriteImg
-            key={s.label}
-            src={s.src}
-            alt={s.label}
+          <button
+            key={s.src}
             onClick={() => setMain(s.src)}
-            className="w-full h-24 object-contain bg-gray-100 rounded-lg cursor-pointer hover:ring-2 hover:ring-red-400 transition p-1"
-          />
+            title={s.label}
+            className={`flex-none w-20 h-20 rounded-lg bg-gray-100 p-1 border-2 transition cursor-pointer ${
+              main === s.src
+                ? "border-red-500"
+                : "border-transparent hover:border-red-300"
+            }`}
+          >
+            <SpriteImg
+              src={s.src}
+              alt={s.label}
+              className="w-full h-full object-contain"
+            />
+          </button>
         ))}
       </div>
     </div>

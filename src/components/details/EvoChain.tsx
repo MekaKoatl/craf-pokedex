@@ -1,15 +1,17 @@
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPokemonById } from "../../lib/api";
 import { getRegionalDisplayName } from "../../lib/regional";
 import { cdnSprite } from "../../lib/sprites";
 import {
   getEvoCondition,
   buildLinearPath,
-  getChildren,
+  getDescendantLevels,
+  listTransitions,
 } from "../../lib/evolution";
 import type { EvolutionChain, Pokemon } from "../../types/pokemon";
 import { SpriteImg } from "../SpriteImg";
+import { fetchPokemonById, fetchPokemonBySpecies } from "../../lib/api";
 
 function EvoNodeCard({
   p,
@@ -59,15 +61,18 @@ export function EvoChain({
   currentId: number;
   suffix?: string;
 }) {
+  const [showReqs, setShowReqs] = useState(false);
+
+  // Lo que viene antes del actual (y el actual)
   const path = buildLinearPath(chain.chain, currentName);
-  const children = getChildren(chain.chain, currentName);
+  // Lo que viene después, agrupado por nivel
+  const levels = getDescendantLevels(chain.chain, currentName);
+  // Todos los pasos de la cadena, para el panel de requisitos
+  const transitions = listTransitions(chain.chain);
 
   const names = [
     ...path.map((s) => s.name),
-    ...children.map((c) => c.species.name),
-    ...children.flatMap((c) =>
-      getChildren(chain.chain, c.species.name).map((g) => g.species.name),
-    ),
+    ...levels.flat().map((n) => n.species.name),
   ];
 
   const { data: pokes } = useQuery({
@@ -83,7 +88,7 @@ export function EvoChain({
               return;
             }
           }
-          const normal = await fetchPokemonById(n);
+          const normal = await fetchPokemonBySpecies(n);
           if (normal) map[n] = normal;
         }),
       );
@@ -91,78 +96,99 @@ export function EvoChain({
     },
   });
 
-  if (path.length === 1 && children.length === 0)
+  if (path.length === 1 && levels.length === 0)
     return <p className="evo-no-evo">This Pokémon does not evolve.</p>;
   if (!pokes) return null;
 
   return (
-    <div className="evo-chain-wrapper">
-      {path.map((step, i) =>
-        pokes[step.name] ? (
-          <div key={step.name} className="flex items-center evo-step">
-            {i > 0 && (
-              <Arrow
-                cond={getEvoCondition(path[i - 1].nextDetail ?? undefined)}
-              />
-            )}
-            <EvoNodeCard
-              p={pokes[step.name]}
-              isCurrent={step.name === currentName}
-            />
-          </div>
-        ) : null,
-      )}
-
-      {children.length === 1 &&
-        (() => {
-          const child = children[0];
-          const grandchildren = getChildren(chain.chain, child.species.name);
-          return (
-            <>
-              {pokes[child.species.name] && (
-                <div className="flex items-center evo-step">
-                  <Arrow cond={getEvoCondition(child.evolution_details[0])} />
-                  <EvoNodeCard
-                    p={pokes[child.species.name]}
-                    isCurrent={false}
-                  />
-                </div>
-              )}
-              {grandchildren.length === 1 &&
-                pokes[grandchildren[0].species.name] && (
-                  <div className="flex items-center evo-step">
-                    <Arrow
-                      cond={getEvoCondition(
-                        grandchildren[0].evolution_details[0],
-                      )}
-                    />
-                    <EvoNodeCard
-                      p={pokes[grandchildren[0].species.name]}
-                      isCurrent={false}
-                    />
-                  </div>
-                )}
-            </>
-          );
-        })()}
-
-      {children.length > 1 && (
-        <>
-          <Arrow />
-          <div className="evo-branch-grid">
-            {children.map((c) =>
-              pokes[c.species.name] ? (
-                <EvoNodeCard
-                  key={c.species.name}
-                  p={pokes[c.species.name]}
-                  isCurrent={false}
-                  cond={getEvoCondition(c.evolution_details[0])}
+    <>
+      <div className="evo-chain-wrapper">
+        {/* Ancestros + actual */}
+        {path.map((step, i) =>
+          pokes[step.name] ? (
+            <div key={step.name} className="flex items-center evo-step">
+              {i > 0 && (
+                <Arrow
+                  cond={getEvoCondition(path[i - 1].nextDetail ?? undefined)}
                 />
-              ) : null,
-            )}
-          </div>
-        </>
+              )}
+              <EvoNodeCard
+                p={pokes[step.name]}
+                isCurrent={step.name === currentName}
+              />
+            </div>
+          ) : null,
+        )}
+
+        {/* Descendientes, nivel por nivel */}
+        {levels.map((level, li) => {
+          // Un solo descendiente: va en línea, con la condición en la flecha
+          if (level.length === 1) {
+            const node = level[0];
+            if (!pokes[node.species.name]) return null;
+            return (
+              <div key={`evo-lvl-${li}`} className="flex items-center evo-step">
+                <Arrow cond={getEvoCondition(node.evolution_details[0])} />
+                <EvoNodeCard p={pokes[node.species.name]} isCurrent={false} />
+              </div>
+            );
+          }
+          // Varios: flecha suelta y grid, con la condición en cada tarjeta
+          return (
+            <Fragment key={`evo-lvl-${li}`}>
+              <Arrow />
+              <div className="evo-branch-grid">
+                {level.map((c) =>
+                  pokes[c.species.name] ? (
+                    <EvoNodeCard
+                      key={c.species.name}
+                      p={pokes[c.species.name]}
+                      isCurrent={false}
+                      cond={getEvoCondition(c.evolution_details[0])}
+                    />
+                  ) : null,
+                )}
+              </div>
+            </Fragment>
+          );
+        })}
+      </div>
+
+      {/* Requisitos completos, colapsado por defecto */}
+      {transitions.length > 0 && (
+        <div className="evo-req">
+          <button
+            className="evo-req-toggle"
+            onClick={() => setShowReqs((v) => !v)}
+          >
+            <span>Evolution requirements</span>
+            <span>{showReqs ? "−" : "+"}</span>
+          </button>
+
+          {showReqs && (
+            <div className="evo-req-body">
+              {transitions.map((t) => (
+                <div key={`${t.from}-${t.to}`} className="evo-req-row">
+                  <div className="evo-req-names">
+                    {getRegionalDisplayName(t.from)} →{" "}
+                    {getRegionalDisplayName(t.to)}
+                  </div>
+                  {t.ways.map((way, i) => (
+                    <Fragment key={i}>
+                      {i > 0 && <div className="evo-req-or">or</div>}
+                      <ul className="evo-req-list">
+                        {way.map((r) => (
+                          <li key={r}>{r}</li>
+                        ))}
+                      </ul>
+                    </Fragment>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }

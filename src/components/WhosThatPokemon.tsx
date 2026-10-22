@@ -84,6 +84,15 @@ export function WhosThatPokemon() {
 
   const isOpen = status === "revealed" || status === "solved";
 
+  const spriteImg = (
+    <img
+      src={sprite}
+      alt={isOpen ? name : "Silueta"}
+      className="w-full h-full object-contain transition-all duration-500 relative"
+      style={{ filter: isOpen ? "none" : "brightness(0)" }}
+    />
+  );
+
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     const limpio = guess.trim().toLowerCase();
@@ -101,15 +110,17 @@ export function WhosThatPokemon() {
     <section className="max-w-4xl mx-auto px-4 pt-8">
       <div className="bg-red-600 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
         {/* Columna izquierda: sprite y, al revelar, los tipos */}
-        <div className="flex flex-col items-center gap-3 flex-shrink-0">
-          <div className="wtp-sprite-box">
-            <img
-              src={sprite}
-              alt={isOpen ? name : "Silueta"}
-              className="w-full h-full object-contain transition-all duration-500 relative"
-              style={{ filter: isOpen ? "none" : "brightness(0)" }}
-            />
-          </div>
+        <div className="flex flex-col items-center gap-3 flex-shrink-0 w-44">
+          {isOpen ? (
+            <Link
+              to={`/details/${pokemon.id}`}
+              className="wtp-sprite-box transition hover:scale-105"
+            >
+              {spriteImg}
+            </Link>
+          ) : (
+            <div className="wtp-sprite-box">{spriteImg}</div>
+          )}
 
           {isOpen && (
             <div className="wtp-types flex gap-2 justify-center">

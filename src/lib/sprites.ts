@@ -23,3 +23,15 @@ export function boxIconUrl(id: number): string {
 // Unown animado, se usa como indicador de "cargando" en los sprites
 export const LOADING_SPRITE =
   "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/versions/generation-v/black-white/animated/201.gif";
+
+const POKEMON_BASE =
+  "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon";
+
+export function pokemonSpriteUrl(id: number): string {
+  return `${POKEMON_BASE}/${id}.png`;
+}
+
+// Icono de PC si existe, si no el sprite normal
+export function iconOrSprite(id: number): string {
+  return hasBoxIcon(id) ? boxIconUrl(id) : pokemonSpriteUrl(id);
+}

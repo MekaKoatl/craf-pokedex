@@ -1,27 +1,31 @@
-import { useState } from 'react'
-import { useFilters } from '../hooks/useFilters'
-import { useFilteredPokemon } from '../hooks/useFilteredPokemon'
-import { useDexGallery } from '../hooks/useDexGallery'
-import { usePokemonNames } from '../hooks/usePokemonNames'
-import { useSearchPokemon } from '../hooks/useSearchPokemon'
-import { FilterBar } from '../components/filters/FilterBar'
-import { SearchBar } from '../components/SearchBar'
-import { DexCard } from '../components/DexCard'
-import { LoadingSpinner } from '../components/LoadingSpinner'
+import { useState } from "react";
+import { useFilters } from "../hooks/useFilters";
+import { useFilteredPokemon } from "../hooks/useFilteredPokemon";
+import { useDexGallery } from "../hooks/useDexGallery";
+import { usePokemonNames } from "../hooks/usePokemonNames";
+import { useSearchPokemon } from "../hooks/useSearchPokemon";
+import { FilterBar } from "../components/filters/FilterBar";
+import { SearchBar } from "../components/SearchBar";
+import { DexCard } from "../components/DexCard";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export function DexGallery() {
-  const { filters, toggle, clearGroup, clearAll, hasAnyActive } = useFilters()
-  const [search, setSearch] = useState('')
+  const { filters, toggle, clearGroup, clearAll, hasAnyActive } = useFilters();
+  const [search, setSearch] = useState("");
 
-  const { data: allNames = [] } = usePokemonNames()
-  const searchResults = useSearchPokemon(search, allNames)
-  const gallery = useDexGallery()
-  const filtered = useFilteredPokemon(filters, hasAnyActive)
+  const { data: allNames = [] } = usePokemonNames();
+  const searchResults = useSearchPokemon(search, allNames);
+  const gallery = useDexGallery();
+  const filtered = useFilteredPokemon(filters, hasAnyActive);
 
-  const isSearching = search.length > 0
+  const isSearching = search.length > 0;
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Pokedex</h2>
+      </div>
+
       <SearchBar onSearch={setSearch} />
       <FilterBar
         filters={filters}
@@ -37,7 +41,9 @@ export function DexGallery() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {(searchResults.data ?? []).length === 0 ? (
-              <p className="text-gray-400 col-span-full text-center py-8">No Pokémon found.</p>
+              <p className="text-gray-400 col-span-full text-center py-8">
+                No Pokémon found.
+              </p>
             ) : (
               searchResults.data!.map((p) => <DexCard key={p.id} pokemon={p} />)
             )}
@@ -49,7 +55,9 @@ export function DexGallery() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {(filtered.data ?? []).length === 0 ? (
-              <p className="text-gray-400 col-span-full text-center py-8">No Pokémon found.</p>
+              <p className="text-gray-400 col-span-full text-center py-8">
+                No Pokémon found.
+              </p>
             ) : (
               filtered.data!.map((p) => <DexCard key={p.id} pokemon={p} />)
             )}
@@ -71,12 +79,12 @@ export function DexGallery() {
                 disabled={gallery.isFetchingNextPage}
                 className="px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50"
               >
-                {gallery.isFetchingNextPage ? 'Loading...' : 'Load More'}
+                {gallery.isFetchingNextPage ? "Loading..." : "Load More"}
               </button>
             )}
           </div>
         </>
       )}
     </section>
-  )
+  );
 }
