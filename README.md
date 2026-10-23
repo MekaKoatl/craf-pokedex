@@ -31,6 +31,8 @@ Migración terminada y funcional.
 - [x] Páginas Items y Abilities — listado, buscador, filtros y expansión en línea
 - [x] Details unificado por género — una sola página por especie
 - [x] Cadena evolutiva completa, con panel de requisitos
+- [x] Items y Abilities en formato tabla — encabezados ordenables y tira de letras A–Z
+- [x] Las habilidades de Details enlazan a su ficha en Abilities
 
 ## Páginas
 
@@ -50,17 +52,19 @@ Migración terminada y funcional.
 - Galería de sprites: imagen principal arriba y tira horizontal de selección abajo (incluye los iconos de PC).
 - Cadena evolutiva completa con ramas, formas regionales y panel colapsable de requisitos.
 - Conmutador de género cuando la especie tiene variedades separadas.
-- Tipos, generación, habitat, flavor text, altura, peso, habilidades y stats base.
+- Tipos, generación, habitat, flavor text, altura, peso, habilidades y stats base. Cada habilidad enlaza a `/abilities?open=<slug>`.
 - More Info: acordeón lazy con egg groups, ratio de género, captura, color, locations expandibles y más.
 - Regional Forms y Alt Forms (Mega/Gmax con diff de stats contra la forma base).
 
 **Items**
-- Listado con buscador y filtro por categoría (8 grupos propios sobre las 54 categorías de la API).
-- Al hacer click, la fila se expande en línea con el detalle del objeto y se marca con separadores arriba y abajo.
+- Tabla de Name / Category / Effect. Los encabezados de Name y Category ordenan: primer click ascendente, segundo descendente, tercero vuelve al orden original de la API.
+- Buscador, filtro por categoría (8 grupos propios sobre las 54 categorías de la API) y tira de letras A–Z.
+- Al hacer click, la fila se expande en línea con el detalle del objeto, entre dos líneas rojas.
+- En mobile los encabezados se ocultan y el orden se elige con un `select`.
 
 **Abilities**
-- Listado con buscador, el efecto resumido y la cantidad de Pokémon que la tienen.
-- Misma expansión en línea que Items.
+- Tabla de Name / Pokémon / Description / Gen. Ordenan Name y Gen.; la cuenta de Pokémon se muestra pero no ordena (ver notas técnicas).
+- Buscador, tira de letras A–Z y la misma expansión en línea, con las grillas de Pokémon que la tienen, normal y oculta, enlazadas a Details.
 
 ## Estructura
 
@@ -68,7 +72,7 @@ Migración terminada y funcional.
       data/
         pokemon-data.ts          · dataset local (1042 Pokémon)
       types/
-        pokemon.ts               · todos los tipos
+        pokemon.ts · item.ts · ability.ts
       lib/
         constants.ts             · BASE_URL, totales, sufijos regionales
         api.ts                   · fetchers de la PokéAPI
@@ -78,13 +82,15 @@ Migración terminada y funcional.
         searchNames.ts           · match de nombres (incluye regionales)
         evolution.ts             · recorrido de la cadena y requisitos
         itemGroups.ts            · las 54 categorías de la API en 8 grupos
+        items.ts · abilities.ts  · helpers de texto de objetos y habilidades
         daily.ts                 · Pokémon del día y countdown
-        text.ts                  · helpers de texto e idFromUrl()
+        text.ts                  · prettyName(), normalize(), idFromUrl()
       hooks/
         usePokemon · usePokemonDetails · usePokemonNames
         useDexGallery · useFilters · useFilteredPokemon · useSearchPokemon
         useFavorites · useDailyPokemon · useTickerPokemon
-        useItems · useAbilities
+        useItemNames · useItemList · useItemCategoryMap
+        useAbilityNames · useAbilityList · useAbilityGenMap
       context/
         FavoritesContext.tsx     · favoritos (key "craf-favorites")
       components/
@@ -93,7 +99,7 @@ Migración terminada y funcional.
         badges/     · TypeBadge, FormBadge
         filters/    · FilterBar, FilterPanel, FilterPill
         details/    · SpriteGallery, ImageModal, EvoChain, RegionalForms,
-                      MorInfoPanel, AltFormsAccordion, StatBar
+                      MoreInfoPanel, AltFormsAccordion, StatBar
         items/      · ItemRow
         abilities/  · AbilityRow
       pages/
@@ -112,16 +118,20 @@ Migración terminada y funcional.
 - **Arte oficial sin versión hembra.** `official-artwork` no tiene carpeta `female`: es un PNG por id de Pokémon. Las hembras sí existen en los sprites de juego, en `home` y en los animados de gen V. La galería resuelve cada hueco ♀ con `??`, tomando el campo `_female` del propio Pokémon o, si no hay, el sprite de la variedad hembra.
 - **Cadena evolutiva por niveles.** `getDescendantLevels()` recorre los descendientes nivel por nivel, así una rama a cualquier profundidad se muestra completa (Ralts ve a Gardevoir y Gallade, Wurmple ve a Beautifly y Dustox). `.evo-branch-grid` es flex y no grid: con `repeat(3, 1fr)` quedaba una columna vacía que corría todo hacia la izquierda.
 - **Requisitos de evolución.** `describeEvolution()` arma la lista completa de condiciones de cada vía, en vez de devolver solo la primera como `getEvoCondition()`. `evolution_details` puede traer varias vías alternativas (Milotic tiene dos).
+- **Clave de caché de las listas paginadas.** `useItemList` y `useAbilityList` reciben el array de nombres más una clave corta, porque meter el array entero en el `queryKey` es carísimo. Cualquier cosa que cambie ese array —búsqueda, filtro, letra, orden, mapa auxiliar ya cargado— tiene que estar en la clave, o React Query sirve la caché vieja y la lista no se mueve.
+- **El orden es global, no de lo cargado.** Se ordena la lista de nombres *antes* de paginar, así ordenar por nombre acomoda las ~2000 entradas aunque solo se vean las primeras.
+- **Mapas auxiliares perezosos.** `useItemCategoryMap` (las 54 categorías agrupadas) y `useAbilityGenMap` (7 llamadas a `/generation/{id}`) solo se disparan cuando el usuario toca ese encabezado, y quedan cacheados para siempre. Las generaciones 1 y 2 devuelven el array `abilities` vacío, porque las habilidades existen recién desde la 3.
+- **Por qué la columna Pokémon no ordena.** Ese número sale de `ability.pokemon.length`, o sea del detalle de cada habilidad, y no hay endpoint que los dé en bloque. Ordenarla bien exigiría traer las ~367 habilidades completas, con sus efectos en todos los idiomas: decenas de megas.
+- **Enlace Details → Abilities.** Viaja como `?open=<slug>`. Al llegar, esa habilidad se adelanta al frente de la lista de nombres para que caiga en la primera página y se vea abierta sin dar Load More.
 - **Precio de los objetos.** El campo `prices` de la API viene siempre vacío, así que no hay forma de mostrar el costo de un objeto.
 - **Flavor text.** Los objetos lo exponen como `flavor_text_entries[].text` y las habilidades como `flavor_text_entries[].flavor_text`. No son el mismo campo.
 
 ## Pendientes
 
 - Un `Security Error: ... may not load or link to file:///` aparece en consola. No rompe nada; falta ubicar el origen.
-- `MorInfoPanel.tsx` tiene un typo en el nombre del archivo (debería ser `MoreInfoPanel.tsx`).
-- Los estilos `.carousel-*` en `index.css` quedaron sin uso tras eliminar el carrusel viejo.
-- Código muerto: `getItemCategories()` en `lib/api.ts`, el archivo `hooks/useItemCategories.ts` y el `getRandomPokemonId` comentado en `lib/regional.ts`.
 - Sin usar: los sprites de `showdown` (gifs animados) y `dream-world` (SVG), que incluyen versiones hembra.
+- Las habilidades que lista `AltFormsAccordion` en las formas Mega y Gmax todavía no enlazan a Abilities.
+- `useDexGallery.tsx` es el único hook con extensión `.tsx`; si no devuelve JSX, debería ser `.ts`.
 
 ## Scripts
 

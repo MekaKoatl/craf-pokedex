@@ -6,6 +6,7 @@ import { TypeBadge } from "../badges/TypeBadge";
 import type { Species, PokemonFull } from "../../types/pokemon";
 import { cdnSprite } from "../../lib/sprites";
 import { SpriteImg } from "../SpriteImg";
+import { Link } from "react-router-dom";
 
 const STAT_COLORS: Record<string, string> = {
   hp: "#ef4444",
@@ -70,10 +71,14 @@ function FormCard({
           <div className="form-alt-acc-label">Ability</div>
           <div className="flex flex-wrap gap-1 mb-3">
             {p.abilities.map((a) => (
-              <span key={a.ability.name} className="form-alt-ability">
+              <Link
+                key={a.ability.name}
+                to={`/abilities?open=${a.ability.name}`}
+                className="form-alt-ability form-alt-ability-link"
+              >
                 {a.ability.name.replace(/-/g, " ")}
                 {a.is_hidden ? " (Hidden)" : ""}
-              </span>
+              </Link>
             ))}
           </div>
           <div className="form-alt-acc-label">Base Stats</div>

@@ -4,13 +4,15 @@ import { cdnSprite, boxIconUrl, hasBoxIcon } from "../../lib/sprites";
 import { ImageModal } from "./ImageModal";
 import { SpriteImg } from "../SpriteImg";
 
-// Atajos a los cuatro lugares donde viven los sprites
+// Atajos a los seis lugares donde viven los sprites
 function parts(p?: PokemonFull | null) {
   return {
     s: p?.sprites,
     art: p?.sprites.other?.["official-artwork"],
     home: p?.sprites.other?.["home"],
     anim: p?.sprites.versions?.["generation-v"]?.["black-white"]?.animated,
+    show: p?.sprites.other?.["showdown"],
+    dream: p?.sprites.other?.["dream_world"],
   };
 }
 
@@ -32,6 +34,11 @@ export function SpriteGallery({
     { src: w.art?.front_default, label: "Artwork ♀" },
     { src: m.home?.front_default, label: "Home" },
     { src: m.home?.front_female ?? w.home?.front_default, label: "Home ♀" },
+    { src: m.dream?.front_default, label: "Dream World" },
+    {
+      src: m.dream?.front_female ?? w.dream?.front_default,
+      label: "Dream World ♀",
+    },
     { src: m.s?.front_default, label: "Front" },
     { src: m.s?.back_default, label: "Back" },
     { src: m.s?.front_female ?? w.s?.front_default, label: "Front ♀" },
@@ -46,6 +53,16 @@ export function SpriteGallery({
       src: m.anim?.back_female ?? w.anim?.back_default,
       label: "Back Animated ♀",
     },
+    { src: m.show?.front_default, label: "Showdown" },
+    { src: m.show?.back_default, label: "Showdown Back" },
+    {
+      src: m.show?.front_female ?? w.show?.front_default,
+      label: "Showdown ♀",
+    },
+    {
+      src: m.show?.back_female ?? w.show?.back_default,
+      label: "Showdown Back ♀",
+    },
 
     { src: m.art?.front_shiny, label: "Artwork Shiny" },
     { src: w.art?.front_shiny, label: "Artwork Shiny ♀" },
@@ -58,6 +75,16 @@ export function SpriteGallery({
     { src: m.s?.back_shiny, label: "Back Shiny" },
     { src: m.s?.front_shiny_female ?? w.s?.front_shiny, label: "Shiny ♀" },
     { src: m.s?.back_shiny_female ?? w.s?.back_shiny, label: "Back Shiny ♀" },
+    { src: m.show?.front_shiny, label: "Showdown Shiny" },
+    { src: m.show?.back_shiny, label: "Showdown Back Shiny" },
+    {
+      src: m.show?.front_shiny_female ?? w.show?.front_shiny,
+      label: "Showdown Shiny ♀",
+    },
+    {
+      src: m.show?.back_shiny_female ?? w.show?.back_shiny,
+      label: "Showdown Back Shiny ♀",
+    },
 
     {
       src: hasBoxIcon(pokemon.id) ? boxIconUrl(pokemon.id) : null,

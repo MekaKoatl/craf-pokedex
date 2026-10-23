@@ -5,6 +5,7 @@ import { useItemList } from "../hooks/useItemList";
 import { useItemCategoryMap } from "../hooks/useItemCategoryMap";
 import { getItemsInGroup } from "../lib/api";
 import { ITEM_GROUPS } from "../lib/itemGroups";
+import { normalize } from "../lib/text";
 import { SearchBar } from "../components/SearchBar";
 import { ItemRow } from "../components/items/ItemRow";
 import { LoadingSpinner } from "../components/LoadingSpinner";
@@ -13,10 +14,6 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 type SortKey = "default" | "name" | "category";
 
-// "Master Ball" y "master-ball" quedan iguales
-function normalize(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]/g, "");
-}
 
 export function Items() {
   const [search, setSearch] = useState("");

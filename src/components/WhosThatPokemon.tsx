@@ -189,11 +189,13 @@ export function WhosThatPokemon() {
             </>
           ) : (
             <>
-              {status === "solved" && (
-                <p className="text-xs font-bold uppercase tracking-widest text-yellow-200 mb-1">
-                  You got it!
-                </p>
-              )}
+              <p
+                className={`text-xs font-bold uppercase tracking-widest mb-1 ${
+                  status === "solved" ? "text-yellow-200" : "text-white/70"
+                }`}
+              >
+                {status === "solved" ? "You got it!" : "It's..."}
+              </p>
 
               <Link to={`/details/${pokemon.id}`}>
                 <h2 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight hover:underline">

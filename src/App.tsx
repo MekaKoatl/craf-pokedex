@@ -7,6 +7,7 @@ import { Home } from "./pages/Home";
 import { Details } from "./pages/Details";
 import { Items } from "./pages/Items";
 import { Abilities } from "./pages/Abilities";
+import { Moves } from "./pages/Moves";
 
 function App() {
   return (
@@ -17,8 +18,9 @@ function App() {
         <Route path="/dxg" element={<DexGallery />} />
         <Route path="/details/:id" element={<Details />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/items" element={<Items />} />
         <Route path="/abilities" element={<Abilities />} />
+        <Route path="/items" element={<Items />} />
+        <Route path="/moves" element={<Moves />} />
       </Routes>
       <BackToTop />
     </>

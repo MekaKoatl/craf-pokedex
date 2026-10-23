@@ -69,6 +69,20 @@ export interface PokemonFull extends Pokemon {
         front_female: string | null;
         front_shiny_female: string | null;
       };
+      showdown?: {
+        front_default: string | null;
+        back_default: string | null;
+        front_female: string | null;
+        back_female: string | null;
+        front_shiny: string | null;
+        back_shiny: string | null;
+        front_shiny_female: string | null;
+        back_shiny_female: string | null;
+      };
+      dream_world?: {
+        front_default: string | null;
+        front_female: string | null;
+      };
     };
     versions?: Pokemon["sprites"]["versions"] & {
       "generation-v"?: {
@@ -104,6 +118,7 @@ export interface Species {
   color: NamedResource | null;
   base_happiness: number | null;
   growth_rate: NamedResource | null;
+  varieties: { is_default: boolean; pokemon: NamedResource }[];
 }
 
 export interface EvoDetail {

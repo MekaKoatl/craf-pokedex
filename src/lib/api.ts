@@ -3,6 +3,7 @@ import type { Pokemon } from "../types/pokemon";
 import type { PokemonFull, Species } from "../types/pokemon";
 import type { Item } from "../types/item";
 import type { Ability } from "../types/ability";
+import type { Move } from "../types/move";
 
 // Lanza error si no existe (lo usará React Query)
 export async function getPokemon(nameOrId: string | number): Promise<Pokemon> {
@@ -113,4 +114,35 @@ export async function fetchPokemonBySpecies(
     (v: { is_default: boolean }) => v.is_default,
   );
   return def ? fetchPokemonById(def.pokemon.name) : null;
+}
+
+// Devuelve null si no existe, para poder pedir lotes sin que explote
+export async function getMove(nameOrId: string | number): Promise<Move | null> {
+  const res = await fetch(`${BASE_URL}/move/${nameOrId}`);
+  if (!res.ok) return null;
+  return res.json();
+}
+
+export async function getMoveNames(): Promise<string[]> {
+  const res = await fetch(`${BASE_URL}/move?limit=2000`);
+  if (!res.ok) throw new Error("Move list not found");
+  const data = await res.json();
+  return data.results.map((r: { name: string }) => r.name);
+}
+
+// Cada tipo trae su propia lista de movimientos, igual que las categorías
+// de objetos. Con 18 llamadas se arma el mapa movimiento → tipo.
+export async function getMovesOfType(type: string): Promise<string[]> {
+  const res = await fetch(`${BASE_URL}/type/${type}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.moves.map((m: { name: string }) => m.name);
+}
+
+// physical, special o status; cada clase trae su lista de movimientos
+export async function getMovesInDamageClass(cls: string): Promise<string[]> {
+  const res = await fetch(`${BASE_URL}/move-damage-class/${cls}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.moves.map((m: { name: string }) => m.name);
 }

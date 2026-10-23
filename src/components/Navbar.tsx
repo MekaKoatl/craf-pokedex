@@ -10,6 +10,7 @@ const mainLinks = [
 const dataLinks = [
   { to: "/items", label: "Items" },
   { to: "/abilities", label: "Abilities" },
+  { to: "/moves", label: "Moves" },
 ];
 
 const favLink = { to: "/favorites", label: "Favorites" };

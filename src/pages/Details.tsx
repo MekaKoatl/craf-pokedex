@@ -15,7 +15,7 @@ import { StatBars } from "../components/details/StatBar";
 import { SpriteGallery } from "../components/details/SpriteGallery";
 import { EvoChain } from "../components/details/EvoChain";
 import { RegionalForms } from "../components/details/RegionalForms";
-import { MoreInfoPanel } from "../components/details/MorInfoPanel";
+import { MoreInfoPanel } from "../components/details/MoreInfoPanel";
 import { AltFormsAccordion } from "../components/details/AltFormsAccordion";
 
 const GEN_MAP: Record<string, string> = {
