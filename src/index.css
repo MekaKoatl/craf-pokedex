@@ -1342,7 +1342,7 @@
 .move-head,
 .move-row {
   display: grid;
-  grid-template-columns: 180px 100px 80px 60px 60px 50px 1fr;
+  grid-template-columns: 180px 100px 110px 60px 60px 50px 1fr;
   align-items: stretch;
   width: 100%;
   text-align: left;
@@ -1443,8 +1443,8 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-
 /* Fila abierta: ocupa el ancho completo de la tabla */
 .move-expanded {
   position: relative;
@@ -1482,9 +1482,5 @@
   .move-cell-num:nth-of-type(6)::before {
     content: "PP: ";
     color: #9ca3af;
-  }
-  .move-cell-effect {
-    -webkit-line-clamp: 3;
-    padding-bottom: 0.6rem;
   }
 }

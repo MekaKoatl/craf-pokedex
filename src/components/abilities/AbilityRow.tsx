@@ -66,12 +66,17 @@ export function AbilityRow({
   const name = prettyName(ability.name);
   const short = abilityShortEffect(ability);
 
+  // Las formas Gigamax repiten al Pokémon base y no aportan nada acá
+  const entries = ability.pokemon.filter(
+    (p) => !p.pokemon.name.endsWith("-gmax"),
+  );
+
   if (!open) {
     return (
       <button className="ability-row" onClick={onToggle}>
         <span className="ability-cell ability-cell-name">{name}</span>
         <span className="ability-cell ability-cell-count">
-          {ability.pokemon.length}
+          {entries.length}
         </span>
         <span className="ability-cell ability-cell-desc">{short}</span>
         <span className="ability-cell ability-cell-gen">
@@ -81,8 +86,9 @@ export function AbilityRow({
     );
   }
 
-  const normal = ability.pokemon.filter((p) => !p.is_hidden);
-  const hidden = ability.pokemon.filter((p) => p.is_hidden);
+  
+  const normal = entries.filter((p) => !p.is_hidden);
+  const hidden = entries.filter((p) => p.is_hidden);
   const flavor = abilityFlavor(ability);
   const effect = abilityEffect(ability);
   const gen = genLabel(ability.generation.name);

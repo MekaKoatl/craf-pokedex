@@ -115,7 +115,9 @@ export function MoveRow({
         .join(", "),
     });
 
-  const learners = move.learned_by_pokemon;
+  const learners = move.learned_by_pokemon.filter(
+    (p) => !p.name.endsWith("-gmax"),
+  );
   const visible = learners.slice(0, LEARNED_CAP);
   const hidden = learners.length - visible.length;
 

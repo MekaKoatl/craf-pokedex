@@ -151,7 +151,3 @@ export interface EvoNode {
 export interface EvolutionChain {
   chain: EvoNode;
 }
-
-export interface Species {
-  varieties: { is_default: boolean; pokemon: NamedResource }[];
-}
