@@ -146,3 +146,15 @@ export async function getMovesInDamageClass(cls: string): Promise<string[]> {
   const data = await res.json();
   return data.moves.map((m: { name: string }) => m.name);
 }
+
+// Solo las relaciones defensivas: qué tipos le hacen ×2, ×½ y ×0
+export async function getTypeRelations(type: string): Promise<{
+  double_damage_from: { name: string }[];
+  half_damage_from: { name: string }[];
+  no_damage_from: { name: string }[];
+}> {
+  const res = await fetch(`${BASE_URL}/type/${type}`);
+  if (!res.ok) throw new Error("Type not found");
+  const data = await res.json();
+  return data.damage_relations;
+}

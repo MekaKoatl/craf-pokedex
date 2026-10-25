@@ -1,122 +1,164 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getPokemon } from "../../lib/api";
-import { getRegionalDisplayName } from "../../lib/regional";
-import { TypeBadge } from "../badges/TypeBadge";
-import type { Species, PokemonFull } from "../../types/pokemon";
-import { cdnSprite } from "../../lib/sprites";
-import { SpriteImg } from "../SpriteImg";
 import { Link } from "react-router-dom";
+import { getPokemonFull } from "../../lib/api";
+import { cdnSprite } from "../../lib/sprites";
+import { prettyName } from "../../lib/text";
+import { TypeBadge } from "../badges/TypeBadge";
+import { SpriteImg } from "../SpriteImg";
+import { LoadingSpinner } from "../LoadingSpinner";
+import { StatBars } from "./StatBar";
+import { SpriteGallery } from "./SpriteGallery";
+import type { Species, PokemonFull } from "../../types/pokemon";
 
-const STAT_COLORS: Record<string, string> = {
-  hp: "#ef4444",
-  attack: "#f97316",
-  defense: "#eab308",
-  "special-attack": "#3b82f6",
-  "special-defense": "#22c55e",
-  speed: "#a855f7",
-};
-const STAT_LABELS: Record<string, string> = {
-  hp: "HP",
-  attack: "ATK",
-  defense: "DEF",
-  "special-attack": "SP.ATK",
-  "special-defense": "SP.DEF",
-  speed: "SPD",
-};
+// La ficha y el panel usan la misma clave: se pide una sola vez
+function useAltForm(name: string) {
+  return useQuery({
+    queryKey: ["alt-form", name],
+    queryFn: () => getPokemonFull(name),
+    staleTime: Infinity,
+  });
+}
 
-function FormCard({
+// "charizard-mega-x" → "Mega Charizard X"
+// "venusaur-gmax"    → "Gigantamax Venusaur"
+function formInfo(name: string) {
+  const isMega = name.includes("-mega");
+  const [base, rest = ""] = name.split(isMega ? "-mega" : "-gmax");
+  const suffix = rest.replace(/^-/, "").toUpperCase();
+  const tag = isMega ? "Mega" : "Gigantamax";
+  return {
+    isMega,
+    tag,
+    label: `${tag} ${prettyName(base)}${suffix ? ` ${suffix}` : ""}`,
+  };
+}
+
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <h4 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
+      {children}
+    </h4>
+  );
+}
+
+function FormTile({
+  name,
+  active,
+  onClick,
+}: {
+  name: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  const { data: p } = useAltForm(name);
+  const info = formInfo(name);
+
+  return (
+    <button
+      onClick={onClick}
+      className={`evo-node flex-none w-32 cursor-pointer${
+        active ? " evo-node-current" : ""
+      }`}
+    >
+      <span
+        className={`form-alt-tag ${
+          info.isMega ? "form-alt-tag-mega" : "form-alt-tag-gmax"
+        }`}
+      >
+        {info.tag}
+      </span>
+      {/* Sin datos todavía no se dibuja el img: un src vacío pide la página actual */}
+      {p ? (
+        <SpriteImg
+          className="evo-node-img"
+          src={cdnSprite(p.sprites.other?.["official-artwork"]?.front_default)}
+          alt={info.label}
+        />
+      ) : (
+        <div className="evo-node-img" />
+      )}
+      <span className="evo-node-name">{info.label}</span>
+    </button>
+  );
+}
+
+function FormPanel({
   name,
   baseStats,
+  onClose,
 }: {
   name: string;
   baseStats: PokemonFull["stats"];
+  onClose: () => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const { data: p } = useQuery({
-    queryKey: ["alt-form", name],
-    queryFn: () => getPokemon(name) as Promise<PokemonFull>,
-  });
-  if (!p) return null;
-
-  const isMega = name.includes("-mega");
-  const tag = isMega ? "Mega" : "Gigantamax";
+  const { data: p } = useAltForm(name);
+  const info = formInfo(name);
 
   return (
-    <div className="form-alt-card">
-      <div className="form-alt-header">
-        <span
-          className={`form-alt-tag ${isMega ? "form-alt-tag-mega" : "form-alt-tag-gmax"}`}
-        >
-          {tag}
-        </span>
-        <SpriteImg
-          className="form-alt-sprite"
-          src={cdnSprite(p.sprites.other?.["official-artwork"]?.front_default)}
-          alt={p.name}
-        />
-        <span className="form-alt-name">{getRegionalDisplayName(p.name)}</span>
-        <div className="form-alt-types">
-          {p.types.map((t) => (
-            <TypeBadge key={t.type.name} type={t.type.name} />
-          ))}
-        </div>
-      </div>
-      <div className="form-alt-toggle" onClick={() => setOpen((v) => !v)}>
-        <span>Stats & Abilities</span>
-        <span>{open ? "−" : "+"}</span>
-      </div>
-      {open && (
-        <div className="form-alt-accordion">
-          <div className="form-alt-acc-label">Ability</div>
-          <div className="flex flex-wrap gap-1 mb-3">
-            {p.abilities.map((a) => (
-              <Link
-                key={a.ability.name}
-                to={`/abilities?open=${a.ability.name}`}
-                className="form-alt-ability form-alt-ability-link"
-              >
-                {a.ability.name.replace(/-/g, " ")}
-                {a.is_hidden ? " (Hidden)" : ""}
-              </Link>
-            ))}
-          </div>
-          <div className="form-alt-acc-label">Base Stats</div>
-          <div className="form-alt-stats">
-            {p.stats.map((s) => {
-              const base =
-                baseStats.find((b) => b.stat.name === s.stat.name)?.base_stat ??
-                s.base_stat;
-              const diff = s.base_stat - base;
-              return (
-                <div key={s.stat.name} className="form-alt-stat-row">
-                  <span className="form-alt-stat-name">
-                    {STAT_LABELS[s.stat.name]}
-                  </span>
-                  <span className="form-alt-stat-val">{s.base_stat}</span>
-                  <div className="form-alt-stat-bg">
-                    <div
-                      className="form-alt-stat-bar"
-                      style={{
-                        width: `${Math.min((s.base_stat / 255) * 100, 100)}%`,
-                        background: STAT_COLORS[s.stat.name],
-                      }}
-                    />
-                  </div>
-                  <span
-                    style={{
-                      color: STAT_COLORS[s.stat.name],
-                      fontSize: "10px",
-                      fontWeight: 600,
-                      width: "32px",
-                      flexShrink: 0,
-                    }}
+    <div className="relative mt-3 bg-gray-50 border border-gray-200 rounded-xl p-6">
+      <button
+        onClick={onClose}
+        title="Close"
+        className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
+      >
+        ✕
+      </button>
+      <h3 className="text-xl font-bold text-gray-900 mb-4 pr-6">
+        {info.label}
+      </h3>
+
+      {!p ? (
+        <LoadingSpinner text="Loading..." />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <SpriteGallery pokemon={p} />
+
+          <div className="flex flex-col gap-5">
+            <div>
+              <Label>Type</Label>
+              <div className="flex flex-wrap gap-2">
+                {p.types.map((t) => (
+                  <TypeBadge key={t.type.name} type={t.type.name} />
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Height</Label>
+                <p className="text-gray-700 text-sm">
+                  {(p.height / 10).toFixed(1)} m
+                </p>
+              </div>
+              <div>
+                <Label>Weight</Label>
+                <p className="text-gray-700 text-sm">
+                  {(p.weight / 10).toFixed(1)} kg
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <Label>Abilities</Label>
+              <div className="flex flex-col gap-1 items-start">
+                {p.abilities.map((a) => (
+                  <Link
+                    key={a.ability.name}
+                    to={`/abilities?open=${a.ability.name}`}
+                    className="text-gray-700 text-sm capitalize hover:text-red-600 hover:underline transition"
                   >
-                    {diff !== 0 ? (diff > 0 ? `+${diff}` : diff) : ""}
-                  </span>
-                </div>
-              );
-            })}
+                    {a.ability.name.replace(/-/g, " ")}
+                    {a.is_hidden ? " (hidden)" : ""}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <Label>Base Stats</Label>
+              <StatBars stats={p.stats} base={baseStats} />
+            </div>
           </div>
         </div>
       )}
@@ -131,22 +173,49 @@ export function AltFormsAccordion({
   species: Species;
   baseStats: PokemonFull["stats"];
 }) {
+  // Va antes del return temprano: los hooks siempre en el mismo orden
+  const [selected, setSelected] = useState<string | null>(null);
+
   const forms = species.varieties
     .map((v) => v.pokemon.name)
     .filter((n) => n.includes("-mega") || n.includes("-gmax"));
 
   if (forms.length === 0) return null;
 
+  // Si se navega a otro Pokémon sin desmontar Details, la selección
+  // vieja no pertenece a esta especie: se ignora
+  const current = selected && forms.includes(selected) ? selected : null;
+
   return (
     <div className="mb-8">
       <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-4">
         Alternative Forms
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <div className="sprite-strip flex gap-3 overflow-x-auto pb-2">
         {forms.map((n) => (
-          <FormCard key={n} name={n} baseStats={baseStats} />
+          <FormTile
+            key={n}
+            name={n}
+            active={current === n}
+            onClick={() => setSelected(current === n ? null : n)}
+          />
         ))}
       </div>
+
+      {current ? (
+        // La key remonta el panel (y su galería) al cambiar de forma
+        <FormPanel
+          key={current}
+          name={current}
+          baseStats={baseStats}
+          onClose={() => setSelected(null)}
+        />
+      ) : (
+        <p className="text-sm text-gray-400 mt-2">
+          Select a form to see its details.
+        </p>
+      )}
     </div>
   );
 }

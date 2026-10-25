@@ -42,9 +42,19 @@ export interface Pokemon {
   };
 }
 
+export interface PokemonMove {
+  move: NamedResource;
+  version_group_details: {
+    level_learned_at: number;
+    move_learn_method: NamedResource;
+    version_group: NamedResource;
+  }[];
+}
+
 export interface PokemonFull extends Pokemon {
   height: number;
   weight: number;
+  moves: PokemonMove[];
   base_experience: number | null;
   location_area_encounters: string;
   species: NamedResource;

@@ -118,27 +118,29 @@ export function SpriteGallery({
         <ImageModal src={main} alt={pokemon.name} />
       </div>
 
-      {/* Selector horizontal */}
-      <div className="sprite-strip mt-3 flex gap-2 overflow-x-auto pb-2">
-        {uniqueSprites.map((s) => (
-          <button
-            key={s.src}
-            onClick={() => setMain(s.src)}
-            title={s.label}
-            className={`flex-none w-20 h-20 rounded-lg bg-gray-100 p-1 border-2 transition cursor-pointer ${
-              main === s.src
-                ? "border-red-500"
-                : "border-transparent hover:border-red-300"
-            }`}
-          >
-            <SpriteImg
-              src={s.src}
-              alt={s.label}
-              className="w-full h-full object-contain"
-            />
-          </button>
-        ))}
-      </div>
+      {/* Selector horizontal: con un solo sprite no tiene sentido */}
+      {uniqueSprites.length > 1 && (
+        <div className="sprite-strip mt-3 flex gap-2 overflow-x-auto pb-2">
+          {uniqueSprites.map((s) => (
+            <button
+              key={s.src}
+              onClick={() => setMain(s.src)}
+              title={s.label}
+              className={`flex-none w-20 h-20 rounded-lg bg-gray-100 p-1 border-2 transition cursor-pointer ${
+                main === s.src
+                  ? "border-red-500"
+                  : "border-transparent hover:border-red-300"
+              }`}
+            >
+              <SpriteImg
+                src={s.src}
+                alt={s.label}
+                className="w-full h-full object-contain"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

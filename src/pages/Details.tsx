@@ -17,6 +17,8 @@ import { EvoChain } from "../components/details/EvoChain";
 import { RegionalForms } from "../components/details/RegionalForms";
 import { MoreInfoPanel } from "../components/details/MoreInfoPanel";
 import { AltFormsAccordion } from "../components/details/AltFormsAccordion";
+import { LearnedMovesPanel } from "../components/details/LearnedMovesPanel";
+import { TypeMatchups } from "../components/details/TypeMatchups";
 
 const GEN_MAP: Record<string, string> = {
   "generation-i": "I",
@@ -123,7 +125,7 @@ export function Details() {
       <hr className="border-gray-200 my-6" />
 
       {/* Tipos / Generación / Habitat */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 items-start">
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
             Type
@@ -133,6 +135,7 @@ export function Details() {
               <TypeBadge key={t.type.name} type={t.type.name} />
             ))}
           </div>
+          <TypeMatchups types={shown.types.map((t) => t.type.name)} />
         </div>
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
@@ -246,7 +249,7 @@ export function Details() {
       <hr className="border-gray-200 my-6" />
 
       <AltFormsAccordion species={species} baseStats={shown.stats} />
-
+      <LearnedMovesPanel pokemon={shown} />
       <MoreInfoPanel pokemon={shown} species={species} />
     </main>
   );

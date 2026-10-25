@@ -9,10 +9,11 @@ import { normalize, prettyName } from "../lib/text";
 import { SearchBar } from "../components/SearchBar";
 import { MoveRow } from "../components/moves/MoveRow";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { useMoveCategoryMap } from "../hooks/useMoveCategoryMap";
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-type SortKey = "default" | "name" | "type";
+type SortCol = "name" | "type" | "cat";
+type SortKey = "default" | SortCol;
 
 export function Moves() {
   const [search, setSearch] = useState("");
@@ -41,6 +42,8 @@ export function Moves() {
     staleTime: Infinity,
   });
 
+  const { data: catMap } = useMoveCategoryMap(sortKey === "cat");
+
   // El orden sí necesita el mapa completo, y solo entonces se pide
   const { data: typeMap } = useMoveTypeMap(sortKey === "type");
 
@@ -61,7 +64,10 @@ export function Moves() {
     if (q) out = out.filter((n) => normalize(n).includes(q));
     if (letter) out = out.filter((n) => n.charAt(0).toUpperCase() === letter);
 
-    const sorted = sortKey === "name" || (sortKey === "type" && !!typeMap);
+    const sorted =
+      sortKey === "name" ||
+      (sortKey === "type" && !!typeMap) ||
+      (sortKey === "cat" && !!catMap);
     if (sortKey === "name") {
       out = [...out].sort((a, b) => a.localeCompare(b));
     } else if (sortKey === "type" && typeMap) {
@@ -71,20 +77,28 @@ export function Moves() {
           (typeMap[a] ?? "~").localeCompare(typeMap[b] ?? "~") ||
           a.localeCompare(b),
       );
+    } else if (sortKey === "cat" && catMap) {
+      // physical < special < status, empate por nombre
+      out = [...out].sort(
+        (a, b) =>
+          (catMap[a] ?? "~").localeCompare(catMap[b] ?? "~") ||
+          a.localeCompare(b),
+      );
     }
+
     if (sorted && sortDir === "desc") out = [...out].reverse();
     return out;
-  }, [base, q, letter, sortKey, sortDir, typeMap]);
+  }, [base, q, letter, sortKey, sortDir, typeMap, catMap]);
 
   // Todo lo que cambia la lista tiene que estar en la clave de caché
   const listKey = `${type}|${cat}|${q}|${letter ?? ""}|${sortKey}|${sortDir}|${
     typeMap ? 1 : 0
-  }`;
+  }|${catMap ? 1 : 0}`;
   const list = useMoveList(names, listKey);
   const moves = list.data?.pages.flat() ?? [];
 
   // 1er click asc, 2do desc, 3ro vuelve al orden original
-  function toggleSort(key: "name" | "type") {
+  function toggleSort(key: SortCol) {
     if (sortKey !== key) {
       setSortKey(key);
       setSortDir("asc");
@@ -97,7 +111,7 @@ export function Moves() {
     setOpenMove(null);
   }
 
-  function arrow(key: "name" | "type") {
+  function arrow(key: SortCol) {
     if (sortKey !== key) return "⇅";
     return sortDir === "asc" ? "▲" : "▼";
   }
@@ -159,6 +173,8 @@ export function Moves() {
           <option value="name:desc">Name Z–A</option>
           <option value="type:asc">Type A–Z</option>
           <option value="type:desc">Type Z–A</option>
+          <option value="cat:asc">Category A–Z</option>
+          <option value="cat:desc">Category Z–A</option>
         </select>
 
         <label className="text-sm font-semibold text-gray-700">Category:</label>
@@ -232,13 +248,17 @@ export function Moves() {
               >
                 Type <span className="item-sort-arrow">{arrow("type")}</span>
               </button>
-              <span className="move-head-cell is-static">Cat.</span>
+              <button
+                className={`move-head-cell${sortKey === "cat" ? " is-active" : ""}`}
+                onClick={() => toggleSort("cat")}
+              >
+                Cat. <span className="item-sort-arrow">{arrow("cat")}</span>
+              </button>
               <span className="move-head-cell is-static">Power</span>
               <span className="move-head-cell is-static">Acc.</span>
               <span className="move-head-cell is-static">PP</span>
               <span className="move-head-cell is-static">Effect</span>
             </div>
-
             {moves.map((m) => (
               <MoveRow
                 key={m.id}
