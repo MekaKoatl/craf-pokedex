@@ -125,7 +125,7 @@ export function Details() {
       <hr className="border-gray-200 my-6" />
 
       {/* Tipos / Generación / Habitat */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 items-start">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
             Type
@@ -135,7 +135,6 @@ export function Details() {
               <TypeBadge key={t.type.name} type={t.type.name} />
             ))}
           </div>
-          <TypeMatchups types={shown.types.map((t) => t.type.name)} />
         </div>
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
@@ -153,7 +152,7 @@ export function Details() {
           <p className="text-gray-700 text-sm capitalize">{habitat}</p>
         </div>
       </div>
-
+      <TypeMatchups types={shown.types.map((t) => t.type.name)} />
       <hr className="border-gray-200 my-6" />
 
       {/* Flavor */}

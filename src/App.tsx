@@ -8,6 +8,7 @@ import { Details } from "./pages/Details";
 import { Items } from "./pages/Items";
 import { Abilities } from "./pages/Abilities";
 import { Moves } from "./pages/Moves";
+import { DexStats } from "./pages/DexStats";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dxg" element={<DexGallery />} />
+        <Route path="/dex-stats" element={<DexStats />} />
         <Route path="/details/:id" element={<Details />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/abilities" element={<Abilities />} />
