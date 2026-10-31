@@ -9,6 +9,10 @@ import { Items } from "./pages/Items";
 import { Abilities } from "./pages/Abilities";
 import { Moves } from "./pages/Moves";
 import { DexStats } from "./pages/DexStats";
+import { TeamEditor } from "./pages/TeamEditor";
+import { Lists } from "./pages/Lists";
+import { ListDetail } from "./pages/ListDetail";
+import { TeamPlanner } from "./pages/TeamPlanner";
 
 function App() {
   return (
@@ -21,6 +25,10 @@ function App() {
         <Route path="/details/:id" element={<Details />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/abilities" element={<Abilities />} />
+        <Route path="/lists" element={<Lists />} />
+        <Route path="/lists/:listId" element={<ListDetail />} />
+        <Route path="/team-planner" element={<TeamPlanner />} />
+        <Route path="/team-planner/:teamId" element={<TeamEditor />} />
         <Route path="/items" element={<Items />} />
         <Route path="/moves" element={<Moves />} />
       </Routes>

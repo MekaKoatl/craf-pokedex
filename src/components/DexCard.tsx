@@ -6,7 +6,7 @@ import { getRegionalDisplayName } from "../lib/regional";
 import { cdnSprite } from "../lib/sprites";
 import { TypeBadge } from "./badges/TypeBadge";
 import { FormBadge } from "./badges/FormBadge";
-import { FavButton } from "./FavButton";
+import { AddToListButton } from "./AddToListButton";
 import { SpriteImg } from "./SpriteImg";
 
 export function DexCard({ pokemon }: { pokemon: Pokemon }) {
@@ -64,7 +64,7 @@ export function DexCard({ pokemon }: { pokemon: Pokemon }) {
           <TypeBadge key={t} type={t} />
         ))}
       </div>
-      <FavButton id={pokemon.id} />
+            <AddToListButton id={pokemon.id} />
     </Link>
   );
 }

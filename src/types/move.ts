@@ -39,4 +39,13 @@ export interface Move {
   } | null;
   stat_changes: { change: number; stat: NamedResource }[];
   learned_by_pokemon: NamedResource[];
+  // Valores que tenía ANTES de ese version group.
+  // Bite: { type: normal, version_group: gold-silver } = era Normal antes de Gold/Silver
+  past_values: {
+    accuracy: number | null;
+    power: number | null;
+    pp: number | null;
+    type: NamedResource | null;
+    version_group: NamedResource;
+  }[];
 }

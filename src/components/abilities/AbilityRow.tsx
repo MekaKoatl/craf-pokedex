@@ -66,11 +66,13 @@ export function AbilityRow({
   const name = prettyName(ability.name);
   const short = abilityShortEffect(ability);
 
-  // Las formas Gigamax repiten al Pokémon base y no aportan nada acá
+  // Las formas Gigamax y Mega repiten al Pokémon base y no aportan nada acá.
+  // "-mega" seguido de "-" o del final atrapa mega, mega-x, mega-y...
+  // pero no Meganium ni Yanmega (no tienen guion antes de "mega").
   const entries = ability.pokemon.filter(
-    (p) => !p.pokemon.name.endsWith("-gmax"),
+    (p) =>
+      !p.pokemon.name.endsWith("-gmax") && !/-mega(-|$)/.test(p.pokemon.name),
   );
-
   if (!open) {
     return (
       <button className="ability-row" onClick={onToggle}>
@@ -86,7 +88,6 @@ export function AbilityRow({
     );
   }
 
-  
   const normal = entries.filter((p) => !p.is_hidden);
   const hidden = entries.filter((p) => p.is_hidden);
   const flavor = abilityFlavor(ability);

@@ -1,5 +1,5 @@
 // Las insignias/formas posibles de un Pokémon
-export type FormBadge = "M" | "G" | "R" | "B" | "Legend" | "Mythic" | "Baby";
+export type FormBadge = "M" | "G" | "R" | "Legend" | "Mythic" | "Baby";
 
 //dataset local (pokemon-data)
 export interface PokemonEntry {
@@ -58,7 +58,23 @@ export interface PokemonFull extends Pokemon {
   base_experience: number | null;
   location_area_encounters: string;
   species: NamedResource;
-  abilities: { ability: NamedResource; is_hidden: boolean }[];
+  abilities: { ability: NamedResource; is_hidden: boolean; slot: number }[];
+  // Cómo eran en juegos viejos. Cada entrada vale "hasta esa generación".
+  // ability: null = ese casillero todavía no existía
+  past_abilities?: {
+    generation: NamedResource;
+    abilities: {
+      ability: NamedResource | null;
+      is_hidden: boolean;
+      slot: number;
+    }[];
+  }[];
+  // Tipos en juegos viejos. Cada entrada vale "hasta esa generación"
+  // (Clefairy era Normal hasta Gen V)
+  past_types?: {
+    generation: NamedResource;
+    types: { slot: number; type: NamedResource }[];
+  }[];
   stats: { base_stat: number; stat: NamedResource }[];
   sprites: Pokemon["sprites"] & {
     back_default: string | null;
@@ -150,6 +166,10 @@ export interface EvoDetail {
   trade_species: { name: string; url: string } | null;
   trigger: { name: string; url: string } | null;
   turn_upside_down: boolean;
+  // Agregados por PokéAPI en 2026: qué forma evoluciona, en cuál termina y dónde
+  required_pokemon_form?: NamedResource | null;
+  evolved_pokemon_form?: NamedResource | null;
+  region?: NamedResource | null;
 }
 
 export interface EvoNode {

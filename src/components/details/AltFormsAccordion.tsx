@@ -20,15 +20,27 @@ function useAltForm(name: string) {
   });
 }
 
+/// Las regionales tienen su propia sección; las hembras, el botón de género
+const REGIONAL_RE = /-(alola|galar|hisui|paldea)(-|$)/;
+
+type FormKind = "mega" | "gmax" | "form";
+
 // "charizard-mega-x" → "Mega Charizard X"
 // "venusaur-gmax"    → "Gigantamax Venusaur"
+// "rotom-wash"       → "Rotom Wash"
 function formInfo(name: string) {
-  const isMega = name.includes("-mega");
-  const [base, rest = ""] = name.split(isMega ? "-mega" : "-gmax");
+  const kind: FormKind = name.includes("-mega")
+    ? "mega"
+    : name.includes("-gmax")
+      ? "gmax"
+      : "form";
+  if (kind === "form") return { kind, tag: "Form", label: prettyName(name) };
+
+  const [base, rest = ""] = name.split(kind === "mega" ? "-mega" : "-gmax");
   const suffix = rest.replace(/^-/, "").toUpperCase();
-  const tag = isMega ? "Mega" : "Gigantamax";
+  const tag = kind === "mega" ? "Mega" : "Gigantamax";
   return {
-    isMega,
+    kind,
     tag,
     label: `${tag} ${prettyName(base)}${suffix ? ` ${suffix}` : ""}`,
   };
@@ -62,9 +74,7 @@ function FormTile({
       }`}
     >
       <span
-        className={`form-alt-tag ${
-          info.isMega ? "form-alt-tag-mega" : "form-alt-tag-gmax"
-        }`}
+        className={`form-alt-tag form-alt-tag-${info.kind}`}
       >
         {info.tag}
       </span>
@@ -176,9 +186,15 @@ export function AltFormsAccordion({
   // Va antes del return temprano: los hooks siempre en el mismo orden
   const [selected, setSelected] = useState<string | null>(null);
 
+  // Todas las variedades menos la principal, las regionales,
+  // las hembras (tienen su botón) y las totem (son de un solo combate)
   const forms = species.varieties
+    .filter((v) => !v.is_default)
     .map((v) => v.pokemon.name)
-    .filter((n) => n.includes("-mega") || n.includes("-gmax"));
+    .filter(
+      (n) =>
+        !REGIONAL_RE.test(n) && !n.endsWith("-female") && !n.includes("-totem"),
+    );
 
   if (forms.length === 0) return null;
 

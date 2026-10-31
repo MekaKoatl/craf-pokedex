@@ -12,46 +12,6 @@ export function getEvoCondition(d: EvoDetail | undefined): string {
   return "";
 }
 
-export function buildLinearPath(chain: EvoNode, target: string) {
-  const path: { name: string; nextDetail: EvoDetail | null }[] = [];
-  function find(node: EvoNode): boolean {
-    path.push({ name: node.species.name, nextDetail: null });
-    if (node.species.name === target) return true;
-    for (const child of node.evolves_to) {
-      path[path.length - 1].nextDetail = child.evolution_details[0] ?? null;
-      if (find(child)) return true;
-    }
-    path.pop();
-    return false;
-  }
-  find(chain);
-  return path;
-}
-
-export function getChildren(chain: EvoNode, name: string): EvoNode[] {
-  function find(node: EvoNode): EvoNode[] | null {
-    if (node.species.name === name) return node.evolves_to;
-    for (const child of node.evolves_to) {
-      const r = find(child);
-      if (r) return r;
-    }
-    return null;
-  }
-  return find(chain) ?? [];
-}
-
-// Recorre los descendientes nivel por nivel: hijos, nietos, bisnietos...
-// Devuelve un array por nivel, sin importar cuántos haya en cada uno.
-export function getDescendantLevels(chain: EvoNode, name: string): EvoNode[][] {
-  const levels: EvoNode[][] = [];
-  let current = getChildren(chain, name);
-  while (current.length > 0) {
-    levels.push(current);
-    current = current.flatMap((n) => n.evolves_to);
-  }
-  return levels;
-}
-
 // Los triggers que no son "subir de nivel" vienen con nombres crudos
 const TRIGGER_LABELS: Record<string, string> = {
   trade: "Trade",
@@ -108,29 +68,124 @@ export function describeEvolution(d: EvoDetail): string[] {
   if (d.relative_physical_stats === 0) out.push("Attack equal to Defense");
   if (d.relative_physical_stats === -1) out.push("Defense higher than Attack");
   if (d.turn_upside_down) out.push("With the console turned upside down");
+  if (d.region)
+    out.push(
+      `In ${d.region.name.charAt(0).toUpperCase()}${d.region.name.slice(1)}`,
+    );
 
   return out.length > 0 ? out : ["Special method"];
 }
 
-export interface EvoTransition {
-  from: string;
-  to: string;
-  ways: string[][]; // cada vía alternativa, con sus condiciones
+// ── Cadena por formas ─────────────────────────────────
+// La API dice qué forma evoluciona (base_form) y en cuál termina
+// (evolved_form). Con eso se separan las líneas regionales.
+
+const REGIONAL_RE = /-(alola|galar|hisui|paldea)(?=-|$)/;
+
+// null = la forma normal de la especie. Solo distinguimos regionales,
+// así "meowth" y null significan lo mismo.
+export function formKey(name: string | null | undefined): string | null {
+  return name && REGIONAL_RE.test(name) ? name : null;
 }
 
-// Todos los pasos de la cadena, con todas sus vías
-export function listTransitions(chain: EvoNode): EvoTransition[] {
-  const out: EvoTransition[] = [];
-  function walk(node: EvoNode) {
-    for (const child of node.evolves_to) {
-      out.push({
-        from: node.species.name,
-        to: child.species.name,
-        ways: child.evolution_details.map(describeEvolution),
-      });
-      walk(child);
-    }
+export interface FormStep {
+  species: string;
+  form: string | null;
+  details: EvoDetail[]; // cómo se llega a este paso desde `from`
+  from: FormStep | null;
+}
+
+const baseOf = (d: EvoDetail) => formKey(d.required_pokemon_form?.name);
+const resultOf = (d: EvoDetail) => formKey(d.evolved_pokemon_form?.name);
+// Una vía vale solo para la forma que pide.
+// Si no pide una forma regional, es de la forma normal.
+const appliesTo = (d: EvoDetail, form: string | null) => baseOf(d) === form;
+
+// Los nodos desde la raíz hasta la especie buscada
+function speciesPath(chain: EvoNode, target: string): EvoNode[] {
+  if (chain.species.name === target) return [chain];
+  for (const child of chain.evolves_to) {
+    const p = speciesPath(child, target);
+    if (p.length) return [chain, ...p];
   }
-  walk(chain);
-  return out;
+  return [];
+}
+
+function findNode(chain: EvoNode, name: string): EvoNode | null {
+  const p = speciesPath(chain, name);
+  return p[p.length - 1] ?? null;
+}
+
+// Del primero de la cadena hasta el actual, siguiendo solo su forma
+export function buildFormPath(
+  chain: EvoNode,
+  species: string,
+  form: string | null,
+): FormStep[] {
+  const nodes = speciesPath(chain, species);
+  const out: Omit<FormStep, "from">[] = [];
+  let cur = form;
+
+  // Se recorre de atrás para adelante: cada paso dice de qué forma vino
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    if (i === 0) {
+      out.unshift({ species: nodes[i].species.name, form: cur, details: [] });
+      break;
+    }
+    const all = nodes[i].evolution_details;
+    // 1) Las vías que terminan justo en esta forma
+    let ds = all.filter((d) => resultOf(d) === cur);
+    // 2) Si la API no lo dice, las que salen de la misma región
+    const region = cur?.match(REGIONAL_RE)?.[0];
+    if (!ds.length && region)
+      ds = all.filter((d) => d.required_pokemon_form?.name.includes(region));
+    // 3) Último recurso: todas
+    if (!ds.length) ds = all;
+
+    const parent = ds.length ? baseOf(ds[0]) : null;
+    ds = ds.filter((d) => baseOf(d) === parent);
+    out.unshift({ species: nodes[i].species.name, form: cur, details: ds });
+    cur = parent;
+  }
+
+  // Se enlaza cada paso con el anterior
+  const steps: FormStep[] = [];
+  for (const s of out)
+    steps.push({ ...s, from: steps[steps.length - 1] ?? null });
+  return steps;
+}
+
+// Los descendientes de una forma, nivel por nivel.
+// Una misma especie puede aparecer dos veces si termina en dos formas
+// (Pikachu → Raichu y Raichu de Alola).
+export function getFormLevels(chain: EvoNode, start: FormStep): FormStep[][] {
+  const levels: FormStep[][] = [];
+  let current = [start];
+
+  while (current.length) {
+    const next: FormStep[] = [];
+    for (const parent of current) {
+      const node = findNode(chain, parent.species);
+      for (const child of node?.evolves_to ?? []) {
+        // Se agrupan las vías por la forma en la que terminan
+        const groups = new Map<string, EvoDetail[]>();
+        for (const d of child.evolution_details) {
+          if (!appliesTo(d, parent.form)) continue;
+          const key = resultOf(d) ?? "";
+          groups.set(key, [...(groups.get(key) ?? []), d]);
+        }
+        for (const [key, ds] of groups) {
+          next.push({
+            species: child.species.name,
+            form: key || null,
+            details: ds,
+            from: parent,
+          });
+        }
+      }
+    }
+    if (next.length) levels.push(next);
+    current = next;
+  }
+  return levels;
 }

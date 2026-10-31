@@ -4,7 +4,6 @@ import { NavLink, Link, useLocation } from "react-router-dom";
 type NavItem = { to: string; label: string };
 
 const homeLink: NavItem = { to: "/", label: "Home" };
-const favLink: NavItem = { to: "/favorites", label: "Favorites" };
 
 // Cada sección es un desplegable en escritorio y un grupo en mobile
 const sections: { label: string; links: NavItem[] }[] = [
@@ -21,6 +20,14 @@ const sections: { label: string; links: NavItem[] }[] = [
       { to: "/items", label: "Items" },
       { to: "/abilities", label: "Abilities" },
       { to: "/moves", label: "Moves" },
+    ],
+  },
+  {
+    label: "Your PC",
+    links: [
+      { to: "/favorites", label: "Favorites" },
+      { to: "/lists", label: "Lists" },
+      { to: "/team-planner", label: "Team Planner" },
     ],
   },
 ];
@@ -154,12 +161,6 @@ export function Navbar() {
           {sections.map((s) => (
             <NavDropdown key={s.label} label={s.label} links={s.links} />
           ))}
-
-          <li>
-            <NavLink to={favLink.to} className={linkClass}>
-              {favLink.label}
-            </NavLink>
-          </li>
         </ul>
 
         {/* Hamburguesa */}
@@ -190,10 +191,6 @@ export function Navbar() {
             ))}
           </div>
         ))}
-
-        <NavLink to={favLink.to} className={`${mobileLink} mt-2`}>
-          {favLink.label}
-        </NavLink>
       </div>
     </nav>
   );

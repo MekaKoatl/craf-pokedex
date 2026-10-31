@@ -9,7 +9,15 @@ export function usePokemonDetails(id: string) {
     queryFn: async () => {
       const pokemon = await getPokemonFull(id);
 
-      const suffix = REGIONAL_SUFFIX_LIST.find((s) => pokemon.name.endsWith(s));
+      // El sufijo puede estar al final ("raichu-alola") o en el medio
+      // ("tauros-paldea-combat-breed"). Las gorras de Pikachu ("pikachu-alola-cap")
+      // y las formas totem tienen el sufijo pero no son formas regionales.
+      const notRegional = /-(cap|totem)(-|$)/.test(pokemon.name);
+      const suffix = notRegional
+        ? undefined
+        : REGIONAL_SUFFIX_LIST.find(
+            (s) => pokemon.name.endsWith(s) || pokemon.name.includes(`${s}-`),
+          );
       const isRegional = Boolean(suffix);
       const speciesName = pokemon.species.name;
 

@@ -6,7 +6,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { usePokemonDetails } from "../hooks/usePokemonDetails";
-import { useFavorites } from "../hooks/useFavorites";
+import { AddToListButton } from "../components/AddToListButton";
+import { SavedIn } from "../components/details/SavedIn";
 import { getRegionalDisplayName } from "../lib/regional";
 import { idFromUrl } from "../lib/text";
 import { LoadingSpinner } from "../components/LoadingSpinner";
@@ -43,12 +44,19 @@ const REGION_MAP: Record<string, string> = {
   "generation-ix": "Paldea",
 };
 
+// Las formas regionales debutaron en otra generación que su especie
+const REGIONAL_GEN: Record<string, { gen: string; region: string }> = {
+  alola: { gen: "VII", region: "Alola" },
+  galar: { gen: "VIII", region: "Galar" },
+  hisui: { gen: "VIII", region: "Hisui" },
+  paldea: { gen: "IX", region: "Paldea" },
+};
+
 export function Details() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, isLoading, isError } = usePokemonDetails(id!);
-  const { isFavorite, toggleFavorite } = useFavorites();
 
   // Si se entra por el id de la hembra, la URL se normaliza a la especie
   useEffect(() => {
@@ -84,6 +92,13 @@ export function Details() {
   const shown = gender === "female" && femaleForm ? femaleForm : pokemon;
 
   const gen = species.generation?.name ?? "";
+  // includes y no endsWith: "tauros-paldea-combat-breed"
+  const regionalKey = data.isRegional
+    ? Object.keys(REGIONAL_GEN).find((k) => pokemon.name.includes(`-${k}`))
+    : undefined;
+  const regional = regionalKey ? REGIONAL_GEN[regionalKey] : undefined;
+  const genLabel = regional?.gen ?? GEN_MAP[gen];
+  const regionLabel = regional?.region ?? REGION_MAP[gen];
   const flavor =
     species.flavor_text_entries
       .find((e) => e.language.name === "en")
@@ -92,7 +107,7 @@ export function Details() {
   const displayName = getRegionalDisplayName(pokemon.name);
   const genus =
     species.genera.find((g) => g.language.name === "en")?.genus ?? "";
-  const active = isFavorite(pokemon.id);
+
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
@@ -108,16 +123,11 @@ export function Details() {
             #{String(pokemon.id).padStart(3, "0")} {displayName}
           </h1>
           <p className="text-lg text-gray-500 mt-1">{genus}</p>
+          <SavedIn id={pokemon.id} />
         </div>
-        <button
-          onClick={() => toggleFavorite(pokemon.id)}
-          className={`mt-2 fav-btn${active ? " fav-active" : ""}`}
-          style={{ position: "static", fontSize: "1.5rem" }}
-          title="Favorite"
-          aria-label="Favorite"
-        >
-          ♥
-        </button>
+        <div className="mt-1">
+          <AddToListButton id={pokemon.id} variant="details" />
+        </div>
       </div>
 
       <SpriteGallery key={pokemon.id} pokemon={pokemon} female={femaleForm} />
@@ -141,8 +151,8 @@ export function Details() {
             Generation
           </h3>
           <div className="text-gray-700 text-sm">
-            <span className="font-bold">Gen {GEN_MAP[gen]}</span>{" "}
-            <span className="text-gray-400">— {REGION_MAP[gen]}</span>
+            <span className="font-bold">Gen {genLabel}</span>{" "}
+            <span className="text-gray-400">— {regionLabel}</span>
           </div>
         </div>
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
@@ -161,6 +171,11 @@ export function Details() {
           Pokédex Entry
         </h3>
         <p className="text-gray-700 text-sm leading-relaxed">{flavor}</p>
+        {data.isRegional && (
+          <p className="text-xs text-gray-400 mt-2">
+            Shared with the original form.
+          </p>
+        )}
       </div>
 
       <hr className="border-gray-200 my-6" />
@@ -169,8 +184,7 @@ export function Details() {
       <EvoChain
         chain={data.evoChain}
         currentName={data.speciesName}
-        currentId={pokemon.id}
-        suffix={data.suffix}
+        currentForm={data.isRegional ? pokemon.name : null}
       />
 
       <hr className="border-gray-200 my-6" />
@@ -247,7 +261,10 @@ export function Details() {
 
       <hr className="border-gray-200 my-6" />
 
-      <AltFormsAccordion species={species} baseStats={shown.stats} />
+      {/* Mega y Gigamax son solo de la forma original, nunca de las regionales */}
+      {!data.isRegional && (
+        <AltFormsAccordion species={species} baseStats={shown.stats} />
+      )}
       <LearnedMovesPanel pokemon={shown} />
       <MoreInfoPanel pokemon={shown} species={species} />
     </main>

@@ -5,13 +5,18 @@ import { getRegionalDisplayName } from "../../lib/regional";
 import { cdnSprite } from "../../lib/sprites";
 import {
   getEvoCondition,
-  buildLinearPath,
-  getDescendantLevels,
-  listTransitions,
+  describeEvolution,
+  buildFormPath,
+  getFormLevels,
+  type FormStep,
 } from "../../lib/evolution";
 import type { EvolutionChain, Pokemon } from "../../types/pokemon";
 import { SpriteImg } from "../SpriteImg";
 import { fetchPokemonById, fetchPokemonBySpecies } from "../../lib/api";
+
+// Identificador de un paso: especie + forma
+const keyOf = (s: FormStep) => `${s.species}|${s.form ?? ""}`;
+const labelOf = (s: FormStep) => getRegionalDisplayName(s.form ?? s.species);
 
 function EvoNodeCard({
   p,
@@ -54,42 +59,35 @@ function Arrow({ cond }: { cond?: string }) {
 export function EvoChain({
   chain,
   currentName,
-  suffix,
+  currentForm,
 }: {
   chain: EvolutionChain;
-  currentName: string;
-  currentId: number;
-  suffix?: string;
+  currentName: string; // especie
+  currentForm: string | null; // forma regional, o null si es la normal
 }) {
   const [showReqs, setShowReqs] = useState(false);
 
-  // Lo que viene antes del actual (y el actual)
-  const path = buildLinearPath(chain.chain, currentName);
-  // Lo que viene después, agrupado por nivel
-  const levels = getDescendantLevels(chain.chain, currentName);
-  // Todos los pasos de la cadena, para el panel de requisitos
-  const transitions = listTransitions(chain.chain);
+  // Ancestros + actual, siguiendo solo la forma que estás viendo
+  const path = buildFormPath(chain.chain, currentName, currentForm);
+  const current = path[path.length - 1];
+  // Lo que viene después, nivel por nivel
+  const levels = getFormLevels(chain.chain, current);
 
-  const names = [
-    ...path.map((s) => s.name),
-    ...levels.flat().map((n) => n.species.name),
-  ];
+  const steps = [...path, ...levels.flat()];
+  // Cada paso con un "from" es una transición para el panel de requisitos
+  const transitions = steps.filter((s) => s.from);
 
   const { data: pokes } = useQuery({
-    queryKey: ["evo", currentName, suffix ?? ""],
+    queryKey: ["evo", currentName, currentForm ?? ""],
     queryFn: async () => {
       const map: Record<string, Pokemon> = {};
       await Promise.all(
-        names.map(async (n) => {
-          if (suffix) {
-            const regional = await fetchPokemonById(`${n}${suffix}`);
-            if (regional) {
-              map[n] = regional;
-              return;
-            }
-          }
-          const normal = await fetchPokemonBySpecies(n);
-          if (normal) map[n] = normal;
+        steps.map(async (s) => {
+          // Forma regional: por nombre exacto. Normal: por especie
+          const p = s.form
+            ? await fetchPokemonById(s.form)
+            : await fetchPokemonBySpecies(s.species);
+          if (p) map[keyOf(s)] = p;
         }),
       );
       return map;
@@ -105,16 +103,12 @@ export function EvoChain({
       <div className="evo-chain-wrapper">
         {/* Ancestros + actual */}
         {path.map((step, i) =>
-          pokes[step.name] ? (
-            <div key={step.name} className="flex items-center evo-step">
-              {i > 0 && (
-                <Arrow
-                  cond={getEvoCondition(path[i - 1].nextDetail ?? undefined)}
-                />
-              )}
+          pokes[keyOf(step)] ? (
+            <div key={keyOf(step)} className="flex items-center evo-step">
+              {i > 0 && <Arrow cond={getEvoCondition(step.details[0])} />}
               <EvoNodeCard
-                p={pokes[step.name]}
-                isCurrent={step.name === currentName}
+                p={pokes[keyOf(step)]}
+                isCurrent={step === current}
               />
             </div>
           ) : null,
@@ -124,12 +118,12 @@ export function EvoChain({
         {levels.map((level, li) => {
           // Un solo descendiente: va en línea, con la condición en la flecha
           if (level.length === 1) {
-            const node = level[0];
-            if (!pokes[node.species.name]) return null;
+            const s = level[0];
+            if (!pokes[keyOf(s)]) return null;
             return (
               <div key={`evo-lvl-${li}`} className="flex items-center evo-step">
-                <Arrow cond={getEvoCondition(node.evolution_details[0])} />
-                <EvoNodeCard p={pokes[node.species.name]} isCurrent={false} />
+                <Arrow cond={getEvoCondition(s.details[0])} />
+                <EvoNodeCard p={pokes[keyOf(s)]} isCurrent={false} />
               </div>
             );
           }
@@ -138,13 +132,13 @@ export function EvoChain({
             <Fragment key={`evo-lvl-${li}`}>
               <Arrow />
               <div className="evo-branch-grid">
-                {level.map((c) =>
-                  pokes[c.species.name] ? (
+                {level.map((s) =>
+                  pokes[keyOf(s)] ? (
                     <EvoNodeCard
-                      key={c.species.name}
-                      p={pokes[c.species.name]}
+                      key={keyOf(s)}
+                      p={pokes[keyOf(s)]}
                       isCurrent={false}
-                      cond={getEvoCondition(c.evolution_details[0])}
+                      cond={getEvoCondition(s.details[0])}
                     />
                   ) : null,
                 )}
@@ -154,7 +148,7 @@ export function EvoChain({
         })}
       </div>
 
-      {/* Requisitos completos, colapsado por defecto */}
+      {/* Requisitos de esta línea, colapsado por defecto */}
       {transitions.length > 0 && (
         <div className="evo-req">
           <button
@@ -168,12 +162,14 @@ export function EvoChain({
           {showReqs && (
             <div className="evo-req-body">
               {transitions.map((t) => (
-                <div key={`${t.from}-${t.to}`} className="evo-req-row">
+                <div
+                  key={`${keyOf(t.from!)}-${keyOf(t)}`}
+                  className="evo-req-row"
+                >
                   <div className="evo-req-names">
-                    {getRegionalDisplayName(t.from)} →{" "}
-                    {getRegionalDisplayName(t.to)}
+                    {labelOf(t.from!)} → {labelOf(t)}
                   </div>
-                  {t.ways.map((way, i) => (
+                  {t.details.map(describeEvolution).map((way, i) => (
                     <Fragment key={i}>
                       {i > 0 && <div className="evo-req-or">or</div>}
                       <ul className="evo-req-list">
