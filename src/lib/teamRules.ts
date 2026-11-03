@@ -182,14 +182,26 @@ export function moveForGame(m: Move, game: Game): MoveInGame {
 
 // ── Objetos ───────────────────────────────
 
-// Los grupos del selector, en orden
+// Los grupos del buscador, en orden. key = categoría de la API
 export const ITEM_GROUPS = [
-  { key: "held", label: "Held items" },
-  { key: "type", label: "Type boosters" },
-  { key: "species", label: "Species-specific" },
-  { key: "berry", label: "Berries" },
-  { key: "mega", label: "Mega Stones" },
-  { key: "z", label: "Z-Crystals" },
+  { key: "choice", label: "Choice items" },
+  { key: "held-items", label: "Held items" },
+  { key: "bad-held-items", label: "Orbs & hindering items" },
+  { key: "type-enhancement", label: "Type boosters" },
+  { key: "plates", label: "Plates" },
+  { key: "memories", label: "Memories" },
+  { key: "jewels", label: "Gems" },
+  { key: "species-specific", label: "Species-specific" },
+  { key: "medicine", label: "Berries · Healing & status" },
+  { key: "picky-healing", label: "Berries · HP (flavor)" },
+  { key: "in-a-pinch", label: "Berries · In a pinch" },
+  { key: "type-protection", label: "Berries · Type resist" },
+  { key: "effort-drop", label: "Berries · EV reducing" },
+  { key: "other", label: "Berries · Other" },
+  { key: "training", label: "Training items" },
+  { key: "effort-training", label: "EV training" },
+  { key: "mega-stones", label: "Mega Stones" },
+  { key: "z-crystals", label: "Z-Crystals" },
 ];
 
 // La API dice que existen en juegos posteriores, pero solo sirven en estos
@@ -202,18 +214,130 @@ const MEGA_GROUPS = new Set([
 ]);
 const Z_GROUPS = new Set(["sun-moon", "ultra-sun-ultra-moon"]);
 
-// Grupo → objetos disponibles en ese juego, por nombre
-export function itemsForGame(game: Game): Record<string, string[]> {
-  const out: Record<string, string[]> = {};
-  for (const [name, [group, gen]] of Object.entries(HELD_ITEMS)) {
-    if (gen > game.gen) continue;
-    if (group === "mega" && !MEGA_GROUPS.has(game.group)) continue;
-    if (group === "z" && !Z_GROUPS.has(game.group)) continue;
-    (out[group] ??= []).push(name);
-  }
-  return out;
-}
-
 // "firium-z--held" → "Firium Z"
 export const itemLabel = (name: string) =>
   prettyName(name.replace(/--held$/, ""));
+
+// Categoría → objetos disponibles en ese juego, ordenados por nombre
+export function itemsForGame(game: Game): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [name, [cat, gen]] of Object.entries(HELD_ITEMS)) {
+    if (gen > game.gen) continue;
+    if (cat === "mega-stones" && !MEGA_GROUPS.has(game.group)) continue;
+    if (cat === "z-crystals" && !Z_GROUPS.has(game.group)) continue;
+    // Desde X/Y, Exp. Share es un objeto clave y ya no se equipa
+    if (name === "exp-share" && game.gen >= 6) continue;
+    (out[cat] ??= []).push(name);
+  }
+  for (const list of Object.values(out))
+    list.sort((a, b) => itemLabel(a).localeCompare(itemLabel(b)));
+  return out;
+}
+// ── Megas ───────────────────────────────
+
+// Si el objeto es la Megapiedra de esta especie, el nombre de su forma Mega.
+// "charizard" + "charizardite-x" → "charizard-mega-x"
+export function megaNameFor(
+  speciesName: string,
+  item: string | null,
+): string | null {
+  if (!item || HELD_ITEMS[item]?.[0] !== "mega-stones") return null;
+  // La piedra tiene que ser de esta especie: "charizardite" empieza con "chari"
+  if (!item.startsWith(speciesName.slice(0, 5))) return null;
+  const letter = item.match(/-([xyz])$/)?.[1];
+  return `${speciesName}-mega${letter ? `-${letter}` : ""}`;
+}
+
+// "charizard-mega-x" → "Mega Charizard X"
+export function megaLabel(megaName: string): string {
+  const [base, rest = ""] = megaName.split("-mega");
+  const letter = rest.replace(/^-/, "").toUpperCase();
+  return `Mega ${prettyName(base)}${letter ? ` ${letter}` : ""}`;
+}
+
+// Las Megapiedras de una especie que existen en ese juego.
+// Usar solo con especies que tienen Mega (forms "M" en pokemon-data):
+// por las 5 letras, Pidgey también "coincidiría" con Pidgeotite.
+export function megaStonesFor(speciesName: string, game: Game): string[] {
+  if (!MEGA_GROUPS.has(game.group)) return [];
+  const prefix = speciesName.slice(0, 5);
+  return Object.entries(HELD_ITEMS)
+    .filter(
+      ([name, [cat, gen]]) =>
+        cat === "mega-stones" && gen <= game.gen && name.startsWith(prefix),
+    )
+    .map(([name]) => name)
+    .sort();
+}
+
+// "charizardite-x" → "Mega X" · "venusaurite" → "Mega"
+export function megaStoneLabel(stone: string): string {
+  const letter = stone.match(/-([xyz])$/)?.[1];
+  return letter ? `Mega ${letter.toUpperCase()}` : "Mega";
+}
+
+// ── Stats ───────────────────────────────
+
+export type StatTuple = [number, number, number, number, number, number];
+
+// Mismo orden en todos lados: HP, Atk, Def, SpA, SpD, Spe
+const STAT_KEYS = ["hp", "atk", "def", "spa", "spd", "spe"];
+export const STAT_NAMES = ["HP", "Atk", "Def", "SpA", "SpD", "Spe"];
+const API_STATS = [
+  "hp",
+  "attack",
+  "defense",
+  "special-attack",
+  "special-defense",
+  "speed",
+];
+
+export const DEFAULT_LEVEL = 50;
+export const MAX_IV = 31;
+export const MAX_EV = 252;
+export const MAX_EV_TOTAL = 510;
+export const DEFAULT_IVS: StatTuple = [31, 31, 31, 31, 31, 31];
+export const EMPTY_EVS: StatTuple = [0, 0, 0, 0, 0, 0];
+
+// Los 6 stats base de la API, en nuestro orden
+export function baseStats(p: PokemonFull): StatTuple {
+  return API_STATS.map(
+    (n) => p.stats.find((s) => s.stat.name === n)?.base_stat ?? 0,
+  ) as StatTuple;
+}
+
+// 1.1 si la naturaleza sube ese stat, 0.9 si lo baja. HP nunca cambia.
+export function natureMultiplier(nature: string | null, i: number): number {
+  const n = NATURES.find((x) => x.name === nature);
+  if (!n || i === 0) return 1;
+  if (n.up === STAT_KEYS[i]) return 1.1;
+  if (n.down === STAT_KEYS[i]) return 0.9;
+  return 1;
+}
+
+// Las fórmulas de los juegos (Gen III en adelante)
+export function calcStats(
+  base: StatTuple,
+  ivs: StatTuple,
+  evs: StatTuple,
+  level: number,
+  nature: string | null,
+): StatTuple {
+  return base.map((b, i) => {
+    const core = Math.floor(
+      ((2 * b + ivs[i] + Math.floor(evs[i] / 4)) * level) / 100,
+    );
+    // Shedinja (HP base 1) siempre tiene 1 de HP
+    if (i === 0) return b === 1 ? 1 : core + level + 10;
+    return Math.floor((core + 5) * natureMultiplier(nature, i));
+  }) as StatTuple;
+}
+
+// Repartos de EVs comunes para los botones rápidos
+export const EV_PRESETS: { label: string; evs: StatTuple }[] = [
+  { label: "252 Atk / 252 Spe / 4 HP", evs: [4, 252, 0, 0, 0, 252] },
+  { label: "252 SpA / 252 Spe / 4 HP", evs: [4, 0, 0, 252, 0, 252] },
+  { label: "252 HP / 252 Def / 4 SpD", evs: [252, 0, 252, 0, 4, 0] },
+  { label: "252 HP / 252 SpD / 4 Def", evs: [252, 0, 4, 0, 252, 0] },
+  { label: "Clear", evs: [0, 0, 0, 0, 0, 0] },
+];

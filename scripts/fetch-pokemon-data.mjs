@@ -77,7 +77,9 @@ async function inBatches(items, fn, label, size = 20) {
   const out = [];
   for (let i = 0; i < items.length; i += size) {
     out.push(...(await Promise.all(items.slice(i, i + size).map(fn))));
-    process.stdout.write(`\r${label}: ${Math.min(i + size, items.length)} / ${items.length}`);
+    process.stdout.write(
+      `\r${label}: ${Math.min(i + size, items.length)} / ${items.length}`,
+    );
   }
   process.stdout.write("\n");
   return out;
@@ -107,6 +109,33 @@ const chainDepthById = new Map(
   chainIds.map((id, i) => [id, chainDepth(chainList[i].chain)]),
 );
 
+// Especie → su nodo en la cadena, para saber si evoluciona
+const nodeBySpecies = new Map();
+function indexChain(node) {
+  nodeBySpecies.set(node.species.name, node);
+  node.evolves_to.forEach(indexChain);
+}
+chainList.forEach((c) => indexChain(c.chain));
+
+// ¿Esta forma evoluciona? form = null para la forma normal.
+// Cada vía pide una forma (required_pokemon_form); si no pide una
+// regional, es de la forma normal (Farfetch'd normal no evoluciona).
+function evolves(speciesName, form) {
+  const node = nodeBySpecies.get(speciesName);
+  return (node?.evolves_to ?? []).some((child) =>
+    child.evolution_details.length === 0
+      ? form === null
+      : child.evolution_details.some((d) => {
+          const req = d.required_pokemon_form?.name ?? null;
+          const regional =
+            req && REGIONAL_RE.test(req) && !NOT_REGIONAL_RE.test(req)
+              ? req
+              : null;
+          return regional === form;
+        }),
+  );
+}
+
 // 3) Pokémon: la forma por defecto de cada especie y sus regionales
 const isRegionalVariety = (v) =>
   !v.is_default &&
@@ -131,7 +160,9 @@ const regionals = [];
 
 for (const s of species) {
   const names = s.varieties.map((v) => v.pokemon.name);
-  const def = pokemonById.get(idOf(s.varieties.find((v) => v.is_default).pokemon.url));
+  const def = pokemonById.get(
+    idOf(s.varieties.find((v) => v.is_default).pokemon.url),
+  );
   const evoChainLength = chainDepthById.get(idOf(s.evolution_chain.url));
 
   // Regiones: las Pokédex originales donde aparece.
@@ -157,6 +188,7 @@ for (const s of species) {
     region: GEN_REGION[s.generation.name],
     regions,
     evoChainLength,
+    isFinal: !evolves(s.name, null),
     forms,
   });
 
@@ -170,6 +202,7 @@ for (const s of species) {
       region,
       regions: [region],
       evoChainLength,
+      isFinal: !evolves(s.name, p.name),
       forms: [],
       isRegional: true,
     });
@@ -195,10 +228,15 @@ const newById = new Map(all.map((e) => [e.id, e]));
 const added = all.filter((e) => !oldById.has(e.id));
 const removed = old.filter((e) => !newById.has(e.id));
 const changed = [];
+const newFields = new Set(); // campos que el archivo anterior no tenía
 for (const e of all) {
   const prev = oldById.get(e.id);
   if (!prev) continue;
   for (const key of Object.keys(e)) {
+    if (prev[key] === undefined) {
+      newFields.add(key);
+      continue;
+    }
     const a = JSON.stringify(prev[key]);
     const b = JSON.stringify(e[key]);
     if (a !== b) changed.push(`  ${e.name}.${key}: ${a ?? "—"} → ${b}`);
@@ -214,6 +252,7 @@ const fmt = (e) => {
     `    region: ${JSON.stringify(e.region)},`,
     `    regions: ${JSON.stringify(e.regions)},`,
     `    evoChainLength: ${e.evoChainLength},`,
+    `    isFinal: ${e.isFinal},`,
     `    forms: ${JSON.stringify(e.forms)},`,
   ];
   if (e.isRegional) lines.push("    isRegional: true,");
@@ -232,11 +271,19 @@ ${all.map(fmt).join("\n")}
 );
 
 // 7) Reporte
-console.log(`\n${entries.length} especies + ${regionals.length} formas regionales = ${all.length} entradas`);
+console.log(
+  `\n${entries.length} especies + ${regionals.length} formas regionales = ${all.length} entradas`,
+);
 console.log(`\nAgregadas (${added.length}):`);
 console.log(added.map((e) => `  #${e.id} ${e.name}`).join("\n") || "  ninguna");
 console.log(`\nQuitadas (${removed.length}):`);
-console.log(removed.map((e) => `  #${e.id} ${e.name}`).join("\n") || "  ninguna");
+console.log(
+  removed.map((e) => `  #${e.id} ${e.name}`).join("\n") || "  ninguna",
+);
 console.log(`\nCambiadas (${changed.length}):`);
 console.log(changed.join("\n") || "  ninguna");
+if (newFields.size)
+  console.log(
+    `\nCampos nuevos en todas las entradas: ${[...newFields].join(", ")}`,
+  );
 console.log("\nListo: src/data/pokemon-data.ts");

@@ -1,43 +1,50 @@
 import { useState } from "react";
 import { useQueries } from "@tanstack/react-query";
-import { getMove, getPokemonFull } from "../../lib/api";
+import { getMove } from "../../lib/api";
+import { useTeamForms } from "../../hooks/useTeamForms";
 import {
   moveForGame,
   typesForGame,
   type MoveInGame,
 } from "../../lib/teamRules";
 import {
+  abilityMultiplier,
   defenseMultiplier,
   effectiveness,
   typesForGen,
 } from "../../lib/typeChart";
 import type { Game } from "../../lib/games";
-import { iconOrSprite } from "../../lib/sprites";
-import { SpriteImg } from "../SpriteImg";
 import { TypeBadge } from "../badges/TypeBadge";
 import type { TeamMember } from "../../context/TeamsContext";
 
 type Mode = "defense" | "offense";
 
-function fmt(v: number) {
-  if (v === 0.5) return "×½";
-  if (v === 0.25) return "×¼";
-  return `×${v}`;
+// flex-none: el CSS global le da flex: 1 al badge y lo estiraba en columna
+const badgeCol =
+  "[&_.type-badge]:inline-block [&_.type-badge]:w-20 [&_.type-badge]:flex-none";
+
+// Cuánto suma o resta cada multiplicador al total de defensa
+function defenseScore(v: number): number {
+  if (v >= 4) return -2;
+  if (v > 1) return -1;
+  if (v === 0 || v <= 0.25) return 2;
+  if (v < 1) return 1;
+  return 0;
 }
 
-// Color de cada celda según el multiplicador
-function cellClass(v: number) {
-  if (v === 0) return "bg-gray-800 text-white";
-  if (v >= 4) return "bg-red-500 text-white";
-  if (v >= 2) return "bg-red-100 text-red-700";
-  if (v <= 0.25) return "bg-green-300 text-green-900";
-  if (v < 1) return "bg-green-100 text-green-700";
-  return "";
+// Tarjeta de cada tipo: roja si hay un problema
+function cardClass(danger: boolean) {
+  return `flex flex-col items-center gap-1 p-2 rounded-lg border ${badgeCol} ${
+    danger ? "border-red-300 bg-red-50" : "border-gray-200 bg-white"
+  }`;
 }
 
-const badgeCol = "[&_.type-badge]:inline-block [&_.type-badge]:w-20";
+function textClass(danger: boolean) {
+  return `text-xs font-semibold ${danger ? "text-red-600" : "text-gray-600"}`;
+}
 
-export function TeamAnalysis({
+// Solo existe mientras el análisis está abierto: recién ahí pide datos
+function AnalysisBody({
   members,
   game,
 }: {
@@ -46,15 +53,11 @@ export function TeamAnalysis({
 }) {
   const [mode, setMode] = useState<Mode>("defense");
 
-  const pokeResults = useQueries({
-    queries: members.map((m) => ({
-      queryKey: ["pokemon-full", m.pokemonId],
-      queryFn: () => getPokemonFull(m.pokemonId),
-      staleTime: Infinity,
-    })),
-  });
+  const forms = useTeamForms(members);
 
-  const moveNames = [...new Set(members.flatMap((m) => m.moves.filter(Boolean)))];
+  const moveNames = [
+    ...new Set(members.flatMap((m) => m.moves.filter(Boolean))),
+  ];
   const moveResults = useQueries({
     queries: moveNames.map((n) => ({
       queryKey: ["team-move", n],
@@ -63,9 +66,14 @@ export function TeamAnalysis({
     })),
   });
 
-  const pokes = pokeResults.map((r) => r.data);
+  // La forma que pelea: la Mega si la tiene, si no la normal
+  const pokes = forms.map((f) => f.mega ?? f.base);
+  // La Mega tiene una sola habilidad fija; si no, la elegida
+  const abilities = forms.map((f, i) =>
+    f.mega ? (f.mega.abilities[0]?.ability.name ?? null) : members[i].ability,
+  );
   if (pokes.some((p) => !p)) {
-    return <p className="text-xs text-gray-400 mt-6">Loading analysis...</p>;
+    return <p className="text-xs text-gray-400 mt-4">Loading analysis...</p>;
   }
 
   const gen = game.gen;
@@ -78,15 +86,21 @@ export function TeamAnalysis({
     if (r.data) moveInfo[r.data.name] = moveForGame(r.data, game);
   }
 
-  // ── Defensa: cada tipo atacante contra cada miembro
-  const defenseRows = types.map((atk) => {
-    const cells = memberTypes.map((ts) => defenseMultiplier(atk, ts, gen));
-    return {
-      atk,
-      cells,
-      weak: cells.filter((v) => v > 1).length,
-      resist: cells.filter((v) => v < 1).length,
-    };
+  // ── Defensa: ×2 resta 1, ×4 resta 2; ×½ suma 1, ×¼ e inmunidad suman 2
+  const defense = types.map((atk) => {
+    // Tipos primero, después la habilidad elegida (si hay)
+    const mults = memberTypes.map((ts, i) =>
+      abilityMultiplier(
+        atk,
+        defenseMultiplier(atk, ts, gen),
+        abilities[i],
+        gen,
+      ),
+    );
+    const weak = mults.filter((v) => v > 1).length;
+    const resist = mults.filter((v) => v < 1).length;
+    const total = mults.reduce((sum, v) => sum + defenseScore(v), 0);
+    return { type: atk, weak, resist, total };
   });
 
   // ── Ofensa: con qué tipos ataca cada miembro
@@ -102,20 +116,16 @@ export function TeamAnalysis({
   });
 
   const offense = types.map((def) => ({
-    def,
+    type: def,
     // Cuántos miembros le pegan súper efectivo a este tipo
     count: attackTypes.filter((a) =>
       a.types.some((atk) => effectiveness(atk, def, gen) > 1),
     ).length,
   }));
-  const usingFallback = members.filter((_, i) => attackTypes[i].fallback).length;
+  const usingFallback = attackTypes.filter((a) => a.fallback).length;
 
   return (
-    <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-6">
-      <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-4">
-        Team Analysis
-      </h3>
-
+    <div className="mt-4">
       {/* Conmutador: mismo estilo que en Type Matchups */}
       <div className="flex items-center gap-2 mb-2">
         {(["defense", "offense"] as const).map((m) => (
@@ -134,96 +144,78 @@ export function TeamAnalysis({
       </div>
       <p className="text-xs text-gray-400 mb-4">
         {mode === "defense"
-          ? "Damage each team member takes from each type."
+          ? "Weaknesses subtract (×2 = −1, ×4 = −2). Resistances add (×½ = +1, ×¼ or immune = +2). Chosen abilities like Levitate count."
           : "How many team members hit each type super effectively."}
       </p>
 
-      {mode === "defense" ? (
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="text-gray-400 uppercase tracking-wide">
-                <th className="py-1 pr-2 text-left">Type</th>
-                {members.map((m, i) => (
-                  <th key={i} className="py-1 px-1">
-                    <SpriteImg
-                      src={iconOrSprite(m.pokemonId)}
-                      alt=""
-                      className="w-8 h-8 mx-auto object-contain"
-                      style={{ imageRendering: "pixelated" }}
-                    />
-                  </th>
-                ))}
-                <th className="py-1 px-2">Weak</th>
-                <th className="py-1 pl-2">Resist</th>
-              </tr>
-            </thead>
-            <tbody>
-              {defenseRows.map((row) => (
-                <tr
-                  key={row.atk}
-                  className={`border-t border-gray-200 ${row.weak >= 3 ? "bg-red-50" : ""}`}
-                >
-                  <td className={`py-1 pr-2 ${badgeCol}`}>
-                    <TypeBadge type={row.atk} />
-                  </td>
-                  {row.cells.map((v, i) => (
-                    <td key={i} className="py-1 px-1 text-center">
-                      {v !== 1 && (
-                        <span
-                          className={`inline-block w-9 rounded font-semibold ${cellClass(v)}`}
-                        >
-                          {fmt(v)}
-                        </span>
-                      )}
-                    </td>
-                  ))}
-                  <td
-                    className={`py-1 px-2 text-center font-bold ${
-                      row.weak >= 3 ? "text-red-600" : "text-gray-600"
-                    }`}
-                  >
-                    {row.weak}
-                  </td>
-                  <td className="py-1 pl-2 text-center font-bold text-gray-600">
-                    {row.resist}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-            {offense.map((o) => (
-              <div
-                key={o.def}
-                className={`flex flex-col items-center gap-1 p-2 rounded-lg border ${badgeCol} ${
-                  o.count === 0
-                    ? "border-red-300 bg-red-50"
-                    : "border-gray-200 bg-white"
-                }`}
-              >
-                <TypeBadge type={o.def} />
-                <span
-                  className={`text-xs font-semibold ${
-                    o.count === 0 ? "text-red-600" : "text-gray-600"
-                  }`}
-                >
-                  {o.count === 0 ? "Not covered" : `${o.count} super effective`}
-                </span>
-              </div>
-            ))}
-          </div>
-          {usingFallback > 0 && (
-            <p className="text-xs text-gray-400 mt-3">
-              {usingFallback} {usingFallback === 1 ? "member has" : "members have"}{" "}
-              no damaging moves yet, so their own types are used.
-            </p>
-          )}
-        </>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+        {mode === "defense"
+          ? defense.map((d) => {
+              const danger = d.total < 0;
+              const total =
+                d.total > 0
+                  ? `+${d.total}`
+                  : d.total < 0
+                    ? `−${-d.total}`
+                    : "0";
+              return (
+                <div key={d.type} className={cardClass(danger)}>
+                  <TypeBadge type={d.type} />
+                  <span className="text-xs text-gray-500">
+                    {d.weak} weak · {d.resist} resist
+                  </span>
+                  <span className={textClass(danger)}>Total: {total}</span>
+                </div>
+              );
+            })
+          : offense.map((o) => {
+              const danger = o.count === 0;
+              return (
+                <div key={o.type} className={cardClass(danger)}>
+                  <TypeBadge type={o.type} />
+                  <span className={textClass(danger)}>
+                    {danger ? "Not covered" : `${o.count} super effective`}
+                  </span>
+                </div>
+              );
+            })}
+      </div>
+
+      {mode === "offense" && usingFallback > 0 && (
+        <p className="text-xs text-gray-400 mt-3">
+          {usingFallback} {usingFallback === 1 ? "member has" : "members have"}{" "}
+          no damaging moves yet, so their own types are used.
+        </p>
       )}
+    </div>
+  );
+}
+
+export function TeamAnalysis({
+  members,
+  game,
+}: {
+  members: TeamMember[];
+  game: Game;
+}) {
+  // Arranca cerrado
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="mb-6 bg-gray-50 border border-gray-200 rounded-xl p-6">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between text-left cursor-pointer"
+      >
+        <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400">
+          Team Analysis
+        </h3>
+        <span className="text-gray-400 text-lg leading-none">
+          {open ? "✕" : "+"}
+        </span>
+      </button>
+
+      {open && <AnalysisBody members={members} game={game} />}
     </div>
   );
 }

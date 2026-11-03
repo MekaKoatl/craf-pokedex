@@ -9,6 +9,7 @@ export interface PokemonEntry {
   region: string;
   regions: string[];
   evoChainLength: number;
+  isFinal: boolean; // no evoluciona más (por forma: Farfetch'd sí, el de Galar no)
   forms: FormBadge[];
   isRegional?: boolean;
 }

@@ -7,27 +7,37 @@ import { writeFileSync } from "node:fs";
 const OUT = new URL("../src/data/held-items.ts", import.meta.url);
 const API = "https://pokeapi.co/api/v2";
 
-// Categorías de la API → grupo en el que se muestran en el Team Planner
-const CATEGORIES = {
-  "held-items": "held",
-  choice: "held",
-  "bad-held-items": "held",
-  training: "held",
-  "effort-training": "held",
-  "type-enhancement": "type",
-  plates: "type",
-  memories: "type",
-  jewels: "type",
-  "species-specific": "species",
-  medicine: "berry",
-  "in-a-pinch": "berry",
-  "picky-healing": "berry",
-  "type-protection": "berry",
-  "effort-drop": "berry",
-  other: "berry",
-  "mega-stones": "mega",
-  "z-crystals": "z",
-};
+// Categorías de la API con objetos que se pueden equipar
+const CATEGORIES = [
+  "choice",
+  "held-items",
+  "bad-held-items",
+  "training",
+  "effort-training",
+  "type-enhancement",
+  "plates",
+  "memories",
+  "jewels",
+  "species-specific",
+  "medicine",
+  "picky-healing",
+  "in-a-pinch",
+  "type-protection",
+  "effort-drop",
+  "other",
+  "mega-stones",
+  "z-crystals",
+];
+
+// Están en esas categorías pero no se equipan
+const EXCLUDE = new Set([
+  "red-nectar", // los Nectars se usan en Oricorio
+  "yellow-nectar",
+  "pink-nectar",
+  "purple-nectar",
+  "blank-plate", // de Legends: Arceus, sin objetos equipados
+  "legend-plate",
+]);
 
 const GEN_NUM = {
   "generation-i": 1,
@@ -56,16 +66,18 @@ async function get(path) {
 }
 
 // 1) Los nombres de los objetos de cada categoría
-const names = {}; // objeto → grupo
-for (const [cat, group] of Object.entries(CATEGORIES)) {
+const categoryOf = {}; // objeto → categoría
+for (const cat of CATEGORIES) {
   const data = await get(`item-category/${cat}`);
-  for (const i of data.items) names[i.name] = group;
+  for (const i of data.items) {
+    if (!EXCLUDE.has(i.name)) categoryOf[i.name] = cat;
+  }
 }
-const list = Object.keys(names);
+const list = Object.keys(categoryOf);
 console.log(`${list.length} objetos`);
 
 // 2) Desde qué generación existe cada uno
-const result = {}; // objeto → [grupo, generación]
+const result = {}; // objeto → [categoría, generación]
 const skipped = [];
 for (let i = 0; i < list.length; i += 20) {
   await Promise.all(
@@ -76,7 +88,7 @@ for (let i = 0; i < list.length; i += 20) {
         .filter(Boolean);
       // Sin datos de juego: todavía no se puede saber dónde existe
       if (!gens.length) return skipped.push(name);
-      result[name] = [names[name], Math.min(...gens)];
+      result[name] = [categoryOf[name], Math.min(...gens)];
     }),
   );
   process.stdout.write(`\r${Math.min(i + 20, list.length)} / ${list.length}`);
@@ -90,7 +102,7 @@ const lines = Object.keys(result)
 writeFileSync(
   OUT,
   `// Generado por scripts/fetch-items.mjs. No editar a mano: volver a correr el script.
-// Objeto → [grupo, generación en la que aparece]
+// Objeto → [categoría de la API, generación en la que aparece]
 export const HELD_ITEMS: Record<string, [string, number]> = {
 ${lines.join("\n")}
 };
@@ -99,7 +111,4 @@ ${lines.join("\n")}
 
 console.log(`Listo: src/data/held-items.ts (${lines.length} objetos)`);
 if (skipped.length)
-  console.log(
-    `Sin datos de juego, quedan afuera (${skipped.length}):`,
-    skipped.join(", "),
-  );
+  console.log(`Sin datos de juego, quedan afuera (${skipped.length}):`, skipped.join(", "));

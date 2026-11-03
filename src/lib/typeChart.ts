@@ -1,6 +1,9 @@
 // Tabla de tipos actual (Gen VI en adelante).
 // Atacante → { 2: le pega doble, 0.5: le pega la mitad, 0: no le hace nada }
-const CHART_LISTS: Record<string, { 2?: string[]; 0.5?: string[]; 0?: string[] }> = {
+const CHART_LISTS: Record<
+  string,
+  { 2?: string[]; 0.5?: string[]; 0?: string[] }
+> = {
   normal: { 0.5: ["rock", "steel"], 0: ["ghost"] },
   fire: {
     2: ["grass", "ice", "bug", "steel"],
@@ -39,7 +42,11 @@ const CHART_LISTS: Record<string, { 2?: string[]; 0.5?: string[]; 0?: string[] }
     2: ["grass", "fighting", "bug"],
     0.5: ["electric", "rock", "steel"],
   },
-  psychic: { 2: ["fighting", "poison"], 0.5: ["psychic", "steel"], 0: ["dark"] },
+  psychic: {
+    2: ["fighting", "poison"],
+    0.5: ["psychic", "steel"],
+    0: ["dark"],
+  },
   bug: {
     2: ["grass", "psychic", "dark"],
     0.5: ["fire", "fighting", "poison", "flying", "ghost", "steel", "fairy"],
@@ -55,7 +62,10 @@ const CHART_LISTS: Record<string, { 2?: string[]; 0.5?: string[]; 0?: string[] }
     2: ["ice", "rock", "fairy"],
     0.5: ["fire", "water", "electric", "steel"],
   },
-  fairy: { 2: ["fighting", "dragon", "dark"], 0.5: ["fire", "poison", "steel"] },
+  fairy: {
+    2: ["fighting", "dragon", "dark"],
+    0.5: ["fire", "poison", "steel"],
+  },
 };
 
 // Las listas pasadas a una tabla: CHART["fire"]["grass"] = 2
@@ -100,4 +110,52 @@ export function defenseMultiplier(
   gen: number,
 ): number {
   return defTypes.reduce((m, def) => m * effectiveness(atk, def, gen), 1);
+}
+
+// ── Habilidades que cambian el daño recibido ──────────────
+
+// Anulan un tipo por completo
+const ABILITY_IMMUNE: Record<string, string[]> = {
+  levitate: ["ground"],
+  "earth-eater": ["ground"],
+  "flash-fire": ["fire"],
+  "well-baked-body": ["fire"],
+  "volt-absorb": ["electric"],
+  "motor-drive": ["electric"],
+  "lightning-rod": ["electric"],
+  "water-absorb": ["water"],
+  "storm-drain": ["water"],
+  "dry-skin": ["water"],
+  "sap-sipper": ["grass"],
+};
+
+// Antes de Gen V solo atraían el ataque, no daban inmunidad
+const IMMUNE_SINCE_GEN5 = new Set(["lightning-rod", "storm-drain"]);
+
+// Reciben la mitad de daño de estos tipos
+const ABILITY_HALVE: Record<string, string[]> = {
+  "thick-fat": ["fire", "ice"],
+  heatproof: ["fire"],
+  "water-bubble": ["fire"],
+  "purifying-salt": ["ghost"],
+};
+
+// Ajusta un multiplicador según la habilidad del defensor
+export function abilityMultiplier(
+  atk: string,
+  mult: number,
+  ability: string | null,
+  gen: number,
+): number {
+  if (!ability) return mult;
+  // Wonder Guard: solo le afecta lo súper efectivo
+  if (ability === "wonder-guard") return mult > 1 ? mult : 0;
+  if (
+    ABILITY_IMMUNE[ability]?.includes(atk) &&
+    !(IMMUNE_SINCE_GEN5.has(ability) && gen < 5)
+  )
+    return 0;
+  if (ABILITY_HALVE[ability]?.includes(atk)) return mult / 2;
+  if (ability === "dry-skin" && atk === "fire") return mult * 1.25;
+  return mult;
 }

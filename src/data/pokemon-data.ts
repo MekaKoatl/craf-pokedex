@@ -9,6 +9,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -18,6 +19,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -27,6 +29,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M","G"],
   },
   {
@@ -36,6 +39,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -45,6 +49,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -54,6 +59,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M","G"],
   },
   {
@@ -63,6 +69,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -72,6 +79,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -81,6 +89,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M","G"],
   },
   {
@@ -90,6 +99,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -99,6 +109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -108,6 +119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos","alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -117,6 +129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -126,6 +139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -135,6 +149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -144,6 +159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -153,6 +169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -162,6 +179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -171,6 +189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -180,6 +199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -189,6 +209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -198,6 +219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -207,6 +229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -216,6 +239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -225,6 +249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["G"],
   },
   {
@@ -234,6 +259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M","R"],
   },
   {
@@ -243,6 +269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -252,6 +279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -261,6 +289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -270,6 +299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -279,6 +309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -288,6 +319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -297,6 +329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -306,6 +339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -315,6 +349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -324,6 +359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -333,6 +369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -342,6 +379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -351,6 +389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -360,6 +399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -369,6 +409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -378,6 +419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -387,6 +429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -396,6 +439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -405,6 +449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","kalos","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -414,6 +459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -423,6 +469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -432,6 +479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -441,6 +489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -450,6 +499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -459,6 +509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -468,6 +519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["G","R"],
   },
   {
@@ -477,6 +529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -486,6 +539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -495,6 +549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -504,6 +559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -513,6 +569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -522,6 +579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -531,6 +589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -540,6 +599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -549,6 +609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -558,6 +619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -567,6 +629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -576,6 +639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -585,6 +649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -594,6 +659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -603,6 +669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -612,6 +679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -621,6 +689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -630,6 +699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -639,6 +709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -648,6 +719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -657,6 +729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -666,6 +739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -675,6 +749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -684,6 +759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -693,6 +769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -702,6 +779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -711,6 +789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -720,6 +799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M","R"],
   },
   {
@@ -729,6 +809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -738,6 +819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -747,6 +829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -756,6 +839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -765,6 +849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -774,6 +859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -783,6 +869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -792,6 +879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -801,6 +889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -810,6 +899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -819,6 +909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -828,6 +919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -837,6 +929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -846,6 +939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M","G"],
   },
   {
@@ -855,6 +949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -864,6 +959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -873,6 +969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -882,6 +979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -891,6 +989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -900,6 +999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -909,6 +1009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -918,6 +1019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -927,6 +1029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -936,6 +1039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -945,6 +1049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -954,6 +1059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -963,6 +1069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -972,6 +1079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -981,6 +1089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -990,6 +1099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -999,6 +1109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1008,6 +1119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1017,6 +1129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1026,6 +1139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1035,6 +1149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1044,6 +1159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1053,6 +1169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1062,6 +1179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1071,6 +1189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1080,6 +1199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1089,6 +1209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1098,6 +1219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -1107,6 +1229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1116,6 +1239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1125,6 +1249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1134,6 +1259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1143,6 +1269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1152,6 +1279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -1161,6 +1289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1170,6 +1299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","hoenn","sinnoh","kalos","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1179,6 +1309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -1188,6 +1319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1197,6 +1329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["G"],
   },
   {
@@ -1206,6 +1339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1215,6 +1349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1224,6 +1359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1233,6 +1369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1242,6 +1379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1251,6 +1389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1260,6 +1399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1269,6 +1409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1278,6 +1419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1287,6 +1429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","sinnoh","kalos","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -1296,6 +1439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["R","Legend"],
   },
   {
@@ -1305,6 +1449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["R","Legend"],
   },
   {
@@ -1314,6 +1459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["R","Legend"],
   },
   {
@@ -1323,6 +1469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1332,6 +1479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1341,6 +1489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto","alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1350,6 +1499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Legend"],
   },
   {
@@ -1359,6 +1509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kanto",
     regions: ["kanto","johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -1368,6 +1519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1377,6 +1529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1386,6 +1539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1395,6 +1549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1404,6 +1559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1413,6 +1569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -1422,6 +1579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1431,6 +1589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1440,6 +1599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1449,6 +1609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1458,6 +1619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1467,6 +1629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1476,6 +1639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1485,6 +1649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1494,6 +1659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1503,6 +1669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1512,6 +1679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1521,6 +1689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","sinnoh","kalos","alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1530,6 +1699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1539,6 +1709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1548,6 +1719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","sinnoh","kalos","alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -1557,6 +1729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -1566,6 +1739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -1575,6 +1749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -1584,6 +1759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1593,6 +1769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1602,6 +1779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1611,6 +1789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1620,6 +1799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1629,6 +1809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1638,6 +1819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","kalos","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1647,6 +1829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","sinnoh","kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1656,6 +1839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","sinnoh","kalos","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1665,6 +1849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1674,6 +1859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1683,6 +1869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1692,6 +1879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1701,6 +1889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1710,6 +1899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1719,6 +1909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1728,6 +1919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1737,6 +1929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1746,6 +1939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -1755,6 +1949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1764,6 +1959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1773,6 +1969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1782,6 +1979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1791,6 +1989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -1800,6 +1999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1809,6 +2009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1818,6 +2019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1827,6 +2029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","sinnoh","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1836,6 +2039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1845,6 +2049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1854,6 +2059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1863,6 +2069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1872,6 +2079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1881,6 +2089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1890,6 +2099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1899,6 +2109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -1908,6 +2119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1917,6 +2129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1926,6 +2139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","sinnoh","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -1935,6 +2149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -1944,6 +2159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1953,6 +2169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1962,6 +2179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1971,6 +2189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -1980,6 +2199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1989,6 +2209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -1998,6 +2219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -2007,6 +2229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2016,6 +2239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2025,6 +2249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola","galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2034,6 +2259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2043,6 +2269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2052,6 +2279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2061,6 +2289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2070,6 +2299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2079,6 +2309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2088,6 +2319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2097,6 +2329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2106,6 +2339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2115,6 +2349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","kalos","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2124,6 +2359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -2133,6 +2369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2142,6 +2379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -2151,6 +2389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -2160,6 +2399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -2169,6 +2409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2178,6 +2419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","sinnoh","alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2187,6 +2429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -2196,6 +2439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -2205,6 +2449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -2214,6 +2459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2223,6 +2469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2232,6 +2479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2241,6 +2489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -2250,6 +2499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -2259,6 +2509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "johto",
     regions: ["johto"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -2268,6 +2519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2277,6 +2529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2286,6 +2539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2295,6 +2549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2304,6 +2559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2313,6 +2569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2322,6 +2579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2331,6 +2589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2340,6 +2599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2349,6 +2609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2358,6 +2619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2367,6 +2629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -2376,6 +2639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -2385,6 +2649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2394,6 +2659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2403,6 +2669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2412,6 +2679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2421,6 +2689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2430,6 +2699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2439,6 +2709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2448,6 +2719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2457,6 +2729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2466,6 +2739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2475,6 +2749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2484,6 +2759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2493,6 +2769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2502,6 +2779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2511,6 +2789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2520,6 +2799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2529,6 +2809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2538,6 +2819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2547,6 +2829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2556,6 +2839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2565,6 +2849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2574,6 +2859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2583,6 +2869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2592,6 +2879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2601,6 +2889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2610,6 +2899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2619,6 +2909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2628,6 +2919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2637,6 +2929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2646,6 +2939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2655,6 +2949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2664,6 +2959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2673,6 +2969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2682,6 +2979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -2691,6 +2989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2700,6 +2999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2709,6 +3009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2718,6 +3019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2727,6 +3029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2736,6 +3039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2745,6 +3049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2754,6 +3059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2763,6 +3069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","kalos","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2772,6 +3079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","kalos","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2781,6 +3089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2790,6 +3099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2799,6 +3109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2808,6 +3119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2817,6 +3129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2826,6 +3139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2835,6 +3149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2844,6 +3159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2853,6 +3169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2862,6 +3179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2871,6 +3189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2880,6 +3199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2889,6 +3209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2898,6 +3219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2907,6 +3229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -2916,6 +3239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2925,6 +3249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2934,6 +3259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2943,6 +3269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2952,6 +3279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2961,6 +3289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2970,6 +3299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2979,6 +3309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -2988,6 +3319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -2997,6 +3329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3006,6 +3339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3015,6 +3349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3024,6 +3359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3033,6 +3369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3042,6 +3379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3051,6 +3389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3060,6 +3399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3069,6 +3409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3078,6 +3419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3087,6 +3429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3096,6 +3439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3105,6 +3449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3114,6 +3459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3123,6 +3469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3132,6 +3479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3141,6 +3489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3150,6 +3499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3159,6 +3509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3168,6 +3519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3177,6 +3529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3186,6 +3539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3195,6 +3549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3204,6 +3559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3213,6 +3569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3222,6 +3579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3231,6 +3589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3240,6 +3599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -3249,6 +3609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3258,6 +3619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3267,6 +3629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3276,6 +3639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3285,6 +3649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3294,6 +3659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3303,6 +3669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3312,6 +3679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3321,6 +3689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3330,6 +3699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3339,6 +3709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3348,6 +3719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3357,6 +3729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3366,6 +3739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3375,6 +3749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3384,6 +3759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn","alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3393,6 +3769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -3402,6 +3779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -3411,6 +3789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -3420,6 +3799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Legend"],
   },
   {
@@ -3429,6 +3809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Legend"],
   },
   {
@@ -3438,6 +3819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -3447,6 +3829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -3456,6 +3839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Legend"],
   },
   {
@@ -3465,6 +3849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -3474,6 +3859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hoenn",
     regions: ["hoenn"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -3483,6 +3869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3492,6 +3879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3501,6 +3889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3510,6 +3899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3519,6 +3909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3528,6 +3919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3537,6 +3929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3546,6 +3939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3555,6 +3949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3564,6 +3959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3573,6 +3969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3582,6 +3979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3591,6 +3989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3600,6 +3999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3609,6 +4009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3618,6 +4019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3627,6 +4029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3636,6 +4039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3645,6 +4049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3654,6 +4059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -3663,6 +4069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3672,6 +4079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3681,6 +4089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3690,6 +4099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3699,6 +4109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3708,6 +4119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3717,6 +4129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3726,6 +4139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3735,6 +4149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3744,6 +4159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3753,6 +4169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3762,6 +4179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3771,6 +4189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3780,6 +4199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3789,6 +4209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3798,6 +4219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3807,6 +4229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3816,6 +4239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3825,6 +4249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3834,6 +4259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3843,6 +4269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3852,6 +4279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -3861,6 +4289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3870,6 +4299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3879,6 +4309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3888,6 +4319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3897,6 +4329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -3906,6 +4339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3915,6 +4349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3924,6 +4359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3933,6 +4369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3942,6 +4379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -3951,6 +4389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -3960,6 +4399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -3969,6 +4409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3978,6 +4419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -3987,6 +4429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -3996,6 +4439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4005,6 +4449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4014,6 +4459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -4023,6 +4469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -4032,6 +4479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4041,6 +4489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4050,6 +4499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4059,6 +4509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4068,6 +4519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4077,6 +4529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4086,6 +4539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","kalos","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4095,6 +4549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4104,6 +4559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4113,6 +4569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4122,6 +4579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -4131,6 +4589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4140,6 +4599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4149,6 +4609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4158,6 +4619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4167,6 +4629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4176,6 +4639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4185,6 +4649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4194,6 +4659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4203,6 +4669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4212,6 +4679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4221,6 +4689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4230,6 +4699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4239,6 +4709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4248,6 +4719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4257,6 +4729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4266,6 +4739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4275,6 +4749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["kalos","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4284,6 +4759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4293,6 +4769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4302,6 +4779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4311,6 +4789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4320,6 +4799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4329,6 +4809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4338,6 +4819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4347,6 +4829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4356,6 +4839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4365,6 +4849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Legend"],
   },
   {
@@ -4374,6 +4859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4383,6 +4869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4392,6 +4879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -4401,6 +4889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Mythic"],
   },
   {
@@ -4410,6 +4899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -4419,6 +4909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Mythic"],
   },
   {
@@ -4428,6 +4919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -4437,6 +4929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "sinnoh",
     regions: ["sinnoh"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -4446,6 +4939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -4455,6 +4949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4464,6 +4959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4473,6 +4969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4482,6 +4979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4491,6 +4989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4500,6 +4999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4509,6 +5009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4518,6 +5019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4527,6 +5029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -4536,6 +5039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4545,6 +5049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4554,6 +5059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4563,6 +5069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4572,6 +5079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4581,6 +5089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4590,6 +5099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4599,6 +5109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4608,6 +5119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4617,6 +5129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4626,6 +5139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4635,6 +5149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4644,6 +5159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4653,6 +5169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4662,6 +5179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4671,6 +5189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4680,6 +5199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4689,6 +5209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4698,6 +5219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4707,6 +5229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4716,6 +5239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4725,6 +5249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4734,6 +5259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4743,6 +5269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4752,6 +5279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4761,6 +5289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4770,6 +5299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4779,6 +5309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4788,6 +5319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4797,6 +5329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4806,6 +5339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4815,6 +5349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4824,6 +5359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4833,6 +5369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4842,6 +5379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4851,6 +5389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4860,6 +5399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4869,6 +5409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4878,6 +5419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4887,6 +5429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4896,6 +5439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4905,6 +5449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -4914,6 +5459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4923,6 +5469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4932,6 +5479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4941,6 +5489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -4950,6 +5499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4959,6 +5509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4968,6 +5519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -4977,6 +5529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -4986,6 +5539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -4995,6 +5549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -5004,6 +5559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5013,6 +5569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5022,6 +5579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5031,6 +5589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5040,6 +5599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -5049,6 +5609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5058,6 +5619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -5067,6 +5629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5076,6 +5639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5085,6 +5649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5094,6 +5659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5103,6 +5669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5112,6 +5679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5121,6 +5689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -5130,6 +5699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -5139,6 +5709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -5148,6 +5719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5157,6 +5729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5166,6 +5739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5175,6 +5749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5184,6 +5759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5193,6 +5769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5202,6 +5779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5211,6 +5789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5220,6 +5799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5229,6 +5809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5238,6 +5819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5247,6 +5829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5256,6 +5839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5265,6 +5849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5274,6 +5859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5283,6 +5869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5292,6 +5879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5301,6 +5889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5310,6 +5899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5319,6 +5909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5328,6 +5919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5337,6 +5929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5346,6 +5939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5355,6 +5949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5364,6 +5959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5373,6 +5969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5382,6 +5979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5391,6 +5989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5400,6 +5999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5409,6 +6009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5418,6 +6019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5427,6 +6029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5436,6 +6039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -5445,6 +6049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5454,6 +6059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5463,6 +6069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5472,6 +6079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5481,6 +6089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -5490,6 +6099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5499,6 +6109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5508,6 +6119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","kalos","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5517,6 +6129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5526,6 +6139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5535,6 +6149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5544,6 +6159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5553,6 +6169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5562,6 +6179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -5571,6 +6189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5580,6 +6199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5589,6 +6209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5598,6 +6219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5607,6 +6229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -5616,6 +6239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5625,6 +6249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5634,6 +6259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5643,6 +6269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5652,6 +6279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -5661,6 +6289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5670,6 +6299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5679,6 +6309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5688,6 +6319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5697,6 +6329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5706,6 +6339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5715,6 +6349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5724,6 +6359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5733,6 +6369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5742,6 +6379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5751,6 +6389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5760,6 +6399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5769,6 +6409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5778,6 +6419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5787,6 +6429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5796,6 +6439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5805,6 +6449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5814,6 +6459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -5823,6 +6469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -5832,6 +6479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -5841,6 +6489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "unova",
     regions: ["unova"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -5850,6 +6499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5859,6 +6509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5868,6 +6519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -5877,6 +6529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5886,6 +6539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5895,6 +6549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -5904,6 +6559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5913,6 +6569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5922,6 +6579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -5931,6 +6589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5940,6 +6599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5949,6 +6609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5958,6 +6619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","alola","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5967,6 +6629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","alola","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -5976,6 +6639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5985,6 +6649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -5994,6 +6659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6003,6 +6669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6012,6 +6679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6021,6 +6689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6030,6 +6699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["M"],
   },
   {
@@ -6039,6 +6709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6048,6 +6719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6057,6 +6729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6066,6 +6739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6075,6 +6749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6084,6 +6759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6093,6 +6769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6102,6 +6779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6111,6 +6789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6120,6 +6799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6129,6 +6809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6138,6 +6819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6147,6 +6829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6156,6 +6839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6165,6 +6849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6174,6 +6859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6183,6 +6869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6192,6 +6879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6201,6 +6889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6210,6 +6899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6219,6 +6909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6228,6 +6919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6237,6 +6929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6246,6 +6939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6255,6 +6949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6264,6 +6959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6273,6 +6969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6282,6 +6979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6291,6 +6989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6300,6 +6999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6309,6 +7009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6318,6 +7019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6327,6 +7029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6336,6 +7039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6345,6 +7049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["R"],
   },
   {
@@ -6354,6 +7059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -6363,6 +7069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6372,6 +7079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6381,6 +7089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6390,6 +7099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6399,6 +7109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6408,6 +7119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6417,6 +7129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -6426,6 +7139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6435,6 +7149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6444,6 +7159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -6453,6 +7169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -6462,6 +7179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Legend"],
   },
   {
@@ -6471,6 +7189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Mythic"],
   },
   {
@@ -6480,6 +7199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -6489,6 +7209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "kalos",
     regions: ["kalos"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -6498,6 +7219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6507,6 +7229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6516,6 +7239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["R"],
   },
   {
@@ -6525,6 +7249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6534,6 +7259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6543,6 +7269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6552,6 +7279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6561,6 +7289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6570,6 +7299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6579,6 +7309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6588,6 +7319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6597,6 +7329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6606,6 +7339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6615,6 +7349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6624,6 +7359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6633,6 +7369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6642,6 +7379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6651,6 +7389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6660,6 +7399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6669,6 +7409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6678,6 +7419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6687,6 +7429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6696,6 +7439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6705,6 +7449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6714,6 +7459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6723,6 +7469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6732,6 +7479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6741,6 +7489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6750,6 +7499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6759,6 +7509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6768,6 +7519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6777,6 +7529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6786,6 +7539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6795,6 +7549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6804,6 +7559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6813,6 +7569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6822,6 +7579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6831,6 +7589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6840,6 +7599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6849,6 +7609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6858,6 +7619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6867,6 +7629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6876,6 +7639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6885,6 +7649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6894,6 +7659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6903,6 +7669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6912,6 +7679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -6921,6 +7689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -6930,6 +7699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6939,6 +7709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6948,6 +7719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Legend"],
   },
   {
@@ -6957,6 +7729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -6966,6 +7739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6975,6 +7749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6984,6 +7759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -6993,6 +7769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7002,6 +7779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7011,6 +7789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7020,6 +7799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -7029,6 +7809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7038,6 +7819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7047,6 +7829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7056,6 +7839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola","galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7065,6 +7849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -7074,6 +7859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -7083,6 +7869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -7092,6 +7879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -7101,6 +7889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Legend"],
   },
   {
@@ -7110,6 +7899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: ["Legend"],
   },
   {
@@ -7119,6 +7909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -7128,6 +7919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -7137,6 +7929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7146,6 +7939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7155,6 +7949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7164,6 +7959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7173,6 +7969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7182,6 +7979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7191,6 +7989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7200,6 +7999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -7209,6 +8009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Mythic"],
   },
   {
@@ -7218,6 +8019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -7227,6 +8029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7236,6 +8039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7245,6 +8049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7254,6 +8059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7263,6 +8069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M","Mythic"],
   },
   {
@@ -7272,6 +8079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Mythic"],
   },
   {
@@ -7281,6 +8089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G","Mythic"],
   },
   {
@@ -7290,6 +8099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7299,6 +8109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7308,6 +8119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7317,6 +8129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7326,6 +8139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7335,6 +8149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7344,6 +8159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7353,6 +8169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7362,6 +8179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7371,6 +8189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7380,6 +8199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7389,6 +8209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7398,6 +8219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7407,6 +8229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7416,6 +8239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7425,6 +8249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7434,6 +8259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7443,6 +8269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7452,6 +8279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7461,6 +8289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7470,6 +8299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7479,6 +8309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7488,6 +8319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7497,6 +8329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7506,6 +8339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7515,6 +8349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7524,6 +8359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7533,6 +8369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7542,6 +8379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7551,6 +8389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7560,6 +8399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7569,6 +8409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7578,6 +8419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7587,6 +8429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7596,6 +8439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7605,6 +8449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7614,6 +8459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7623,6 +8469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7632,6 +8479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Baby"],
   },
   {
@@ -7641,6 +8489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7650,6 +8499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7659,6 +8509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7668,6 +8519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7677,6 +8529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7686,6 +8539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7695,6 +8549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7704,6 +8559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7713,6 +8569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7722,6 +8579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7731,6 +8589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7740,6 +8599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7749,6 +8609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7758,6 +8619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7767,6 +8629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7776,6 +8639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7785,6 +8649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7794,6 +8659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7803,6 +8669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7812,6 +8679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7821,6 +8689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7830,6 +8699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -7839,6 +8709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7848,6 +8719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7857,6 +8729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7866,6 +8739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7875,6 +8749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7884,6 +8759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7893,6 +8769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7902,6 +8779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7911,6 +8789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G"],
   },
   {
@@ -7920,6 +8799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7929,6 +8809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7938,6 +8819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7947,6 +8829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7956,6 +8839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["G"],
   },
   {
@@ -7965,6 +8849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7974,6 +8859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -7983,6 +8869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar","paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -7992,6 +8879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8001,6 +8889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8010,6 +8899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8019,6 +8909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: ["Legend"],
   },
   {
@@ -8028,6 +8919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["G","Legend"],
   },
   {
@@ -8037,6 +8929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -8046,6 +8939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8055,6 +8949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8064,6 +8959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8073,6 +8969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8082,6 +8979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8091,6 +8989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8100,6 +8999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8109,6 +9009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8118,6 +9019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8127,6 +9029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8136,6 +9039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8145,6 +9049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -8154,6 +9059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8163,6 +9069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8172,6 +9079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8181,6 +9089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8190,6 +9099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8199,6 +9109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8208,6 +9119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8217,6 +9129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8226,6 +9139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8235,6 +9149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8244,6 +9159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8253,6 +9169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8262,6 +9179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8271,6 +9189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8280,6 +9199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8289,6 +9209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8298,6 +9219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8307,6 +9229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8316,6 +9239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8325,6 +9249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8334,6 +9259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8343,6 +9269,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8352,6 +9279,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8361,6 +9289,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8370,6 +9299,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8379,6 +9309,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8388,6 +9319,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8397,6 +9329,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8406,6 +9339,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8415,6 +9349,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8424,6 +9359,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8433,6 +9369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8442,6 +9379,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8451,6 +9389,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8460,6 +9399,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8469,6 +9409,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8478,6 +9419,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8487,6 +9429,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8496,6 +9439,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8505,6 +9449,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8514,6 +9459,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8523,6 +9469,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8532,6 +9479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8541,6 +9489,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8550,6 +9499,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8559,6 +9509,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8568,6 +9519,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -8577,6 +9529,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8586,6 +9539,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8595,6 +9549,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8604,6 +9559,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8613,6 +9569,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8622,6 +9579,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8631,6 +9589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8640,6 +9599,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8649,6 +9609,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8658,6 +9619,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8667,6 +9629,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8676,6 +9639,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8685,6 +9649,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8694,6 +9659,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8703,6 +9669,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8712,6 +9679,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8721,6 +9689,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8730,6 +9699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -8739,6 +9709,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8748,6 +9719,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8757,6 +9729,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8766,6 +9739,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8775,6 +9749,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8784,6 +9759,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8793,6 +9769,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8802,6 +9779,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -8811,6 +9789,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8820,6 +9799,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8829,6 +9809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8838,6 +9819,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8847,6 +9829,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8856,6 +9839,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8865,6 +9849,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8874,6 +9859,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8883,6 +9869,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8892,6 +9879,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8901,6 +9889,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8910,6 +9899,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8919,6 +9909,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8928,6 +9919,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8937,6 +9929,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8946,6 +9939,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8955,6 +9949,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -8964,6 +9959,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8973,6 +9969,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -8982,6 +9979,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: ["M"],
   },
   {
@@ -8991,6 +9989,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -9000,6 +9999,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9009,6 +10009,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9018,6 +10019,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9027,6 +10029,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9036,6 +10039,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9045,6 +10049,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9054,6 +10059,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9063,6 +10069,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9072,6 +10079,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9081,6 +10089,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9090,6 +10099,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9099,6 +10109,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
   },
   {
@@ -9108,6 +10119,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
   },
   {
@@ -9117,6 +10129,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9126,6 +10139,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9135,6 +10149,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9144,6 +10159,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9153,6 +10169,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9162,6 +10179,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9171,6 +10189,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9180,6 +10199,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9189,6 +10209,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9198,6 +10219,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9207,6 +10229,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
   },
   {
@@ -9216,6 +10239,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Legend"],
   },
   {
@@ -9225,6 +10249,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: ["Mythic"],
   },
   {
@@ -9234,6 +10259,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9244,6 +10270,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9254,6 +10281,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9264,6 +10292,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9274,6 +10303,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9284,6 +10314,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9294,6 +10325,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9304,6 +10336,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9314,6 +10347,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9324,6 +10358,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9334,6 +10369,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9344,6 +10380,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9354,6 +10391,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9364,6 +10402,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9374,6 +10413,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9384,6 +10424,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9394,6 +10435,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9404,6 +10446,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "alola",
     regions: ["alola"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9414,6 +10457,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9424,6 +10468,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9434,6 +10479,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9444,6 +10490,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9454,6 +10501,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9464,6 +10512,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9474,6 +10523,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9484,6 +10534,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9494,6 +10545,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9504,6 +10556,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9514,6 +10567,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9524,6 +10578,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9534,6 +10589,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9544,6 +10600,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9554,6 +10611,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9564,6 +10622,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9574,6 +10633,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9584,6 +10644,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9594,6 +10655,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "galar",
     regions: ["galar"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9604,6 +10666,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9614,6 +10677,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9624,6 +10688,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9634,6 +10699,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9644,6 +10710,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9654,6 +10721,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9664,6 +10732,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9674,6 +10743,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9684,6 +10754,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9694,6 +10765,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9704,6 +10776,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9714,6 +10787,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9724,6 +10798,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 3,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },
@@ -9734,6 +10809,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9744,6 +10820,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 2,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9754,6 +10831,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "hisui",
     regions: ["hisui"],
     evoChainLength: 3,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9764,6 +10842,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9774,6 +10853,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9784,6 +10864,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 1,
+    isFinal: true,
     forms: [],
     isRegional: true,
   },
@@ -9794,6 +10875,7 @@ export const POKEMON_DATA: PokemonEntry[] = [
     region: "paldea",
     regions: ["paldea"],
     evoChainLength: 2,
+    isFinal: false,
     forms: [],
     isRegional: true,
   },

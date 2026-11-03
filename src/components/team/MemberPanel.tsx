@@ -8,7 +8,11 @@ import {
   natureLabel,
   itemLabel,
   itemsForGame,
+  megaStoneLabel,
+  megaStonesFor,
   ITEM_GROUPS,
+  baseStats,
+  megaNameFor,
   type MoveInGame,
 } from "../../lib/teamRules";
 import { gameFeatures, type Game } from "../../lib/games";
@@ -16,6 +20,10 @@ import { prettyName } from "../../lib/text";
 import { pokemonSpriteUrl } from "../../lib/sprites";
 import { SpriteImg } from "../SpriteImg";
 import { TypeBadge } from "../badges/TypeBadge";
+import { SearchSelect } from "../SearchSelect";
+import { POKEMON_DATA } from "../../data/pokemon-data";
+import { StatsEditor } from "./StatsEditor";
+import { StatBars } from "../details/StatBar";
 import type { TeamMember } from "../../context/TeamsContext";
 
 const MOVE_SLOTS = [0, 1, 2, 3];
@@ -48,6 +56,32 @@ export function MemberPanel({
   const abilities = pokemon ? abilitiesForGame(pokemon, game.gen) : [];
   const learnable = pokemon ? movesForGame(pokemon, game.group) : [];
   const items = features.items ? itemsForGame(game) : {};
+  // Si tiene su Megapiedra, los stats salen de la Mega
+  const megaName = pokemon
+    ? megaNameFor(pokemon.species.name, member.item)
+    : null;
+  const { data: mega } = useQuery({
+    queryKey: ["pokemon-full", megaName ?? ""],
+    queryFn: () => getPokemonFull(megaName as string),
+    enabled: !!megaName,
+    retry: false,
+    staleTime: Infinity,
+  });
+  const statSource = (megaName && mega) || pokemon;
+
+  // Megapiedras propias: solo especies con Mega, en juegos con Megas
+  const entry = POKEMON_DATA.find((e) => e.id === member.pokemonId);
+  const stones = entry?.forms.includes("M")
+    ? megaStonesFor(entry.name, game)
+    : [];
+  // Cuál está equipada ahora (null = ninguna, o un objeto que no es Megapiedra)
+  const activeStone = stones.find((s) => s === member.item) ?? null;
+
+  function setMega(stone: string | null) {
+    if (stone) onChange({ item: stone });
+    // "No Mega" solo saca el objeto si era su Megapiedra
+    else if (activeStone) onChange({ item: null });
+  }
 
   // Los datos de cada movimiento elegido, uno por consulta
   const chosen = member.moves.filter(Boolean);
@@ -82,7 +116,7 @@ export function MemberPanel({
         ✕
       </button>
 
-      <div className="flex items-center gap-3 mb-5">
+      <div className="flex flex-wrap items-center gap-3 mb-5 pr-8">
         <SpriteImg
           src={pokemonSpriteUrl(member.pokemonId)}
           alt=""
@@ -90,6 +124,25 @@ export function MemberPanel({
           style={{ imageRendering: "pixelated" }}
         />
         <h3 className="text-xl font-bold text-gray-900">{name}</h3>
+
+        {/* Toggle de Mega: mismo estilo que Defense / Offense */}
+        {stones.length > 0 && (
+          <div className="flex items-center gap-2 ml-auto">
+            {[null, ...stones].map((s) => (
+              <button
+                key={s ?? "off"}
+                onClick={() => setMega(s)}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold border-2 transition cursor-pointer ${
+                  activeStone === s
+                    ? "bg-red-600 border-red-600 text-white"
+                    : "border-gray-300 text-gray-500 hover:border-red-400"
+                }`}
+              >
+                {s ? megaStoneLabel(s) : "No Mega"}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Habilidad y naturaleza, solo si existen en el juego */}
@@ -132,25 +185,21 @@ export function MemberPanel({
               </select>
             </div>
           )}
-                    {features.items && (
+          {features.items && (
             <div>
               <label className={labelClass}>Item</label>
-              <select
-                value={member.item ?? ""}
-                onChange={(e) => onChange({ item: e.target.value || null })}
-                className={selectClass}
-              >
-                <option value="">— None —</option>
-                {ITEM_GROUPS.filter((g) => items[g.key]).map((g) => (
-                  <optgroup key={g.key} label={g.label}>
-                    {items[g.key].map((n) => (
-                      <option key={n} value={n}>
-                        {itemLabel(n)}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+              <SearchSelect
+                value={member.item}
+                groups={ITEM_GROUPS.filter((g) => items[g.key]).map((g) => ({
+                  label: g.label,
+                  options: items[g.key].map((n) => ({
+                    value: n,
+                    label: itemLabel(n),
+                  })),
+                }))}
+                onChange={(v) => onChange({ item: v })}
+                placeholder="Search an item..."
+              />
             </div>
           )}
         </div>
@@ -203,6 +252,23 @@ export function MemberPanel({
             </div>
           );
         })}
+      </div>
+      {/* Stats: EVs/IVs desde Gen III; antes, solo los base */}
+      <div className="mt-6">
+        {game.gen >= 3 ? (
+          <StatsEditor
+            base={statSource ? baseStats(statSource) : null}
+            member={member}
+            onChange={onChange}
+          />
+        ) : (
+          <>
+            <span className="block text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
+              Base stats
+            </span>
+            {statSource && <StatBars stats={statSource.stats} />}
+          </>
+        )}
       </div>
     </div>
   );
