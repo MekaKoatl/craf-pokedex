@@ -4,10 +4,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useTeams } from "../hooks/useTeams";
 import { TEAM_SIZE } from "../context/TeamsContext";
 import { POKEMON_DATA } from "../data/pokemon-data";
-import { GAME_BY_ID, genLabel } from "../lib/games";
+import {
+  GAME_BY_ID,
+  genLabel,
+  spriteStyle,
+  teamSpriteUrl,
+  usesArtwork,
+} from "../lib/games";
 import { getPokemonFull } from "../lib/api";
 import { getRegionalDisplayName } from "../lib/regional";
-import { cdnSprite, pokemonSpriteUrl } from "../lib/sprites";
+import { cdnSprite } from "../lib/sprites";
 import { megaLabel } from "../lib/teamRules";
 import { transferMembers } from "../lib/teamTransfer";
 import { useTeamForms } from "../hooks/useTeamForms";
@@ -80,6 +86,9 @@ export function TeamEditor() {
   }
 
   const full = team.members.length >= TEAM_SIZE;
+
+  // Juegos de Switch: arte oficial en lugar de sprites pixel
+  const art = usesArtwork(game);
 
   const startEdit = () => {
     setDraft(team.name);
@@ -380,13 +389,19 @@ export function TeamEditor() {
               <SpriteImg
                 src={
                   mega
-                    ? cdnSprite(mega.sprites.front_default)
-                    : pokemonSpriteUrl(m.pokemonId)
+                    ? cdnSprite(
+                        art
+                          ? mega.sprites.other?.["official-artwork"]
+                              ?.front_default
+                          : mega.sprites.front_default,
+                      )
+                    : teamSpriteUrl(m.pokemonId, game)
                 }
                 alt=""
-                className="w-24 h-24 object-contain pointer-events-none"
-                style={{ imageRendering: "pixelated" }}
+                className={`${art ? "w-20 h-20" : "w-24 h-24"} object-contain pointer-events-none`}
+                style={spriteStyle(!art)}
               />
+
               <Link
                 to={`/details/${m.pokemonId}`}
                 draggable={false}

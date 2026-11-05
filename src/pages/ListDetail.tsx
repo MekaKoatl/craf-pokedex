@@ -2,18 +2,15 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import { useLists } from "../hooks/useLists";
-import { POKEMON_DATA } from "../data/pokemon-data";
+import { useFilters } from "../hooks/useFilters";
 import { fetchPokemonById } from "../lib/api";
-import { getRegionalDisplayName } from "../lib/regional";
-import { iconOrSprite } from "../lib/sprites";
-import { compareDex, dexNumber } from "../lib/dexOrder";
+import { compareDex } from "../lib/dexOrder";
+import { matchesFilters } from "../lib/matchFilters";
 import { DexCard } from "../components/DexCard";
-import { SpriteImg } from "../components/SpriteImg";
+import { FilterBar } from "../components/filters/FilterBar";
+import { AddPokemonSearch } from "../components/AddPokemonSearch";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import type { Pokemon } from "../types/pokemon";
-
-// Cuántos resultados muestra el buscador
-const MAX_RESULTS = 8;
 
 export function ListDetail() {
   const { listId } = useParams();
@@ -27,10 +24,10 @@ export function ListDetail() {
     listNameError,
   } = useLists();
   const list = lists.find((l) => l.id === listId);
+  const { filters, toggle, clearGroup, clearAll } = useFilters();
 
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
-  const [search, setSearch] = useState("");
   const [renameError, setRenameError] = useState<string | null>(null);
 
   // Los hooks van antes de cualquier return, aunque la lista no exista
@@ -44,18 +41,7 @@ export function ListDetail() {
   });
   const pokes = results.map((r) => r.data).filter((p): p is Pokemon => !!p);
   const loading = results.some((r) => r.isLoading);
-
-  // Buscador: por nombre interno o por nombre visible ("alolan")
-  const q = search.trim().toLowerCase();
-  const matches = q
-    ? POKEMON_DATA.filter(
-        (e) =>
-          e.name.includes(q) ||
-          getRegionalDisplayName(e.name).toLowerCase().includes(q),
-      )
-        .sort((a, b) => compareDex(a.id, b.id))
-        .slice(0, MAX_RESULTS)
-    : [];
+  const filtered = pokes.filter((p) => matchesFilters(p.id, filters));
 
   if (!list) {
     return (
@@ -154,60 +140,20 @@ export function ListDetail() {
           </>
         )}
       </div>
-
       {editing && renameError && (
         <p className="text-xs text-red-500 -mt-4 mb-6">{renameError}</p>
       )}
-      <div className="relative mb-6">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => e.key === "Escape" && setSearch("")}
-          placeholder="Add Pokémon to this list..."
-          className="w-full px-4 py-2 border border-gray-300 rounded-full text-gray-700 text-sm focus:outline-none focus:border-red-400"
+
+      {/* Agregar: en su propia tarjeta, igual que en Favorites */}
+      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
+        <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
+          Add Pokémon
+        </p>
+        <AddPokemonSearch
+          isAdded={(id) => isInList(list.id, id)}
+          onToggle={(id) => toggleInList(list.id, id)}
+          placeholder="Search a Pokémon to add to this list..."
         />
-        {q && (
-          <ul className="absolute left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-20 overflow-hidden">
-            {matches.length === 0 ? (
-              <li className="px-4 py-3 text-sm text-gray-400">
-                No Pokémon found.
-              </li>
-            ) : (
-              matches.map((e) => {
-                const added = isInList(list.id, e.id);
-                return (
-                  <li key={e.id}>
-                    <button
-                      onClick={() => toggleInList(list.id, e.id)}
-                      className="w-full flex items-center gap-3 px-3 py-1 text-left hover:bg-gray-50 transition cursor-pointer"
-                    >
-                      <SpriteImg
-                        src={iconOrSprite(e.id)}
-                        alt=""
-                        className="w-10 h-10 object-contain"
-                        style={{ imageRendering: "pixelated" }}
-                      />
-                      <span className="w-12 text-xs text-gray-400">
-                        #{dexNumber(e.id)}
-                      </span>
-                      <span className="flex-1 text-sm font-semibold text-gray-800">
-                        {getRegionalDisplayName(e.name)}
-                      </span>
-                      <span
-                        className={`text-xs font-semibold ${
-                          added ? "text-green-600" : "text-gray-400"
-                        }`}
-                      >
-                        {added ? "✓ Added" : "+ Add"}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })
-            )}
-          </ul>
-        )}
       </div>
 
       {/* Los Pokémon de la lista, en orden de Pokédex */}
@@ -215,22 +161,37 @@ export function ListDetail() {
         <p className="text-gray-400 text-center py-8">
           This list is empty. Use the search bar to add Pokémon.
         </p>
-      ) : loading && pokes.length === 0 ? (
-        <LoadingSpinner text="Loading Pokémon..." />
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {pokes.map((p) => (
-            <div key={p.id} className="flex flex-col gap-1">
-              <DexCard pokemon={p} />
-              <button
-                onClick={() => toggleInList(list.id, p.id)}
-                className="text-xs font-semibold text-gray-400 hover:text-red-500 transition cursor-pointer"
-              >
-                Remove
-              </button>
+        <>
+          <FilterBar
+            filters={filters}
+            toggle={toggle}
+            clearGroup={clearGroup}
+            clearAll={clearAll}
+          />
+
+          {loading && pokes.length === 0 ? (
+            <LoadingSpinner text="Loading Pokémon..." />
+          ) : filtered.length === 0 ? (
+            <p className="text-gray-400 text-center py-8">
+              No Pokémon match these filters.
+            </p>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {filtered.map((p) => (
+                <div key={p.id} className="flex flex-col gap-1">
+                  <DexCard pokemon={p} />
+                  <button
+                    onClick={() => toggleInList(list.id, p.id)}
+                    className="text-xs font-semibold text-gray-400 hover:text-red-500 transition cursor-pointer"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </section>
   );

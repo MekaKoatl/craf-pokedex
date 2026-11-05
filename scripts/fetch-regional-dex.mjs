@@ -56,7 +56,10 @@ async function dexSpecies(name) {
     const dex = await get(`pokedex/${name}`);
     dexCache.set(
       name,
-      dex.pokemon_entries.map((e) => idOf(e.pokemon_species.url)),
+      // En el orden de la Pokédex (entry_number), no el nacional
+      [...dex.pokemon_entries]
+        .sort((a, b) => a.entry_number - b.entry_number)
+        .map((e) => idOf(e.pokemon_species.url)),
     );
   }
   return dexCache.get(name);
@@ -65,21 +68,25 @@ async function dexSpecies(name) {
 const lines = [];
 for (const g of GROUPS) {
   const vg = await get(`version-group/${g}`);
-  // La Nacional no es regional
+  // La Nacional no es regionalf
   const dexNames = vg.pokedexes
     .map((d) => d.name)
     .filter((n) => n !== "national");
+  // Un Set no repite y guarda el orden en que se agregan:
+  // primero la Pokédex principal, después las de los DLC
   const ids = new Set();
   for (const n of dexNames) for (const id of await dexSpecies(n)) ids.add(id);
-  const sorted = [...ids].sort((a, b) => a - b);
-  console.log(`  ${g}: ${sorted.length} (${dexNames.join(", ") || "sin Pokédex"})`);
+  const sorted = [...ids];
+  console.log(
+    `  ${g}: ${sorted.length} (${dexNames.join(", ") || "sin Pokédex"})`,
+  );
   lines.push(`  "${g}": [${sorted.join(", ")}],`);
 }
 
 writeFileSync(
   OUT,
   `// Generado por scripts/fetch-regional-dex.mjs. No editar a mano: volver a correr el script.
-// Juego (version group) → números de especie de su Pokédex regional
+// Juego (version group) → números de especie, en el orden de su Pokédex regional
 export const REGIONAL_DEX: Record<string, number[]> = {
 ${lines.join("\n")}
 };

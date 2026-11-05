@@ -1,4 +1,5 @@
 import { SpriteImg } from "../SpriteImg";
+import { useRevealOnOpen } from "../../hooks/useRevealOnOpen";
 import { cdnSprite } from "../../lib/sprites";
 import {
   prettyName,
@@ -29,6 +30,7 @@ export function ItemRow({
   open: boolean;
   onToggle: () => void;
 }) {
+  const ref = useRevealOnOpen<HTMLDivElement>(open);
   const sprite = cdnSprite(item.sprites.default);
   const name = prettyName(item.name);
 
@@ -79,7 +81,7 @@ export function ItemRow({
     cells.push({ label: "Held by", value: holders.join(", ") });
 
   return (
-    <div className="item-expanded">
+    <div ref={ref} className="item-expanded">
       <button
         onClick={onToggle}
         title="Close"

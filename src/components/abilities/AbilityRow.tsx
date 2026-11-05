@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SpriteImg } from "../SpriteImg";
+import { useRevealOnOpen } from "../../hooks/useRevealOnOpen";
 import { iconOrSprite } from "../../lib/sprites";
 import { getRegionalDisplayName } from "../../lib/regional";
 import { prettyName } from "../../lib/text";
@@ -63,6 +64,7 @@ export function AbilityRow({
   open: boolean;
   onToggle: () => void;
 }) {
+  const ref = useRevealOnOpen<HTMLDivElement>(open);
   const name = prettyName(ability.name);
   const short = abilityShortEffect(ability);
 
@@ -95,7 +97,7 @@ export function AbilityRow({
   const gen = genLabel(ability.generation.name);
 
   return (
-    <div className="ability-expanded">
+    <div ref={ref} className="ability-expanded">
       <button
         onClick={onToggle}
         title="Close"

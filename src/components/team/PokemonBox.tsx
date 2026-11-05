@@ -2,12 +2,18 @@ import { useState, type RefObject } from "react";
 import { POKEMON_DATA } from "../../data/pokemon-data";
 import { GAME_POKEMON } from "../../data/pokemon-games";
 import { REGIONAL_DEX } from "../../data/regional-dex";
-import { genLabel, type Game } from "../../lib/games";
+import {
+  genLabel,
+  spriteStyle,
+  teamIconUrl,
+  usesArtwork,
+  type Game,
+} from "../../lib/games";
 import { typesForGen } from "../../lib/typeChart";
 import { getRegionalDisplayName } from "../../lib/regional";
-import { iconOrSprite } from "../../lib/sprites";
 import { compareDex, dexNumber } from "../../lib/dexOrder";
 import { FilterPanel } from "../filters/FilterPanel";
+import { ClearButton } from "../ClearButton";
 import type { TeamMember } from "../../context/TeamsContext";
 
 // Región de origen → generación (las de Hisui son de Gen VIII)
@@ -24,8 +30,8 @@ const REGION_GEN: Record<string, number> = {
   paldea: 9,
 };
 
-// 3 filas de 56px + 2 espacios de 4px
-const COLLAPSED_HEIGHT = 176;
+// 3 filas de casilleros de 64px + 2 espacios de 6px
+const COLLAPSED_HEIGHT = 204;
 
 // Agrega o quita un valor de una lista
 function toggleIn<T>(arr: T[], v: T): T[] {
@@ -81,6 +87,11 @@ export function PokemonBox({
 
   const available = new Set(GAME_POKEMON[game.group] ?? []);
   const regional = new Set(REGIONAL_DEX[game.group] ?? []);
+  // Posición de cada especie en la Pokédex del juego, para ordenar la caja
+  const dexOrder = new Map(
+    (REGIONAL_DEX[game.group] ?? []).map((id, i) => [id, i]),
+  );
+  const art = usesArtwork(game);
   const inTeam = new Set(members.map((m) => m.pokemonId));
   const q = search.trim().toLowerCase();
 
@@ -99,7 +110,13 @@ export function PokemonBox({
     )
       return false;
     return true;
-  }).sort((a, b) => compareDex(a.id, b.id));
+  }).sort((a, b) => {
+    // Primero los de la Pokédex del juego, en su orden;
+    // después el resto, por número nacional
+    const ia = dexOrder.get(dexNumber(a.id)) ?? Infinity;
+    const ib = dexOrder.get(dexNumber(b.id)) ?? Infinity;
+    return ia - ib || compareDex(a.id, b.id);
+  });
 
   const anyFilter =
     dex !== "all" ||
@@ -136,19 +153,22 @@ export function PokemonBox({
         Available Pokémon ({box.length})
       </h3>
 
-      <input
-        ref={inputRef}
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyDown={(e) => e.key === "Escape" && setSearch("")}
-        placeholder={
-          full
-            ? "The team is full. Remove a Pokémon to add another."
-            : `Search a Pokémon from ${game.label}...`
-        }
-        className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-full text-gray-700 text-sm bg-white focus:outline-none focus:border-red-400"
-      />
+      <div className="relative mb-3">
+        <input
+          ref={inputRef}
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => e.key === "Escape" && setSearch("")}
+          placeholder={
+            full
+              ? "The team is full. Remove a Pokémon to add another."
+              : `Search a Pokémon from ${game.label}...`
+          }
+          className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full text-gray-700 text-sm bg-white focus:outline-none focus:border-red-400"
+        />
+        <ClearButton show={search !== ""} onClear={() => setSearch("")} />
+      </div>
 
       {/* Filtros */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -205,7 +225,7 @@ export function PokemonBox({
           <div
             // Cerrada, se corta a 3 filas
             style={expanded ? undefined : { maxHeight: COLLAPSED_HEIGHT }}
-            className={`grid grid-cols-[repeat(auto-fill,minmax(56px,1fr))] gap-1 overflow-hidden ${
+            className={`grid grid-cols-[repeat(auto-fill,64px)] justify-between gap-1.5 overflow-hidden ${
               full ? "opacity-40" : ""
             }`}
           >
@@ -215,14 +235,14 @@ export function PokemonBox({
                 onClick={() => onAdd(e.id)}
                 disabled={full}
                 title={`#${dexNumber(e.id)} ${getRegionalDisplayName(e.name)}`}
-                className="flex items-center justify-center h-14 rounded-lg hover:bg-white transition cursor-pointer disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                className="flex items-center justify-center w-16 h-16 rounded-lg bg-white border border-gray-200 hover:border-red-300 transition cursor-pointer disabled:cursor-not-allowed disabled:hover:border-gray-200"
               >
                 <img
-                  src={iconOrSprite(e.id)}
+                  src={teamIconUrl(e.id, game)}
                   alt={e.name}
                   loading="lazy"
-                  className="w-12 h-12 object-contain"
-                  style={{ imageRendering: "pixelated" }}
+                  className={`${art ? "w-11 h-11" : "w-12 h-12"} object-contain`}
+                  style={spriteStyle(!art)}
                 />
               </button>
             ))}

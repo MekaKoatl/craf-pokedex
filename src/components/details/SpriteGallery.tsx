@@ -39,8 +39,8 @@ export function SpriteGallery({
       src: m.dream?.front_female ?? w.dream?.front_default,
       label: "Dream World ♀",
     },
-    { src: m.s?.front_default, label: "Front" },
-    { src: m.s?.back_default, label: "Back" },
+    { src: m.s?.front_default, label: "Front Default" },
+    { src: m.s?.back_default, label: "Back Default" },
     { src: m.s?.front_female ?? w.s?.front_default, label: "Front ♀" },
     { src: m.s?.back_female ?? w.s?.back_default, label: "Back ♀" },
     { src: m.anim?.front_default, label: "Front Animated" },
@@ -71,9 +71,12 @@ export function SpriteGallery({
       src: m.home?.front_shiny_female ?? w.home?.front_shiny,
       label: "Home Shiny ♀",
     },
-    { src: m.s?.front_shiny, label: "Shiny" },
+    { src: m.s?.front_shiny, label: "Front Shiny" },
     { src: m.s?.back_shiny, label: "Back Shiny" },
-    { src: m.s?.front_shiny_female ?? w.s?.front_shiny, label: "Shiny ♀" },
+    {
+      src: m.s?.front_shiny_female ?? w.s?.front_shiny,
+      label: "Front Shiny ♀",
+    },
     { src: m.s?.back_shiny_female ?? w.s?.back_shiny, label: "Back Shiny ♀" },
     { src: m.show?.front_shiny, label: "Showdown Shiny" },
     { src: m.show?.back_shiny, label: "Showdown Back Shiny" },
@@ -105,6 +108,8 @@ export function SpriteGallery({
   const artwork =
     cdnSprite(m.art?.front_default) || cdnSprite(m.s?.front_default) || "";
   const [main, setMain] = useState(artwork);
+  // El nombre de la imagen que se está viendo
+  const mainLabel = uniqueSprites.find((s) => s.src === main)?.label;
 
   return (
     <div className="mb-8">
@@ -116,6 +121,11 @@ export function SpriteGallery({
           className="w-72 h-72 object-contain"
         />
         <ImageModal src={main} alt={pokemon.name} />
+        {mainLabel && (
+          <span className="absolute bottom-3 left-4 px-2 py-0.5 rounded-md bg-white/80 text-xs font-semibold text-gray-500">
+            {mainLabel}
+          </span>
+        )}
       </div>
 
       {/* Selector horizontal: con un solo sprite no tiene sentido */}

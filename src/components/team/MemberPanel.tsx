@@ -15,9 +15,14 @@ import {
   megaNameFor,
   type MoveInGame,
 } from "../../lib/teamRules";
-import { gameFeatures, type Game } from "../../lib/games";
+import {
+  gameFeatures,
+  spriteStyle,
+  teamSpriteUrl,
+  usesArtwork,
+  type Game,
+} from "../../lib/games";
 import { prettyName } from "../../lib/text";
-import { pokemonSpriteUrl } from "../../lib/sprites";
 import { SpriteImg } from "../SpriteImg";
 import { TypeBadge } from "../badges/TypeBadge";
 import { SearchSelect } from "../SearchSelect";
@@ -118,10 +123,10 @@ export function MemberPanel({
 
       <div className="flex flex-wrap items-center gap-3 mb-5 pr-8">
         <SpriteImg
-          src={pokemonSpriteUrl(member.pokemonId)}
+          src={teamSpriteUrl(member.pokemonId, game)}
           alt=""
           className="w-16 h-16 object-contain"
-          style={{ imageRendering: "pixelated" }}
+          style={spriteStyle(!usesArtwork(game))}
         />
         <h3 className="text-xl font-bold text-gray-900">{name}</h3>
 

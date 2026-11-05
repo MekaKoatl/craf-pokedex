@@ -1,4 +1,5 @@
 import { GAME_POKEMON } from "../data/pokemon-games";
+import { artworkUrl, iconOrSprite, pokemonSpriteUrl } from "./sprites";
 
 export interface Game {
   id: string; // la versión: "omega-ruby"
@@ -144,3 +145,29 @@ export const GENERATIONS = [...new Set(GAMES.map((g) => g.gen))];
 
 const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
 export const genLabel = (gen: number) => `Gen ${ROMAN[gen] ?? gen}`;
+
+// ── Imágenes del Team Planner ─────────────────
+
+// Juegos de Switch: ya no tienen íconos de PC pixel, se usa arte oficial
+const ARTWORK_GROUPS = new Set([
+  "lets-go-pikachu-lets-go-eevee",
+  "sword-shield",
+  "brilliant-diamond-shining-pearl",
+  "legends-arceus",
+  "scarlet-violet",
+  "legends-za",
+]);
+
+export const usesArtwork = (game: Game) => ARTWORK_GROUPS.has(game.group);
+
+// Imagen chica (caja, tarjetas): ícono de PC o arte
+export const teamIconUrl = (id: number, game?: Game) =>
+  game && usesArtwork(game) ? artworkUrl(id) : iconOrSprite(id);
+
+// Imagen grande (casilleros, panel): sprite pixel o arte
+export const teamSpriteUrl = (id: number, game: Game) =>
+  usesArtwork(game) ? artworkUrl(id) : pokemonSpriteUrl(id);
+
+// El estilo "pixelated" solo queda bien en sprites pixel
+export const spriteStyle = (pixel: boolean) =>
+  pixel ? { imageRendering: "pixelated" as const } : undefined;

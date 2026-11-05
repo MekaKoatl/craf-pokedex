@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SpriteImg } from "../SpriteImg";
+import { useRevealOnOpen } from "../../hooks/useRevealOnOpen";
 import { iconOrSprite } from "../../lib/sprites";
 import { getRegionalDisplayName } from "../../lib/regional";
 import { prettyName, idFromUrl } from "../../lib/text";
@@ -19,6 +20,7 @@ export function MoveRow({
   open: boolean;
   onToggle: () => void;
 }) {
+  const ref = useRevealOnOpen<HTMLDivElement>(open);
   const name = prettyName(move.name);
   const type = move.type.name;
 
@@ -122,7 +124,7 @@ export function MoveRow({
   const hidden = learners.length - visible.length;
 
   return (
-    <div className="move-expanded">
+    <div ref={ref} className="move-expanded">
       <button
         onClick={onToggle}
         title="Close"

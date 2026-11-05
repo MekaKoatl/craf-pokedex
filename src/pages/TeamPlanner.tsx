@@ -3,8 +3,14 @@ import { GameSelect } from "../components/team/GameSelect";
 import { Link } from "react-router-dom";
 import { useTeams } from "../hooks/useTeams";
 import { MAX_TEAMS, TEAM_SIZE, type Team } from "../context/TeamsContext";
-import { GAMES, GAME_BY_ID, genLabel } from "../lib/games";
-import { iconOrSprite } from "../lib/sprites";
+import {
+  GAMES,
+  GAME_BY_ID,
+  genLabel,
+  spriteStyle,
+  teamIconUrl,
+  usesArtwork,
+} from "../lib/games";
 import { SpriteImg } from "../components/SpriteImg";
 
 type SortKey = "oldest" | "newest" | "az" | "za" | "game";
@@ -30,6 +36,7 @@ const cardBase = "border rounded-xl p-4 transition";
 // Lo de adentro de la tarjeta: igual en modo normal y en modo selección
 function CardBody({ team }: { team: Team }) {
   const g = GAME_BY_ID.get(team.game);
+  const art = !!g && usesArtwork(g);
   return (
     <>
       <h3 className="font-bold text-gray-900 truncate pr-6">{team.name}</h3>
@@ -44,10 +51,10 @@ function CardBody({ team }: { team: Team }) {
           return m ? (
             <SpriteImg
               key={i}
-              src={iconOrSprite(m.pokemonId)}
+              src={teamIconUrl(m.pokemonId, g)}
               alt=""
-              className="w-10 h-10 object-contain"
-              style={{ imageRendering: "pixelated" }}
+              className={`${art ? "w-9 h-9" : "w-10 h-10"} object-contain`}
+              style={spriteStyle(!art)}
             />
           ) : (
             <span
