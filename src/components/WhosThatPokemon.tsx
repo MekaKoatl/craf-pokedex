@@ -144,13 +144,13 @@ export function WhosThatPokemon() {
                 <div className="flex gap-3 justify-center sm:justify-start">
                   <button
                     onClick={() => setStatus("revealed")}
-                    className="px-5 py-2 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-red-600 transition"
+                    className="min-h-[45px] px-5 py-2 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-red-600 transition"
                   >
                     Reveal
                   </button>
                   <button
                     onClick={() => setStatus("guessing")}
-                    className="px-5 py-2 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-red-600 transition"
+                    className="min-h-[45px] px-5 py-2 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-red-600 transition"
                   >
                     Guess
                   </button>
@@ -168,13 +168,13 @@ export function WhosThatPokemon() {
                     }}
                     placeholder="Type the name..."
                     autoFocus
-                    className={`px-3 py-2 rounded-lg text-sm text-gray-800 bg-white outline-none border-2 ${
+                    className={`h-[45px] sm:h-auto flex-1 sm:flex-none min-w-0 px-3 py-2 rounded-lg text-base sm:text-sm text-gray-800 bg-white outline-none border-2 ${
                       wrong ? "border-yellow-300" : "border-transparent"
                     }`}
                   />
                   <button
                     type="submit"
-                    className="px-5 py-2 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-red-600 transition"
+                    className="min-h-[45px] px-5 py-2 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-red-600 transition"
                   >
                     Guess
                   </button>

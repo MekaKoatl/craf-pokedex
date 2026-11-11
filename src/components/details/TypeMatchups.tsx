@@ -104,10 +104,11 @@ export function TypeMatchups({ types }: { types: string[] }) {
         ];
 
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-6 mb-8">
+      {" "}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between text-left cursor-pointer"
+        className="w-full min-h-[45px] sm:min-h-0 flex items-center justify-between text-left cursor-pointer"
       >
         <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400">
           Type Matchups
@@ -116,7 +117,6 @@ export function TypeMatchups({ types }: { types: string[] }) {
           {open ? "−" : "+"}
         </span>
       </button>
-
       {open && (
         <div className="mt-4">
           {/* Conmutador: mismo estilo que el de género */}
@@ -125,7 +125,7 @@ export function TypeMatchups({ types }: { types: string[] }) {
               <button
                 key={m}
                 onClick={() => setMode(m)}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold border-2 transition cursor-pointer ${
+                className={`min-h-[45px] sm:min-h-0 px-3 py-1 rounded-lg text-xs font-semibold border-2 transition cursor-pointer ${
                   mode === m
                     ? "bg-red-600 border-red-600 text-white"
                     : "border-gray-300 text-gray-500 hover:border-red-400"

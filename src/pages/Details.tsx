@@ -108,25 +108,38 @@ export function Details() {
   const genus =
     species.genera.find((g) => g.language.name === "en")?.genus ?? "";
 
-
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-start gap-6 mb-6">
-        <button
-          onClick={() => history.back()}
-          className="mt-2 text-gray-500 hover:text-red-600 transition font-semibold text-sm"
-        >
-          ← Return
-        </button>
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold text-gray-900">
-            #{String(pokemon.id).padStart(3, "0")} {displayName}
-          </h1>
-          <p className="text-lg text-gray-500 mt-1">{genus}</p>
-          <SavedIn id={pokemon.id} />
-        </div>
-        <div className="mt-1">
+      <div className="mb-6">
+        {/* Celular: primera fila con volver y guardar */}
+        <div className="flex items-center justify-between gap-4 mb-3 sm:hidden">
+          <button
+            onClick={() => history.back()}
+            className="min-h-[45px] text-gray-500 hover:text-red-600 transition font-semibold text-sm"
+          >
+            ← Return
+          </button>
           <AddToListButton id={pokemon.id} variant="details" />
+        </div>
+
+        <div className="flex items-start gap-6">
+          {/* Escritorio: todo en una fila, como antes */}
+          <button
+            onClick={() => history.back()}
+            className="hidden sm:block mt-2 text-gray-500 hover:text-red-600 transition font-semibold text-sm"
+          >
+            ← Return
+          </button>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              #{String(pokemon.id).padStart(3, "0")} {displayName}
+            </h1>
+            <p className="text-base sm:text-lg text-gray-500 mt-1">{genus}</p>
+            <SavedIn id={pokemon.id} />
+          </div>
+          <div className="hidden sm:block mt-1">
+            <AddToListButton id={pokemon.id} variant="details" />
+          </div>
         </div>
       </div>
 
@@ -196,7 +209,7 @@ export function Details() {
             <button
               key={g}
               onClick={() => pickGender(g)}
-              className={`px-4 py-1.5 rounded-lg text-sm font-semibold border-2 transition cursor-pointer ${
+              className={`min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-lg text-sm font-semibold border-2 transition cursor-pointer ${
                 gender === g
                   ? "bg-red-600 border-red-600 text-white"
                   : "border-gray-300 text-gray-500 hover:border-red-400"
@@ -209,7 +222,7 @@ export function Details() {
       )}
 
       {/* Altura / Peso / Habilidades — siempre visibles */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
             Avg. Height
@@ -226,7 +239,7 @@ export function Details() {
             {(shown.weight / 10).toFixed(1)} kg
           </p>
         </div>
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <div className="col-span-2 sm:col-span-1 bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
             Abilities
           </h3>
@@ -235,7 +248,7 @@ export function Details() {
               <Link
                 key={a.ability.name}
                 to={`/abilities?open=${a.ability.name}`}
-                className="text-gray-700 text-sm capitalize hover:text-red-600 hover:underline transition"
+                className="min-h-[45px] sm:min-h-0 inline-flex items-center text-gray-700 text-sm capitalize hover:text-red-600 hover:underline transition"
               >
                 {a.ability.name.replace(/-/g, " ")}
                 {a.is_hidden ? " (hidden)" : ""}

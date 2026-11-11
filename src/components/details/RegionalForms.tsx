@@ -39,9 +39,10 @@ export function RegionalForms({
       <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-4">
         {isRegional ? "Other Forms" : "Regional Forms"}
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        {" "}
         {forms.map((p) => (
-          <DexCard key={p.id} pokemon={p} />
+          <DexCard key={p.id} pokemon={p} pixel />
         ))}
       </div>
     </div>

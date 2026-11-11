@@ -37,11 +37,15 @@ export function MoveRow({
             {move.damage_class.name}
           </span>
         </span>
-        <span className="move-cell move-cell-num">{move.power ?? "—"}</span>
-        <span className="move-cell move-cell-num">
+        <span className="move-cell move-cell-num move-cell-power">
+          {move.power ?? "—"}
+        </span>
+        <span className="move-cell move-cell-num move-cell-acc">
           {move.accuracy !== null ? `${move.accuracy}%` : "—"}
         </span>
-        <span className="move-cell move-cell-num">{move.pp ?? "—"}</span>
+        <span className="move-cell move-cell-num move-cell-pp">
+          {move.pp ?? "—"}
+        </span>
         <span className="move-cell move-cell-effect">
           {moveShortEffect(move)}
         </span>
@@ -128,12 +132,13 @@ export function MoveRow({
       <button
         onClick={onToggle}
         title="Close"
-        className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
+        className="absolute top-1 right-1 w-[45px] h-[45px] flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-lg cursor-pointer"
       >
         ✕
       </button>
 
-      <h3 className="text-2xl font-bold text-gray-900 leading-tight pr-6">
+      <h3 className="text-2xl font-bold text-gray-900 leading-tight pr-8">
+        {" "}
         {name}
       </h3>
       <div className="flex items-center gap-2 mt-2">

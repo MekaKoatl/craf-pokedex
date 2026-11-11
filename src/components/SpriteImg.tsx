@@ -3,7 +3,16 @@ import { LOADING_SPRITE } from "../lib/sprites";
 
 type Props = React.ImgHTMLAttributes<HTMLImageElement> & { src: string };
 
-export function SpriteImg({ src, alt = "", style, onError, ...rest }: Props) {
+// loading="lazy": la imagen se descarga recién cuando te acercás a ella
+export function SpriteImg({
+  src,
+  alt = "",
+  style,
+  onError,
+  loading = "lazy",
+  decoding = "async",
+  ...rest
+}: Props) {
   const [loaded, setLoaded] = useState(false);
   const ref = useRef<HTMLImageElement>(null);
 
@@ -18,6 +27,8 @@ export function SpriteImg({ src, alt = "", style, onError, ...rest }: Props) {
   return (
     <img
       {...rest}
+      loading={loading}
+      decoding={decoding}
       ref={ref}
       src={src}
       alt={alt}

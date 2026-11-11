@@ -73,9 +73,7 @@ function FormTile({
         active ? " evo-node-current" : ""
       }`}
     >
-      <span
-        className={`form-alt-tag form-alt-tag-${info.kind}`}
-      >
+      <span className={`form-alt-tag form-alt-tag-${info.kind}`}>
         {info.tag}
       </span>
       {/* Sin datos todavía no se dibuja el img: un src vacío pide la página actual */}
@@ -106,18 +104,19 @@ function FormPanel({
   const info = formInfo(name);
 
   return (
-    <div className="relative mt-3 bg-gray-50 border border-gray-200 rounded-xl p-6">
+    <div className="relative mt-3 bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-6">
+      {" "}
       <button
         onClick={onClose}
         title="Close"
-        className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
+        className="absolute top-1 right-1 w-[45px] h-[45px] flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-lg cursor-pointer"
       >
         ✕
       </button>
-      <h3 className="text-xl font-bold text-gray-900 mb-4 pr-6">
+      <h3 className="text-xl font-bold text-gray-900 mb-4 pr-10">
+        {" "}
         {info.label}
       </h3>
-
       {!p ? (
         <LoadingSpinner text="Loading..." />
       ) : (
@@ -156,7 +155,7 @@ function FormPanel({
                   <Link
                     key={a.ability.name}
                     to={`/abilities?open=${a.ability.name}`}
-                    className="text-gray-700 text-sm capitalize hover:text-red-600 hover:underline transition"
+                    className="min-h-[45px] sm:min-h-0 inline-flex items-center text-gray-700 text-sm capitalize hover:text-red-600 hover:underline transition"
                   >
                     {a.ability.name.replace(/-/g, " ")}
                     {a.is_hidden ? " (hidden)" : ""}

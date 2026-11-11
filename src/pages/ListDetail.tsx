@@ -81,7 +81,7 @@ export function ListDetail() {
     <section className="max-w-7xl mx-auto px-4 py-8">
       <Link
         to="/lists"
-        className="text-sm text-gray-400 hover:text-gray-600 transition"
+        className="inline-flex items-center min-h-[45px] sm:min-h-0 text-sm text-gray-400 hover:text-gray-600 transition"
       >
         ← Lists
       </Link>
@@ -89,7 +89,7 @@ export function ListDetail() {
       {/* Título, o el formulario para renombrar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-2 mb-6">
         {editing ? (
-          <form onSubmit={handleRename} className="flex flex-1 gap-2">
+          <form onSubmit={handleRename} className="flex flex-1 flex-wrap gap-2">
             <input
               autoFocus
               value={draft}
@@ -99,18 +99,18 @@ export function ListDetail() {
               }}
               onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
               maxLength={40}
-              className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-xl font-bold text-gray-900 focus:outline-none focus:border-red-400"
+              className="w-full sm:w-auto sm:flex-1 min-w-0 px-3 h-[45px] sm:h-auto py-1.5 border border-gray-300 rounded-lg text-xl font-bold text-gray-900 focus:outline-none focus:border-red-400"
             />
             <button
               type="submit"
-              className="px-4 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
+              className="min-h-[45px] sm:min-h-0 px-4 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
             >
               Save
             </button>
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
+              className=" min-h-[45px] sm:min-h-0 px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
             >
               Cancel
             </button>
@@ -126,13 +126,13 @@ export function ListDetail() {
             <div className="flex gap-4 text-sm font-semibold">
               <button
                 onClick={startEdit}
-                className="text-gray-400 hover:text-gray-600 transition cursor-pointer"
+                className="min-h-[45px] sm:min-h-0 text-gray-400 hover:text-gray-600 transition cursor-pointer"
               >
                 Rename
               </button>
               <button
                 onClick={handleDelete}
-                className="text-gray-400 hover:text-red-500 transition cursor-pointer"
+                className="min-h-[45px] sm:min-h-0 text-gray-400 hover:text-red-500 transition cursor-pointer"
               >
                 Delete list
               </button>
@@ -183,7 +183,7 @@ export function ListDetail() {
                   <DexCard pokemon={p} />
                   <button
                     onClick={() => toggleInList(list.id, p.id)}
-                    className="text-xs font-semibold text-gray-400 hover:text-red-500 transition cursor-pointer"
+                    className="min-h-[45px] sm:min-h-0 text-xs font-semibold text-gray-400 hover:text-red-500 transition cursor-pointer"
                   >
                     Remove
                   </button>

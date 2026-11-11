@@ -36,7 +36,7 @@ const MOVE_SLOTS = [0, 1, 2, 3];
 const labelClass =
   "block text-xs font-bold uppercase tracking-wide text-gray-400 mb-1";
 const selectClass =
-  "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:border-red-400";
+  "w-full px-3 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-lg text-base sm:text-sm text-gray-700 bg-white focus:outline-none focus:border-red-400";
 
 export function MemberPanel({
   member,
@@ -112,11 +112,11 @@ export function MemberPanel({
   }
 
   return (
-    <div className="relative mt-6 bg-gray-50 border border-gray-200 rounded-xl p-6">
+    <div className="relative mt-6 bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-6">
       <button
         onClick={onClose}
         title="Close"
-        className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
+        className="absolute top-1 right-1 w-[45px] h-[45px] flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-lg cursor-pointer"
       >
         ✕
       </button>
@@ -137,7 +137,7 @@ export function MemberPanel({
               <button
                 key={s ?? "off"}
                 onClick={() => setMega(s)}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold border-2 transition cursor-pointer ${
+                className={`min-h-[45px] sm:min-h-0 px-3 py-1 rounded-lg text-xs font-semibold border-2 transition cursor-pointer ${
                   activeStone === s
                     ? "bg-red-600 border-red-600 text-white"
                     : "border-gray-300 text-gray-500 hover:border-red-400"

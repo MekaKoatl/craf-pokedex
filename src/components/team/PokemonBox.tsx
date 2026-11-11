@@ -52,7 +52,7 @@ function Toggle({
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 py-1 rounded-lg text-xs font-semibold border-2 transition cursor-pointer ${
+      className={`min-h-[45px] sm:min-h-0 px-3 py-1 rounded-lg text-xs font-semibold border-2 transition cursor-pointer ${
         active
           ? "bg-red-600 border-red-600 text-white"
           : "border-gray-300 text-gray-500 hover:border-red-400"
@@ -148,7 +148,7 @@ export function PokemonBox({
   });
 
   return (
-    <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-6">
+    <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-6">
       <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-4">
         Available Pokémon ({box.length})
       </h3>
@@ -165,13 +165,13 @@ export function PokemonBox({
               ? "The team is full. Remove a Pokémon to add another."
               : `Search a Pokémon from ${game.label}...`
           }
-          className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full text-gray-700 text-sm bg-white focus:outline-none focus:border-red-400"
+          className="w-full pl-4 pr-10 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-full text-gray-700 text-base sm:text-sm bg-white focus:outline-none focus:border-red-400"
         />
         <ClearButton show={search !== ""} onClear={() => setSearch("")} />
       </div>
 
       {/* Filtros */}
-      <div className="flex flex-wrap items-center gap-2 mb-4">
+      <div className="relative flex flex-wrap items-center gap-2 mb-4">
         <Toggle active={dex === "all"} onClick={() => setDex("all")}>
           All available
         </Toggle>
@@ -208,7 +208,7 @@ export function PokemonBox({
           <button
             type="button"
             onClick={clearFilters}
-            className="text-xs font-semibold text-gray-400 hover:text-red-500 underline cursor-pointer"
+            className="min-h-[45px] sm:min-h-0 text-xs font-semibold text-gray-400 hover:text-red-500 underline cursor-pointer"
           >
             Clear filters
           </button>
@@ -251,7 +251,7 @@ export function PokemonBox({
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="w-full mt-3 py-1.5 text-xs font-semibold text-gray-400 hover:text-gray-600 border-t border-gray-200 cursor-pointer"
+            className="min-h-[45px] sm:min-h-0 w-full mt-3 py-1.5 text-xs font-semibold text-gray-400 hover:text-gray-600 border-t border-gray-200 cursor-pointer"
           >
             {expanded ? "Show less ▲" : `Show all (${box.length}) ▼`}
           </button>

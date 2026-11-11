@@ -19,7 +19,7 @@ const SORT_LABELS: Record<SortKey, string> = {
 };
 
 const ghostBtn =
-  "px-4 py-1.5 rounded-full border-[1.5px] border-gray-200 bg-white text-sm font-semibold text-gray-600 hover:border-gray-400 transition cursor-pointer";
+  "min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-full border-[1.5px] border-gray-200 bg-white text-sm font-semibold text-gray-600 hover:border-gray-400 transition cursor-pointer";
 const cardBase = "border rounded-xl p-4 transition";
 
 // Lo de adentro de la tarjeta: igual en modo normal y en modo selección
@@ -143,11 +143,11 @@ export function Lists() {
           }}
           placeholder="New list name..."
           maxLength={40}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-full text-gray-700 text-sm focus:outline-none focus:border-red-400"
+          className="flex-1 px-4 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-full text-gray-700 text-base sm:text-sm focus:outline-none focus:border-red-400"
         />
         <button
           type="submit"
-          className="px-5 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
+          className="min-h-[45px] sm:min-h-0 px-5 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
         >
           Create
         </button>
@@ -183,7 +183,7 @@ export function Lists() {
               <button
                 onClick={handleDeleteSelected}
                 disabled={selected.length === 0}
-                className="px-4 py-1.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                className="min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Delete ({selected.length})
               </button>

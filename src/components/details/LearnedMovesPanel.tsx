@@ -27,10 +27,10 @@ function MoveTable({
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-5">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between text-left cursor-pointer"
+        className="w-full min-h-[45px] sm:min-h-0 flex items-center justify-between text-left cursor-pointer"
       >
         <h4 className="text-sm font-bold text-gray-900">
           {title}{" "}
@@ -50,17 +50,33 @@ function MoveTable({
               <table className="w-full text-xs">
                 <thead>
                   <tr className="text-left text-gray-400 uppercase tracking-wide border-b border-gray-200">
-                    {showLevel && <th className="py-2 pr-2 text-right">Lv.</th>}
-                    <th className="py-2 px-2">Move</th>
-                    <th className="py-2 px-2">Type</th>
-                    <th className="py-2 px-2">Cat.</th>
-                    <th className="py-2 px-2 text-right">Power</th>
-                    <th className="py-2 pl-2 text-right">Acc.</th>
+                    {showLevel && (
+                      <th className="py-2 pr-1 sm:pr-2 text-right">Lv.</th>
+                    )}
+                    <th className="py-2 px-1 sm:px-2">Move</th>
+                    <th className="py-2 px-1 sm:px-2">Type</th>
+                    {/* En celular la categoría va adentro de la columna Type */}
+                    <th className="hidden sm:table-cell py-2 px-2">Cat.</th>
+                    <th className="py-2 px-1 sm:px-2 text-right">
+                      <span className="sm:hidden">Pow.</span>
+                      <span className="hidden sm:inline">Power</span>
+                    </th>
+                    <th className="py-2 pl-1 sm:pl-2 text-right">Acc.</th>
                   </tr>
                 </thead>
                 <tbody>
                   {rows.map((r, i) => {
                     const m = moves[r.name];
+                    // Se arma una vez y se usa en dos lugares
+                    const cat = m ? (
+                      <span
+                        className={`move-cat move-cat-${m.damage_class.name}`}
+                      >
+                        {m.damage_class.name}
+                      </span>
+                    ) : (
+                      "—"
+                    );
                     return (
                       // El índice va en la key porque un movimiento puede
                       // repetirse en level up con dos niveles distintos
@@ -69,31 +85,25 @@ function MoveTable({
                         className="border-b border-gray-100"
                       >
                         {showLevel && (
-                          <td className="py-1.5 pr-2 text-right text-gray-500">
+                          <td className="py-1.5 pr-1 sm:pr-2 text-right text-gray-500">
                             {r.level}
                           </td>
                         )}
-                        <td className="py-1.5 px-2 font-semibold text-gray-800 whitespace-nowrap">
+                        <td className="py-1.5 px-1 sm:px-2 font-semibold text-gray-800 sm:whitespace-nowrap">
                           {prettyName(r.name)}
                         </td>
-                        <td className="py-1.5 px-2 [&_.type-badge]:inline-block [&_.type-badge]:w-20 [&_.type-badge]:text-center">
+                        <td className="py-1.5 px-1 sm:px-2 [&_.type-badge]:inline-block [&_.type-badge]:max-w-none [&_.type-badge]:w-16 sm:[&_.type-badge]:w-20 [&_.type-badge]:text-center [&_.move-cat]:inline-block [&_.move-cat]:w-16 [&_.move-cat]:px-0 [&_.move-cat]:text-center">
                           {m ? <TypeBadge type={m.type.name} /> : "—"}
+                          {/* Solo en celular: la categoría debajo del tipo */}
+                          <span className="sm:hidden block mt-1">{cat}</span>
                         </td>
-                        <td className="py-1.5 px-2 [&_.move-cat]:inline-block [&_.move-cat]:w-20 [&_.move-cat]:text-center">
-                          {m ? (
-                            <span
-                              className={`move-cat move-cat-${m.damage_class.name}`}
-                            >
-                              {m.damage_class.name}
-                            </span>
-                          ) : (
-                            "—"
-                          )}
+                        <td className="hidden sm:table-cell py-1.5 px-2 [&_.move-cat]:inline-block [&_.move-cat]:w-20 [&_.move-cat]:text-center">
+                          {cat}
                         </td>
-                        <td className="py-1.5 px-2 text-right text-gray-700">
+                        <td className="py-1.5 px-1 sm:px-2 text-right text-gray-700">
                           {m?.power ?? "—"}
                         </td>
-                        <td className="py-1.5 pl-2 text-right text-gray-700">
+                        <td className="py-1.5 pl-1 sm:pl-2 text-right text-gray-700">
                           {m && m.accuracy !== null ? `${m.accuracy}%` : "—"}
                         </td>
                       </tr>
@@ -149,7 +159,7 @@ export function LearnedMovesPanel({ pokemon }: { pokemon: PokemonFull }) {
     <div className="mb-8">
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-xl transition ${
+        className={`w-full min-h-[45px] sm:min-h-0 flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-xl transition ${
           open
             ? "bg-red-50 border-red-200 text-red-500 hover:bg-red-100"
             : "bg-gray-50 border-gray-200 text-gray-400 hover:border-gray-300 hover:text-gray-600"

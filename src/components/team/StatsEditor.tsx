@@ -23,12 +23,20 @@ const ROWS = [
   { label: "SPD", color: "bg-purple-500" },
 ];
 
-// nombre · base · barra · total · IV · EV
+// Celular, dos líneas por stat:
+//   nombre | barra (ocupa 2 columnas) | total
+//   base   | IV                       | EV
+// Escritorio, una línea: nombre · base · barra · total · IV · EV
 const rowGrid =
-  "grid grid-cols-[56px_36px_1fr_40px_64px_64px] sm:grid-cols-[72px_44px_1fr_48px_72px_72px] items-center gap-2 sm:gap-3";
+  "grid grid-cols-[56px_1fr_1fr_40px] sm:grid-cols-[72px_44px_1fr_48px_72px_72px] items-center gap-x-2 gap-y-1.5 sm:gap-3";
 
+// En celular: 45px de alto y letra de 16px (con menos, el iPhone hace zoom)
 const numClass =
-  "w-full px-2 py-1 border border-gray-300 rounded-md text-xs text-right text-gray-700 bg-white focus:outline-none focus:border-red-400";
+  "h-[45px] sm:h-auto px-2 py-1 border border-gray-300 rounded-md text-base sm:text-xs text-right text-gray-700 bg-white focus:outline-none focus:border-red-400";
+
+// "order-1" manda el elemento a la segunda línea en celular;
+// "sm:order-none" lo deja en su lugar normal en escritorio
+const secondLine = "order-1 sm:order-none";
 
 // Número entero dentro de un rango; lo vacío cuenta como el mínimo
 const clamp = (v: string, min: number, max: number) =>
@@ -74,7 +82,7 @@ export function StatsEditor({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between gap-3 text-left cursor-pointer"
+        className="w-full min-h-[45px] sm:min-h-0 flex items-center justify-between gap-3 text-left cursor-pointer"
       >
         <span className="text-xs font-bold uppercase tracking-wide text-gray-400">
           Stats
@@ -105,7 +113,7 @@ export function StatsEditor({
                 onChange={(e) =>
                   onChange({ level: clamp(e.target.value, 1, 100) })
                 }
-                className={`${numClass} w-16`}
+                className={`${numClass} w-20 sm:w-16`}
               />
             </label>
             {EV_PRESETS.map((p) => (
@@ -113,7 +121,7 @@ export function StatsEditor({
                 key={p.label}
                 type="button"
                 onClick={() => onChange({ evs: p.evs })}
-                className="px-2.5 py-1 rounded-lg text-[11px] font-semibold border border-gray-300 text-gray-500 hover:border-red-400 hover:text-red-500 transition cursor-pointer"
+                className="min-h-[45px] sm:min-h-0 px-3 sm:px-2.5 py-1 rounded-lg text-xs sm:text-[11px] font-semibold border border-gray-300 text-gray-500 hover:border-red-400 hover:text-red-500 transition cursor-pointer"
               >
                 {p.label}
               </button>
@@ -125,9 +133,9 @@ export function StatsEditor({
             )}
           </div>
 
-          {/* Títulos de las columnas */}
+          {/* Títulos de las columnas: solo en escritorio */}
           <div
-            className={`${rowGrid} text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-1`}
+            className={`${rowGrid} hidden sm:grid text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-1`}
           >
             <span />
             <span className="text-right">Base</span>
@@ -156,51 +164,70 @@ export function StatsEditor({
               return (
                 <div
                   key={row.label}
-                  className={`${rowGrid} py-1.5 border-t border-gray-100`}
+                  className={`${rowGrid} py-2.5 sm:py-1.5 border-t border-gray-100`}
                 >
                   <span className={`text-sm font-bold ${color}`}>
                     {row.label}
                     {mult > 1 ? " +" : mult < 1 ? " −" : ""}
                   </span>
-                  <span className="text-xs text-right text-gray-500">
+
+                  <span
+                    className={`${secondLine} text-xs text-gray-500 sm:text-right`}
+                  >
+                    <span className="sm:hidden text-gray-400">Base </span>
                     {base?.[i] ?? "—"}
                   </span>
-                  <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
+
+                  {/* En celular la barra ocupa dos columnas */}
+                  <div className="col-span-2 sm:col-span-1 h-2.5 bg-gray-200 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${row.color}`}
                       style={{ width: `${width}%` }}
                     />
                   </div>
+
                   <span
                     className={`text-sm font-bold text-right ${mult === 1 ? "text-gray-900" : color}`}
                   >
                     {total ?? "—"}
                   </span>
-                  <input
-                    type="number"
-                    min={0}
-                    max={MAX_IV}
-                    value={ivs[i]}
-                    onChange={(e) =>
-                      onChange({
-                        ivs: setAt(ivs, i, clamp(e.target.value, 0, MAX_IV)),
-                      })
-                    }
-                    className={numClass}
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    max={MAX_EV}
-                    step={4}
-                    value={evs[i]}
-                    onChange={(e) =>
-                      onChange({
-                        evs: setAt(evs, i, clamp(e.target.value, 0, MAX_EV)),
-                      })
-                    }
-                    className={numClass}
-                  />
+
+                  <label className={`${secondLine} flex items-center gap-1.5`}>
+                    <span className="sm:hidden text-[11px] font-bold text-gray-400">
+                      IV
+                    </span>
+                    <input
+                      type="number"
+                      min={0}
+                      max={MAX_IV}
+                      value={ivs[i]}
+                      onChange={(e) =>
+                        onChange({
+                          ivs: setAt(ivs, i, clamp(e.target.value, 0, MAX_IV)),
+                        })
+                      }
+                      className={`${numClass} flex-1 min-w-0 w-full`}
+                    />
+                  </label>
+
+                  <label className={`${secondLine} flex items-center gap-1.5`}>
+                    <span className="sm:hidden text-[11px] font-bold text-gray-400">
+                      EV
+                    </span>
+                    <input
+                      type="number"
+                      min={0}
+                      max={MAX_EV}
+                      step={4}
+                      value={evs[i]}
+                      onChange={(e) =>
+                        onChange({
+                          evs: setAt(evs, i, clamp(e.target.value, 0, MAX_EV)),
+                        })
+                      }
+                      className={`${numClass} flex-1 min-w-0 w-full`}
+                    />
+                  </label>
                 </div>
               );
             })}

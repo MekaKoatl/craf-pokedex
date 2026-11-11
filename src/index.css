@@ -19,9 +19,12 @@
   text-decoration: none;
 }
 
-.dex-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+/* Solo con mouse: en el celular el hover se queda pegado después de tocar */
+@media (hover: hover) {
+  .dex-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .dex-card-sprite {
@@ -62,13 +65,21 @@
   transform: scale(0.95);
 }
 
-/* Estado en hover */
-.dex-card:hover .sprite-static {
-  opacity: 0;
+/* Estado en hover (solo con mouse) */
+@media (hover: hover) {
+  .dex-card:hover .sprite-static {
+    opacity: 0;
+  }
+  .dex-card:hover .sprite-animated {
+    opacity: 1;
+    transform: scale(0.95);
+  }
 }
-.dex-card:hover .sprite-animated {
-  opacity: 1;
-  transform: scale(0.95);
+
+/* Dream World y arte oficial no son pixel: se ven suaves */
+.dex-card-sprite img.dex-card-art {
+  image-rendering: auto;
+  padding: 4px;
 }
 
 /* ── TYPE BADGES ─────────────────────────── */
@@ -832,9 +843,11 @@
   pointer-events: none;
 }
 
-.ticker-item:hover {
-  opacity: 1;
-  transform: scale(1.25);
+@media (hover: hover) {
+  .ticker-item:hover {
+    opacity: 1;
+    transform: scale(1.25);
+  }
 }
 .ticker-item img {
   position: relative; /* por encima de la Pokébola */
@@ -1447,30 +1460,45 @@
   .move-head {
     display: none;
   }
+  /* En celular cada movimiento es una tarjetita de 3 líneas */
   .move-row {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    padding: 0.75rem;
   }
   .move-cell {
-    padding: 0.2rem 0.9rem;
+    padding: 0;
   }
+  /* El nombre ocupa toda la primera línea */
   .move-cell-name {
-    padding: 0.5rem 0.9rem;
+    flex-basis: 100%;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0.5rem;
   }
-  .move-cell-num {
-    justify-content: flex-start;
+  /* margin-left: auto empuja los números a la derecha */
+  .move-cell-power {
+    margin-left: auto;
   }
-  /* Sin encabezados, los números sueltos no se entienden */
-  .move-cell-num:nth-of-type(4)::before {
-    content: "Power: ";
+  /* Sin encabezados, cada número lleva su etiqueta */
+  .move-cell-num::before {
     color: #9ca3af;
+    margin-right: 4px;
   }
-  .move-cell-num:nth-of-type(5)::before {
-    content: "Acc.: ";
-    color: #9ca3af;
+  .move-cell-power::before {
+    content: "Power";
   }
-  .move-cell-num:nth-of-type(6)::before {
-    content: "PP: ";
-    color: #9ca3af;
+  .move-cell-acc::before {
+    content: "Acc";
+  }
+  .move-cell-pp::before {
+    content: "PP";
+  }
+  /* El efecto ocupa toda la última línea */
+  .move-cell-effect {
+    flex-basis: 100%;
+    color: #6b7280;
   }
 }
 
@@ -1509,4 +1537,88 @@
   background: #ef4444;
   border-color: #ef4444;
   color: #fff;
+}
+
+/* ── DEX CARD EN CELULAR ─────────────────────────── */
+@media (max-width: 639px) {
+  .dex-card {
+    padding: 0.85rem 0.25rem;
+  }
+  /* El + pasa arriba a la izquierda y crece */
+  .dex-card .add-btn {
+    top: 6px;
+    left: 6px;
+    bottom: auto;
+    right: auto;
+    width: 34px;
+    height: 34px;
+    font-size: 1.1rem;
+  }
+  /* Se ve de 34px, pero el área que responde al dedo es de 46px */
+  .add-btn::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+}
+
+/* ── BOTONES DE 45PX EN CELULAR ─────────────────────────── */
+@media (max-width: 639px) {
+  /* Menú ☰ */
+  #hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+  }
+
+  /* Filtros, selects y pastillas */
+  .filter-dropdown-btn,
+  .item-select,
+  .filter-pill,
+  .panel-apply-btn,
+  .panel-clear-link {
+    min-height: 45px;
+  }
+  /* 16px: con menos, el iPhone hace zoom al abrir un select */
+  .item-select {
+    font-size: 16px;
+    padding: 6px 14px;
+  }
+  .filter-pill {
+    padding: 3px 14px;
+    font-size: 13px;
+  }
+
+  /* La ✕ del panel de filtros: 45px sin agrandar el encabezado */
+  .panel-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    margin: -12px -12px -12px 0;
+    font-size: 16px;
+  }
+
+  /* Letras A–Z: una sola fila que se desliza de costado */
+  .item-letters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+  }
+  .item-letter {
+    flex: 0 0 auto;
+    min-width: 45px;
+    min-height: 45px;
+    font-size: 14px;
+  }
+
+  /* Desplegables de Details */
+  .form-alt-toggle,
+  .evo-req-toggle {
+    min-height: 45px;
+  }
 }

@@ -128,8 +128,9 @@ export function Navbar() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `px-3 py-1 rounded transition ${isActive ? "bg-red-700" : "hover:bg-red-700"}`;
 
+  // 45px de alto para el dedo
   const mobileLink =
-    "text-white font-semibold hover:bg-red-700 px-3 py-2 rounded transition";
+    "text-white font-semibold hover:bg-red-700 px-3 min-h-[45px] flex items-center rounded transition";
 
   return (
     <nav className="bg-red-600 shadow-lg text-white">
@@ -166,10 +167,12 @@ export function Navbar() {
         {/* Hamburguesa */}
         <button
           id="hamburger-btn"
-          className="text-white text-2xl font-bold px-2"
+          className="text-white text-2xl font-bold -mr-2"
           onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Menu"
+          aria-expanded={menuOpen}
         >
-          ☰
+          {menuOpen ? "✕" : "☰"}
         </button>
       </div>
 

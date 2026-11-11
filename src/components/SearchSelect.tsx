@@ -10,8 +10,7 @@ export interface SearchGroup {
 }
 
 const inputClass =
-  "w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:border-red-400 disabled:bg-gray-50";
-
+  "w-full pl-3 pr-10 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-lg text-base sm:text-sm text-gray-700 bg-white focus:outline-none focus:border-red-400 disabled:bg-gray-50";
 export function SearchSelect({
   value,
   groups,
@@ -90,7 +89,7 @@ export function SearchSelect({
           type="button"
           onClick={() => pick(null)}
           title="Clear"
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer after:absolute after:-inset-[7px]"
         >
           ✕
         </button>
@@ -114,7 +113,7 @@ export function SearchSelect({
                     key={o.value}
                     type="button"
                     onClick={() => pick(o.value)}
-                    className={`block w-full text-left px-3 py-1.5 hover:bg-red-50 cursor-pointer ${
+                    className={`block w-full text-left px-3 py-3.5 sm:py-1.5 hover:bg-red-50 cursor-pointer ${
                       o.value === value
                         ? "font-semibold text-red-600"
                         : "text-gray-700"

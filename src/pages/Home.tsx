@@ -36,7 +36,7 @@ export function Home() {
   return (
     <div>
       <WhosThatPokemon />
-    
+
       <SpriteTicker />
       <section className="max-w-7xl mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -55,7 +55,7 @@ export function Home() {
           searchResults.isLoading ? (
             <LoadingSpinner text="Searching..." />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {(searchResults.data ?? []).length === 0 ? (
                 <p className="text-gray-400 col-span-full text-center py-8">
                   No Pokémon found.
@@ -71,7 +71,7 @@ export function Home() {
           filtered.isLoading ? (
             <LoadingSpinner text="Searching..." />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {(filtered.data ?? []).length === 0 ? (
                 <p className="text-gray-400 col-span-full text-center py-8">
                   No Pokémon found.
@@ -84,7 +84,7 @@ export function Home() {
         ) : initial.isLoading ? (
           <LoadingSpinner text="Loading..." />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             {(initial.data ?? []).map((p) => (
               <DexCard key={p.id} pokemon={p} />
             ))}

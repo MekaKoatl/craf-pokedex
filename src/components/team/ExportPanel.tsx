@@ -28,7 +28,7 @@ export function ExportPanel({
       <button
         onClick={onClose}
         title="Close"
-        className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
+        className="absolute top-1 right-1 w-[45px] h-[45px] flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-lg cursor-pointer"
       >
         ✕
       </button>
@@ -48,7 +48,7 @@ export function ExportPanel({
       <div className="flex flex-wrap items-center gap-3 mt-2">
         <button
           onClick={copy}
-          className="px-5 py-1.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
+          className="min-h-[45px] sm:min-h-0 px-5 py-1.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
         >
           {copied ? "Copied!" : "Copy"}
         </button>

@@ -6,7 +6,7 @@ import { useLists } from "../../hooks/useLists";
 const MAX_CHIPS = 6;
 
 const chip =
-  "px-2.5 py-0.5 rounded-full text-xs font-semibold border transition";
+  "relative inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border transition after:absolute after:inset-x-0 after:-inset-y-3";
 const listChip = `${chip} bg-red-50 text-red-600 border-red-200 hover:bg-red-100`;
 const moreChip = `${chip} bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100`;
 
@@ -23,7 +23,8 @@ export function SavedIn({ id }: { id: number }) {
   const extra = inLists.length - visible.length;
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 mt-2">
+    <div className="flex flex-wrap items-center gap-x-1.5 gap-y-3 sm:gap-1.5 mt-2">
+      {" "}
       <span className="text-xs text-gray-400">Saved in:</span>
       {isFavorite(id) && (
         <Link to="/favorites" className={listChip}>

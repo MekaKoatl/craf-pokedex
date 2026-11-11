@@ -16,7 +16,8 @@ export function ClearButton({
       onMouseDown={(e) => e.preventDefault()}
       title="Clear"
       aria-label="Clear search"
-      className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 cursor-pointer"
+      // after: área invisible alrededor; se ve de 24px pero se toca en 46px
+      className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 cursor-pointer after:absolute after:-inset-[11px]"
     >
       ✕
     </button>

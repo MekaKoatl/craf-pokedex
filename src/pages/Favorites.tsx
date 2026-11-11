@@ -58,7 +58,7 @@ export function Favorites() {
         {favorites.length > 0 && (
           <button
             onClick={handleClearAll}
-            className="text-sm text-gray-400 hover:text-red-500 transition font-semibold cursor-pointer"
+            className="min-h-[45px] sm:min-h-0 text-sm text-gray-400 hover:text-red-500 transition font-semibold cursor-pointer"
           >
             Remove all favorites
           </button>
@@ -102,7 +102,7 @@ export function Favorites() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Filter your favorites by name..."
-              className="w-full pl-10 pr-10 py-2 border border-gray-200 rounded-full bg-gray-50 text-gray-700 text-sm focus:outline-none focus:border-red-400 focus:bg-white"
+              className="w-full pl-10 pr-10 h-[45px] sm:h-auto py-2 border border-gray-200 rounded-full bg-gray-50 text-gray-700 text-base sm:text-sm focus:outline-none focus:border-red-400 focus:bg-white"
             />
             <ClearButton show={search !== ""} onClear={() => setSearch("")} />
           </div>

@@ -49,6 +49,11 @@ export function artworkUrl(id: number): string {
   return `${POKEMON_BASE}/other/official-artwork/${id}.png`;
 }
 
+// Arte de Dream World (SVG). No existe para todos: si falla, usar artworkUrl
+export function dreamWorldUrl(id: number): string {
+  return `${POKEMON_BASE}/other/dream-world/${id}.svg`;
+}
+
 // Ícono de PC si existe; si no, arte oficial (para las vistas chicas)
 export function iconOrArtwork(id: number): string {
   return hasBoxIcon(id) ? boxIconUrl(id) : artworkUrl(id);

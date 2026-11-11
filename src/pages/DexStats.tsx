@@ -183,8 +183,8 @@ export function DexStats() {
                     key={r.id}
                     className="border-t border-gray-200 hover:bg-gray-50"
                   >
-                    <td className="py-1.5 px-3">
-                      <div className="flex items-center gap-2">
+                    <td className="py-1.5 pl-3 pr-5 whitespace-nowrap">
+                      <div className="flex items-center gap-2 [&_img]:shrink-0">
                         <SpriteImg
                           src={iconOrSprite(r.id)}
                           alt=""
@@ -192,7 +192,7 @@ export function DexStats() {
                           className="w-10 h-10 object-contain"
                           style={{ imageRendering: "pixelated" }}
                         />
-                        <span className="text-gray-500 tabular-nums">
+                        <span className="shrink-0 text-gray-500 tabular-nums">
                           {String(r.dex).padStart(4, "0")}
                         </span>
                       </div>

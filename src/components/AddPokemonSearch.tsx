@@ -46,7 +46,7 @@ export function AddPokemonSearch({
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => e.key === "Escape" && setSearch("")}
           placeholder={placeholder}
-          className="w-full pl-9 pr-10 py-2 border border-gray-300 rounded-full bg-white text-gray-700 text-sm focus:outline-none focus:border-red-400"
+          className="w-full pl-9 pr-10 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-full bg-white text-gray-700 text-base sm:text-sm focus:outline-none focus:border-red-400"
         />
         <ClearButton show={search !== ""} onClear={() => setSearch("")} />
       </div>

@@ -27,7 +27,8 @@ import { PokemonBox } from "../components/team/PokemonBox";
 
 const ENTRY_BY_ID = new Map(POKEMON_DATA.map((e) => [e.id, e]));
 
-const linkBtn = "text-gray-400 hover:text-gray-600 transition cursor-pointer";
+const linkBtn =
+  "min-h-[45px] sm:min-h-0 text-gray-400 hover:text-gray-600 transition cursor-pointer";
 
 export function TeamEditor() {
   const { teamId } = useParams();
@@ -89,6 +90,9 @@ export function TeamEditor() {
 
   // Juegos de Switch: arte oficial en lugar de sprites pixel
   const art = usesArtwork(game);
+
+  // Arrastrar solo con mouse: en el celular agarraba el dedo y no dejaba bajar
+  const canDrag = window.matchMedia("(pointer: fine)").matches;
 
   const startEdit = () => {
     setDraft(team.name);
@@ -189,7 +193,7 @@ export function TeamEditor() {
     <section className="max-w-7xl mx-auto px-4 py-8">
       <Link
         to="/team-planner"
-        className="text-sm text-gray-400 hover:text-gray-600 transition"
+        className="inline-flex items-center min-h-[45px] sm:min-h-0 text-sm text-gray-400 hover:text-gray-600 transition"
       >
         ← Teams
       </Link>
@@ -197,7 +201,7 @@ export function TeamEditor() {
       {/* Título, o el formulario para renombrar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-2">
         {editing ? (
-          <form onSubmit={handleRename} className="flex flex-1 gap-2">
+          <form onSubmit={handleRename} className="flex flex-1 flex-wrap gap-2">
             <input
               autoFocus
               value={draft}
@@ -207,18 +211,18 @@ export function TeamEditor() {
               }}
               onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
               maxLength={40}
-              className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-xl font-bold text-gray-900 focus:outline-none focus:border-red-400"
+              className="w-full sm:w-auto sm:flex-1 min-w-0 px-3 h-[45px] sm:h-auto py-1.5 border border-gray-300 rounded-lg text-xl font-bold text-gray-900 focus:outline-none focus:border-red-400"
             />
             <button
               type="submit"
-              className="px-4 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
+              className="min-h-[45px] sm:min-h-0 px-4 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
             >
               Save
             </button>
             <button
               type="button"
               onClick={() => setEditing(false)}
-              className="px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="min-h-[45px] sm:min-h-0 px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
             >
               Cancel
             </button>
@@ -226,7 +230,7 @@ export function TeamEditor() {
         ) : (
           <>
             <h2 className="text-2xl font-bold text-gray-900">{team.name}</h2>
-            <div className="flex gap-4 text-sm font-semibold">
+            <div className="min-h-[45px] sm:min-h-0 flex gap-4 text-sm font-semibold">
               <button onClick={startEdit} className={linkBtn}>
                 Rename
               </button>
@@ -243,7 +247,7 @@ export function TeamEditor() {
               )}
               <button
                 onClick={handleDelete}
-                className="text-gray-400 hover:text-red-500 transition cursor-pointer"
+                className="min-h-[45px] sm:min-h-0 text-gray-400 hover:text-red-500 transition cursor-pointer"
               >
                 Delete team
               </button>
@@ -270,7 +274,7 @@ export function TeamEditor() {
                 setDupError(null);
               }}
               maxLength={40}
-              className="flex-1 min-w-48 px-4 py-2 border border-gray-300 rounded-full text-gray-700 text-sm focus:outline-none focus:border-red-400"
+              className="flex-1 min-w-48 px-4 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-full text-gray-700 text-base sm:text-sm focus:outline-none focus:border-red-400"
             />
             <GameSelect
               value={dupGame}
@@ -282,14 +286,14 @@ export function TeamEditor() {
             <button
               type="submit"
               disabled={busy}
-              className="px-5 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer disabled:opacity-50"
+              className="px-5  h-[45px] sm:h-auto py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer disabled:opacity-50"
             >
               {busy ? "Duplicating..." : "Duplicate"}
             </button>
             <button
               type="button"
               onClick={() => setDuplicating(false)}
-              className="px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="min-h-[45px] sm:min-h-0 px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
             >
               Cancel
             </button>
@@ -314,7 +318,7 @@ export function TeamEditor() {
           <button
             onClick={() => setNotesHidden(true)}
             title="Dismiss"
-            className="absolute top-2 right-3 text-amber-500 hover:text-amber-700 cursor-pointer"
+            className="absolute top-0 right-0 w-[45px] h-[45px] flex items-center justify-center text-amber-500 hover:text-amber-700 cursor-pointer"
           >
             ✕
           </button>
@@ -364,7 +368,7 @@ export function TeamEditor() {
           return (
             <div
               key={i}
-              draggable
+              draggable={canDrag}
               onDragStart={(e) => {
                 // Firefox no arrastra si no hay datos
                 e.dataTransfer.setData("text/plain", String(i));
@@ -376,9 +380,11 @@ export function TeamEditor() {
               onDragLeave={() => setDragOver(null)}
               onDrop={() => handleDrop(i)}
               onClick={() => setSelected(i === selected ? null : i)}
-              className={`flex flex-col items-center gap-1 h-48 p-3 rounded-xl border cursor-grab active:cursor-grabbing transition ${
-                dragFrom === i ? "opacity-40" : ""
-              } ${
+              className={`flex flex-col items-center gap-1 h-48 p-3 rounded-xl border transition ${
+                canDrag
+                  ? "cursor-grab active:cursor-grabbing"
+                  : "cursor-pointer"
+              } ${dragFrom === i ? "opacity-40" : ""} ${
                 isOver
                   ? "border-red-400 border-dashed bg-red-50"
                   : i === selected
@@ -429,7 +435,7 @@ export function TeamEditor() {
                   removeMember(team.id, i);
                   setSelected(null);
                 }}
-                className="mt-auto text-xs font-semibold text-gray-400 hover:text-red-500 transition cursor-pointer"
+                className="relative mt-auto text-xs font-semibold text-gray-400 hover:text-red-500 transition cursor-pointer after:absolute after:-inset-x-4 after:-inset-y-[15px]"
               >
                 Remove
               </button>

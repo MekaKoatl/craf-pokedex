@@ -47,12 +47,13 @@ function LocationChips({ locations }: { locations: string[] }) {
         </span>
       ))}
       {locations.length > SHOW && (
-        <span
+        <button
+          type="button"
           onClick={() => setShowAll((v) => !v)}
-          className="text-red-400 text-xs cursor-pointer hover:underline"
+          className="min-h-[45px] sm:min-h-0 px-1 text-red-400 text-xs cursor-pointer hover:underline"
         >
           {showAll ? "show less" : `+${locations.length - SHOW} more`}
-        </span>
+        </button>
       )}
     </div>
   );
@@ -97,7 +98,7 @@ export function MoreInfoPanel({
     <div className="mb-8">
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-xl transition ${
+        className={`w-full min-h-[45px] sm:min-h-0 flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold border rounded-xl transition ${
           open
             ? "bg-red-50 border-red-200 text-red-500 hover:bg-red-100"
             : "bg-gray-50 border-gray-200 text-gray-400 hover:border-gray-300 hover:text-gray-600"
@@ -107,7 +108,8 @@ export function MoreInfoPanel({
       </button>
 
       {open && (
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-4 bg:red">
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {" "}
           <Card label="Egg Groups">
             <span className="capitalize">{eggGroups}</span>
           </Card>
