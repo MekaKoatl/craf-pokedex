@@ -54,6 +54,20 @@ export function dreamWorldUrl(id: number): string {
   return `${POKEMON_BASE}/other/dream-world/${id}.svg`;
 }
 
+const ITEM_BASE =
+  "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items";
+
+// Las imágenes grandes de un objeto, de mejor a peor.
+// La API no las menciona y cada carpeta tiene solo algunos objetos:
+// hay que probarlas en orden y pasar a la siguiente si falla.
+export function itemArtUrls(name: string): string[] {
+  return [
+    `${ITEM_BASE}/gen9/${name}.png`, // HD, 160px
+    `${ITEM_BASE}/gen8/${name}.png`, // HD, 160px
+    `${ITEM_BASE}/dream-world/${name}.png`, // dibujo, ~90px
+  ];
+}
+
 // Ícono de PC si existe; si no, arte oficial (para las vistas chicas)
 export function iconOrArtwork(id: number): string {
   return hasBoxIcon(id) ? boxIconUrl(id) : artworkUrl(id);

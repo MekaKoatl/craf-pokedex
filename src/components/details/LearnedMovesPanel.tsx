@@ -4,6 +4,7 @@ import { getMove, fetchInBatches } from "../../lib/api";
 import { buildLearnset } from "../../lib/learnset";
 import { prettyName } from "../../lib/text";
 import { TypeBadge } from "../badges/TypeBadge";
+import { CategoryBadge } from "../badges/CategoryBadge";
 import { LoadingSpinner } from "../LoadingSpinner";
 import type { PokemonFull } from "../../types/pokemon";
 import type { Move } from "../../types/move";
@@ -69,11 +70,7 @@ function MoveTable({
                     const m = moves[r.name];
                     // Se arma una vez y se usa en dos lugares
                     const cat = m ? (
-                      <span
-                        className={`move-cat move-cat-${m.damage_class.name}`}
-                      >
-                        {m.damage_class.name}
-                      </span>
+                      <CategoryBadge category={m.damage_class.name} />
                     ) : (
                       "—"
                     );
@@ -92,12 +89,14 @@ function MoveTable({
                         <td className="py-1.5 px-1 sm:px-2 font-semibold text-gray-800 sm:whitespace-nowrap">
                           {prettyName(r.name)}
                         </td>
-                        <td className="py-1.5 px-1 sm:px-2 [&_.type-badge]:inline-block [&_.type-badge]:max-w-none [&_.type-badge]:w-16 sm:[&_.type-badge]:w-20 [&_.type-badge]:text-center [&_.move-cat]:inline-block [&_.move-cat]:w-16 [&_.move-cat]:px-0 [&_.move-cat]:text-center">
+                        <td className="py-1.5 px-1 sm:px-2 [&_.type-badge]:inline-block [&_.type-badge]:max-w-none [&_.type-badge]:w-16 sm:[&_.type-badge]:w-20 [&_.type-badge]:text-center [&_.move-cat]:w-16 [&_.move-cat]:px-0">
+                          {" "}
                           {m ? <TypeBadge type={m.type.name} /> : "—"}
                           {/* Solo en celular: la categoría debajo del tipo */}
                           <span className="sm:hidden block mt-1">{cat}</span>
                         </td>
-                        <td className="hidden sm:table-cell py-1.5 px-2 [&_.move-cat]:inline-block [&_.move-cat]:w-20 [&_.move-cat]:text-center">
+                        <td className="hidden sm:table-cell py-1.5 px-2 [&_.move-cat]:w-24">
+                          {" "}
                           {cat}
                         </td>
                         <td className="py-1.5 px-1 sm:px-2 text-right text-gray-700">

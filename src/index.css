@@ -981,23 +981,33 @@
   color: #fff;
 }
 
+/* La caja que contiene la lista: encabezado y filas */
 .item-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: #f3f4f6;
   border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  overflow: hidden;
+  border-radius: 1.5rem;
 }
 
+/* Las mismas columnas en el encabezado y en las filas.
+   La última (45px) es la del + */
 .item-head,
 .item-row {
   display: grid;
-  grid-template-columns: 240px 150px 1fr;
+  grid-template-columns: 240px 150px 1fr 45px;
   align-items: center;
   width: 100%;
   text-align: left;
 }
 
+/* Sin fondo: es parte de la caja. El borde transparente
+   iguala el de las filas para que las columnas coincidan */
 .item-head {
-  background: #f3f4f6;
+  padding: 0 0.4rem;
+  border: 1px solid transparent;
 }
 
 .item-head-cell {
@@ -1015,6 +1025,10 @@
   cursor: pointer;
   transition: color 0.15s;
 }
+/* "Name" arranca donde arranca el nombre, no el círculo */
+.item-head-cell:first-child {
+  padding-left: calc(36px + 0.75rem);
+}
 .item-head-cell:hover {
   color: #4b5563;
 }
@@ -1031,19 +1045,34 @@
   line-height: 1;
 }
 
+/* Cada fila es una píldora separada */
 .item-row {
+  padding: 0.3rem 0.4rem;
   background: #fff;
-  border: none;
-  border-top: 1px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
-.item-row:hover {
+/* Una sí, una no en gris claro. El encabezado es el primer
+   hijo de la caja, por eso las filas grises son las "odd" */
+.item-row:nth-child(odd) {
   background: #f9fafb;
+}
+@media (hover: hover) {
+  .item-row:hover {
+    border-color: #fca5a5;
+  }
+  .item-row:hover .item-plus {
+    color: #ef4444;
+    background: #fee2e2;
+  }
 }
 
 .item-cell {
-  padding: 0.55rem 0.9rem;
+  padding: 0.35rem 0.9rem;
   font-size: 0.8rem;
   color: #374151;
   min-width: 0;
@@ -1051,18 +1080,26 @@
 .item-cell-name {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
+  padding-left: 0;
   font-weight: 600;
   color: #111827;
 }
-.item-cell-name img {
+/* El círculo donde va el sprite */
+.item-sprite {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #f3f4f6;
+}
+.item-sprite img {
   width: 28px;
   height: 28px;
-  flex: 0 0 28px;
   object-fit: contain;
-}
-.item-sprite-gap {
-  flex: 0 0 28px;
 }
 .item-cell-cat {
   color: #6b7280;
@@ -1073,16 +1110,32 @@
   white-space: nowrap;
 }
 
-/* Fila abierta: ocupa el ancho completo de la tabla */
+/* El + de la derecha */
+.item-plus {
+  justify-self: center;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #9ca3af;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+
+/* Fila abierta: una tarjeta blanca dentro de la caja */
 .item-expanded {
   position: relative;
   padding: 1.25rem;
-  margin: 0.75rem 0.5rem;
-  background: #f9fafb;
+  background: #fff;
   border: 2px solid #fca5a5;
-  border-radius: 0.75rem;
+  border-radius: 1.25rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  /* Al hacer scroll hasta él, deja un poco de aire arriba */
+  /* Al hacer scroll hasta ella, deja un poco de aire arriba */
   scroll-margin-top: 1rem;
 }
 
@@ -1105,39 +1158,50 @@
   .item-head {
     display: none;
   }
+  .item-table {
+    padding: 0.4rem;
+    border-radius: 1.25rem;
+  }
+  /* En celular: círculo + nombre, y el + a la derecha */
   .item-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 45px;
   }
-  .item-cell {
-    padding: 0.2rem 0.9rem;
-  }
-  .item-cell-name {
-    padding-top: 0.6rem;
-  }
+  .item-cell-cat,
   .item-cell-effect {
-    white-space: normal;
-    padding-bottom: 0.6rem;
+    display: none;
+  }
+  .item-expanded {
+    padding: 1rem;
   }
 }
 
 /* ── ABILITIES ─────────────────────────── */
+/* La caja que contiene la lista: encabezado y filas (igual que Items) */
 .ability-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: #f3f4f6;
   border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  overflow: hidden;
+  border-radius: 1.5rem;
 }
 
+/* Nombre · Pokémon · Descripción · Gen · + */
 .ability-head,
 .ability-row {
   display: grid;
-  grid-template-columns: 200px 90px 1fr 70px;
+  grid-template-columns: 200px 90px 1fr 60px 45px;
   align-items: center;
   width: 100%;
   text-align: left;
 }
 
+/* Sin fondo: es parte de la caja. El borde transparente
+   iguala el de las filas para que las columnas coincidan */
 .ability-head {
-  background: #f3f4f6;
+  padding: 0 0.4rem;
+  border: 1px solid transparent;
 }
 
 .ability-head-cell {
@@ -1167,26 +1231,41 @@
   color: #9ca3af;
 }
 
+/* Cada fila es una píldora separada */
 .ability-row {
+  min-height: 45px;
+  padding: 0.3rem 0.4rem;
   background: #fff;
-  border: none;
-  border-top: 1px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
-.ability-row:hover {
+/* Una sí, una no en gris claro (el encabezado es el primer hijo) */
+.ability-row:nth-child(odd) {
   background: #f9fafb;
+}
+@media (hover: hover) {
+  .ability-row:hover {
+    border-color: #fca5a5;
+  }
+  .ability-row:hover .item-plus {
+    color: #ef4444;
+    background: #fee2e2;
+  }
 }
 
 .ability-cell {
-  padding: 0.55rem 0.9rem;
+  padding: 0.35rem 0.9rem;
   font-size: 0.8rem;
   color: #374151;
   min-width: 0;
 }
 .ability-cell-name {
   font-weight: 700;
-  color: #ef4444;
+  color: #000000;
 }
 .ability-cell-count {
   color: #6b7280;
@@ -1202,14 +1281,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Fila abierta: ocupa el ancho completo de la tabla */
+/* Fila abierta: una tarjeta blanca dentro de la caja */
 .ability-expanded {
   position: relative;
   padding: 1.25rem;
-  margin: 0.75rem 0.5rem;
-  background: #f9fafb;
+  background: #fff;
   border: 2px solid #fca5a5;
-  border-radius: 0.75rem;
+  border-radius: 1.25rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   scroll-margin-top: 1rem;
 }
@@ -1218,28 +1296,21 @@
   .ability-head {
     display: none;
   }
+  .ability-table {
+    padding: 0.4rem;
+    border-radius: 1.25rem;
+  }
+  /* En celular: nombre y + */
   .ability-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 45px;
   }
-  .ability-cell {
-    padding: 0.2rem 0.9rem;
-  }
-  .ability-cell-name {
-    padding-top: 0.6rem;
-  }
-  .ability-cell-desc {
-    white-space: normal;
-  }
-  /* Sin encabezados, los números sueltos no se entienden */
-  .ability-cell-count::before {
-    content: "Pokémon: ";
-    color: #9ca3af;
-  }
-  .ability-cell-gen::before {
-    content: "Gen ";
-  }
+  .ability-cell-count,
+  .ability-cell-desc,
   .ability-cell-gen {
-    padding-bottom: 0.6rem;
+    display: none;
+  }
+  .ability-expanded {
+    padding: 1rem;
   }
 }
 
@@ -1331,24 +1402,31 @@
   color: #ef4444;
 }
 
-/* ── MOVES ─────────────────────────── */
+/* La caja que contiene la lista (igual que Items y Abilities) */
 .move-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: #f3f4f6;
   border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  overflow: hidden;
+  border-radius: 1.5rem;
 }
 
+/* Nombre · Tipo · Categoría · Power · Acc · PP · Efecto · + */
 .move-head,
 .move-row {
   display: grid;
-  grid-template-columns: 180px 100px 110px 60px 60px 50px 1fr;
+  grid-template-columns: 170px 100px 120px 70px 70px 55px 1fr 45px;
   align-items: stretch;
   width: 100%;
   text-align: left;
 }
 
+/* Sin fondo: es parte de la caja. El borde transparente
+   iguala el de las filas para que las columnas coincidan */
 .move-head {
-  background: #f3f4f6;
+  border: 1px solid transparent;
 }
 
 .move-head-cell {
@@ -1378,15 +1456,38 @@
   color: #9ca3af;
 }
 
-.move-row {
-  background: #fff;
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  cursor: pointer;
-  transition: background 0.15s;
+/* Type, Cat., Power, Acc. y PP: título centrado igual que sus datos */
+.move-head-cell:nth-child(n + 2):nth-child(-n + 6) {
+  justify-content: center;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
 }
-.move-row:hover {
+
+/* Cada fila es una píldora. overflow: hidden hace que el color
+   del nombre respete la curva del borde */
+.move-row {
+  min-height: 45px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+/* Una sí, una no en gris claro (el encabezado es el primer hijo) */
+.move-row:nth-child(odd) {
   background: #f9fafb;
+}
+@media (hover: hover) {
+  .move-row:hover {
+    border-color: #fca5a5;
+  }
+  .move-row:hover .item-plus {
+    color: #ef4444;
+    background: #fee2e2;
+  }
 }
 
 .move-cell {
@@ -1397,61 +1498,83 @@
   color: #374151;
   min-width: 0;
 }
-/* El color de fondo lo pone la clase type-* del tipo */
+/* Nombre y tipo: el fondo lo pone la clase type-* del tipo */
 .move-cell-name {
   font-weight: 700;
   color: #fff;
 }
+.move-cell-type {
+  justify-content: center;
+  font-weight: 600;
+  color: #fff;
+  border-left: 2px solid rgba(0, 0, 0, 0.2);
+}
 /* Sobre estos tres el blanco no se lee */
 .move-cell-name.type-electric,
 .move-cell-name.type-ground,
-.move-cell-name.type-steel {
+.move-cell-name.type-steel,
+.move-cell-type.type-electric,
+.move-cell-type.type-ground,
+.move-cell-type.type-steel {
   color: #111827;
 }
-/* La API no trae iconos de categoría, así que van por color */
-.move-cat {
-  display: inline-block;
-  padding: 2px 9px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-.move-cat-physical {
-  background: #fadfcd;
-  color: #9a4a16;
-}
-.move-cat-special {
-  background: #d6e4f7;
-  color: #1d4e8f;
-}
-.move-cat-status {
-  background: #e5e7eb;
-  color: #4b5563;
+.move-cell-cat {
+  justify-content: center;
+  padding: 0.35rem 0.5rem;
 }
 .move-cell-num {
-  justify-content: flex-end;
+  justify-content: center;
+  padding: 0.5rem 0.25rem;
   font-variant-numeric: tabular-nums;
 }
+/* Una sola línea con "..." para que la fila no se deforme */
 .move-cell-effect {
+  display: block;
+  align-self: center;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.move-cell-effect {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.move-row .item-plus {
+  align-self: center;
 }
-/* Fila abierta: ocupa el ancho completo de la tabla */
+
+/* Pastilla de categoría: color de fondo + ícono blanco */
+.move-cat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+  white-space: nowrap;
+  color: #fff;
+}
+.move-cat-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+.move-cat-physical {
+  background: #e8562a;
+}
+.move-cat-special {
+  background: #3f72d9;
+}
+.move-cat-status {
+  background: #8b8f97;
+}
+
+/* Fila abierta: una tarjeta blanca dentro de la caja */
 .move-expanded {
   position: relative;
   padding: 1.25rem;
-  margin: 0.75rem 0.5rem;
-  background: #f9fafb;
+  background: #fff;
   border: 2px solid #fca5a5;
-  border-radius: 0.75rem;
+  border-radius: 1.25rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   scroll-margin-top: 1rem;
 }
@@ -1460,45 +1583,55 @@
   .move-head {
     display: none;
   }
-  /* En celular cada movimiento es una tarjetita de 3 líneas */
+  .move-table {
+    padding: 0.4rem;
+    border-radius: 1.25rem;
+  }
+  /* En celular: nombre · tipo · categoría · + */
   .move-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 6px 10px;
-    padding: 0.75rem;
+    grid-template-columns: minmax(0, 1fr) 84px 92px 36px;
+  }
+  .move-cell-num,
+  .move-cell-effect {
+    display: none;
   }
   .move-cell {
-    padding: 0;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
   }
-  /* El nombre ocupa toda la primera línea */
+  /* Nombre: texto normal, sin el color del tipo */
   .move-cell-name {
-    flex-basis: 100%;
-    padding: 0.4rem 0.7rem;
-    border-radius: 0.5rem;
+    background: none;
+    color: #111827;
+    padding-left: 0.9rem;
   }
-  /* margin-left: auto empuja los números a la derecha */
-  .move-cell-power {
-    margin-left: auto;
+  /* Tipo: una píldora de color. background-clip pinta solo el
+     contenido de la celda, así el padding queda como margen */
+  .move-cell-type {
+    border-left: none;
+    padding: 0.4rem 0.25rem;
+    background-clip: content-box;
+    border-radius: 999px;
   }
-  /* Sin encabezados, cada número lleva su etiqueta */
-  .move-cell-num::before {
-    color: #9ca3af;
-    margin-right: 4px;
+  /* Categoría: rectángulo de color con una línea clara por dentro */
+  .move-cell-cat {
+    padding: 0.3rem 0.25rem;
   }
-  .move-cell-power::before {
-    content: "Power";
+  .move-cell-cat .move-cat {
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
   }
-  .move-cell-acc::before {
-    content: "Acc";
+  .move-cat {
+    gap: 3px;
+    padding: 3px 7px;
+    font-size: 10px;
   }
-  .move-cell-pp::before {
-    content: "PP";
+  .move-cat-icon {
+    width: 14px;
+    height: 14px;
   }
-  /* El efecto ocupa toda la última línea */
-  .move-cell-effect {
-    flex-basis: 100%;
-    color: #6b7280;
+  .move-expanded {
+    padding: 1rem;
   }
 }
 

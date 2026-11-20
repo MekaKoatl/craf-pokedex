@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { SpriteImg } from "../SpriteImg";
 import { useRevealOnOpen } from "../../hooks/useRevealOnOpen";
-import { cdnSprite } from "../../lib/sprites";
+import { cdnSprite, itemArtUrls } from "../../lib/sprites";
 import {
   prettyName,
   itemShortEffect,
@@ -21,6 +22,34 @@ function usedFor(item: Item): string {
   return uses.join(", ");
 }
 
+// La imagen más grande que exista: HD → Dream World → el pixel de siempre.
+// Si una falla (onError), pasa a la siguiente.
+function ItemArt({
+  name,
+  fallback,
+  alt,
+}: {
+  name: string;
+  fallback: string;
+  alt: string;
+}) {
+  const urls = [...itemArtUrls(name), fallback].filter(Boolean);
+  const [i, setI] = useState(0);
+  const src = urls[i];
+  const pixel = src === fallback;
+
+  return (
+    <SpriteImg
+      src={src}
+      alt={alt}
+      // El pixel se agranda menos y sin suavizar; el arte, más grande
+      className={`${pixel ? "w-12 h-12" : "w-16 h-16"} object-contain`}
+      style={pixel ? { imageRendering: "pixelated" } : undefined}
+      onError={() => setI((n) => Math.min(n + 1, urls.length - 1))}
+    />
+  );
+}
+
 export function ItemRow({
   item,
   open,
@@ -38,12 +67,11 @@ export function ItemRow({
     return (
       <button className="item-row" onClick={onToggle}>
         <span className="item-cell item-cell-name">
-          {/* Sin sprite no se monta SpriteImg, si no queda el gif de carga fijo */}
-          {sprite ? (
-            <SpriteImg src={sprite} alt="" />
-          ) : (
-            <span className="item-sprite-gap" />
-          )}
+          {/* El sprite va dentro de un círculo. Sin sprite no se monta
+              SpriteImg, si no queda el gif de carga fijo */}
+          <span className="item-sprite">
+            {sprite && <SpriteImg src={sprite} alt="" />}
+          </span>
           {name}
         </span>
         <span className="item-cell item-cell-cat">
@@ -51,6 +79,9 @@ export function ItemRow({
         </span>
         <span className="item-cell item-cell-effect">
           {itemShortEffect(item)}
+        </span>
+        <span className="item-plus" aria-hidden="true">
+          +
         </span>
       </button>
     );
@@ -91,13 +122,10 @@ export function ItemRow({
       </button>
 
       {/* Encabezado */}
-      <div className="flex items-start gap-4">
+      <div className="flex items-center gap-4">
+        {" "}
         <div className="w-20 h-20 flex-shrink-0 bg-white border border-gray-200 rounded-lg flex items-center justify-center">
-          <SpriteImg
-            src={sprite}
-            alt={name}
-            className="w-12 h-12 object-contain"
-          />
+          <ItemArt name={item.name} fallback={sprite} alt={name} />
         </div>
         <div className="flex-1 min-w-0 pr-8">
           {" "}
@@ -108,11 +136,11 @@ export function ItemRow({
             {prettyName(item.category.name)}
             {gen && ` · ${gen}`}
           </p>
-          {short && (
-            <p className="text-gray-700 mt-2 leading-relaxed">{short}</p>
-          )}
         </div>
       </div>
+
+      {/* La descripción corta va debajo del encabezado, a todo el ancho */}
+      {short && <p className="text-gray-700 mt-3 leading-relaxed">{short}</p>}
 
       {/* Flavor */}
       {flavor && (

@@ -25,6 +25,7 @@ import {
 import { prettyName } from "../../lib/text";
 import { SpriteImg } from "../SpriteImg";
 import { TypeBadge } from "../badges/TypeBadge";
+import { CategoryBadge } from "../badges/CategoryBadge";
 import { SearchSelect } from "../SearchSelect";
 import { POKEMON_DATA } from "../../data/pokemon-data";
 import { StatsEditor } from "./StatsEditor";
@@ -245,9 +246,7 @@ export function MemberPanel({
               {info && (
                 <div className="flex flex-wrap items-center gap-2 mt-2 px-1 text-xs text-gray-500 [&_.type-badge]:inline-block [&_.type-badge]:w-20">
                   <TypeBadge type={info.type} />
-                  <span className={`move-cat move-cat-${info.category}`}>
-                    {info.category}
-                  </span>
+                  <CategoryBadge category={info.category} />
                   <span>Pow {info.power ?? "—"}</span>
                   <span>
                     Acc {info.accuracy !== null ? `${info.accuracy}%` : "—"}

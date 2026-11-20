@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import { SpriteImg } from "../SpriteImg";
 import { useRevealOnOpen } from "../../hooks/useRevealOnOpen";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { iconOrSprite } from "../../lib/sprites";
 import { getRegionalDisplayName } from "../../lib/regional";
 import { prettyName, idFromUrl } from "../../lib/text";
 import { genLabel } from "../../lib/items";
 import { TypeBadge } from "../badges/TypeBadge";
+import { CategoryBadge } from "../badges/CategoryBadge";
 import { moveShortEffect, moveEffect, moveFlavor } from "../../lib/moves";
 import type { Move } from "../../types/move";
 
-const LEARNED_CAP = 50;
+const LEARNED_ROWS = 2;
 
 export function MoveRow({
   move,
@@ -23,19 +25,20 @@ export function MoveRow({
   const ref = useRevealOnOpen<HTMLDivElement>(open);
   const name = prettyName(move.name);
   const type = move.type.name;
+  // Cuántas columnas tiene "Learned by" (las mismas que sm: y lg: del grid)
+  const isSm = useMediaQuery("(min-width: 640px)");
+  const isLg = useMediaQuery("(min-width: 1024px)");
 
   if (!open) {
     return (
       <button className="move-row" onClick={onToggle}>
-        {/* El fondo del nombre toma el color del tipo */}
+        {/* Nombre y tipo llevan de fondo el color del tipo */}
         <span className={`move-cell move-cell-name type-${type}`}>{name}</span>
-        <span className="move-cell">
-          <TypeBadge type={type} />
+        <span className={`move-cell move-cell-type type-${type}`}>
+          {prettyName(type)}
         </span>
-        <span className="move-cell">
-          <span className={`move-cat move-cat-${move.damage_class.name}`}>
-            {move.damage_class.name}
-          </span>
+        <span className="move-cell move-cell-cat">
+          <CategoryBadge category={move.damage_class.name} />
         </span>
         <span className="move-cell move-cell-num move-cell-power">
           {move.power ?? "—"}
@@ -48,6 +51,9 @@ export function MoveRow({
         </span>
         <span className="move-cell move-cell-effect">
           {moveShortEffect(move)}
+        </span>
+        <span className="item-plus" aria-hidden="true">
+          +
         </span>
       </button>
     );
@@ -124,9 +130,11 @@ export function MoveRow({
   const learners = move.learned_by_pokemon.filter(
     (p) => !p.name.endsWith("-gmax"),
   );
-  const visible = learners.slice(0, LEARNED_CAP);
+  // Hasta 2 filas; si sobran, el último lugar es para el "…and X more"
+  const cols = isLg ? 12 : isSm ? 8 : 4;
+  const max = cols * LEARNED_ROWS;
+  const visible = learners.length > max ? learners.slice(0, max - 1) : learners;
   const hidden = learners.length - visible.length;
-
   return (
     <div ref={ref} className="move-expanded">
       <button
@@ -138,14 +146,11 @@ export function MoveRow({
       </button>
 
       <h3 className="text-2xl font-bold text-gray-900 leading-tight pr-8">
-        {" "}
         {name}
       </h3>
       <div className="flex items-center gap-2 mt-2">
         <TypeBadge type={type} />
-        <span className={`move-cat move-cat-${move.damage_class.name}`}>
-          {move.damage_class.name}
-        </span>
+        <CategoryBadge category={move.damage_class.name} />
         {gen && (
           <span className="text-xs font-bold uppercase tracking-wide text-gray-400">
             {gen}
@@ -191,7 +196,8 @@ export function MoveRow({
           <h4 className="text-xs font-bold uppercase tracking-wide text-gray-400">
             Learned by ({learners.length})
           </h4>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(68px,1fr))] gap-1 mt-2">
+          {/* Columnas fijas para poder contar cuántos entran en 2 filas */}
+          <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-1 mt-2">
             {visible.map((p) => {
               const id = idFromUrl(p.url);
               return (
@@ -212,12 +218,13 @@ export function MoveRow({
                 </Link>
               );
             })}
+            {/* El último lugar de la segunda fila */}
+            {hidden > 0 && (
+              <div className="flex items-center justify-center p-1 text-center text-[0.65rem] leading-tight text-gray-400">
+                …and {hidden} more Pokémon not shown.
+              </div>
+            )}
           </div>
-          {hidden > 0 && (
-            <p className="text-xs text-gray-400 mt-2">
-              …and {hidden} more Pokémon not shown.
-            </p>
-          )}
         </div>
       )}
     </div>

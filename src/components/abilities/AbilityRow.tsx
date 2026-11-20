@@ -86,6 +86,9 @@ export function AbilityRow({
         <span className="ability-cell ability-cell-gen">
           {GEN_NUM[ability.generation.name] ?? "—"}
         </span>
+        <span className="item-plus" aria-hidden="true">
+          +
+        </span>
       </button>
     );
   }
