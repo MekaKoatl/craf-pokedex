@@ -2,6 +2,7 @@ import { useState, type RefObject } from "react";
 import { POKEMON_DATA } from "../../data/pokemon-data";
 import { GAME_POKEMON } from "../../data/pokemon-games";
 import { REGIONAL_DEX } from "../../data/regional-dex";
+import { POKEMON_STATS } from "../../data/pokemon-stats";
 import {
   genLabel,
   spriteStyle,
@@ -9,11 +10,13 @@ import {
   usesArtwork,
   type Game,
 } from "../../lib/games";
-import { typesForGen } from "../../lib/typeChart";
+import { defenseMultiplier, typesForGen } from "../../lib/typeChart";
 import { getRegionalDisplayName } from "../../lib/regional";
 import { compareDex, dexNumber } from "../../lib/dexOrder";
 import { FilterPanel } from "../filters/FilterPanel";
 import { ClearButton } from "../ClearButton";
+import { TypeBadge } from "../badges/TypeBadge";
+import { useTeamDefense } from "../../hooks/useTeamDefense";
 import type { TeamMember } from "../../context/TeamsContext";
 
 // Región de origen → generación (las de Hisui son de Gen VIII)
@@ -36,6 +39,38 @@ const COLLAPSED_HEIGHT = 204;
 // Agrega o quita un valor de una lista
 function toggleIn<T>(arr: T[], v: T): T[] {
   return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
+}
+
+// Cómo ordenar la caja. Los stats van de mayor a menor.
+type SortKey = "dex" | "total" | "hp" | "atk" | "def" | "spa" | "spd" | "spe";
+
+const SORT_OPTIONS: { key: SortKey; label: string }[] = [
+  { key: "dex", label: "Sort: Pokédex" },
+  { key: "total", label: "Sort: Total" },
+  { key: "hp", label: "Sort: HP" },
+  { key: "atk", label: "Sort: Attack" },
+  { key: "def", label: "Sort: Defense" },
+  { key: "spa", label: "Sort: Sp. Atk" },
+  { key: "spd", label: "Sort: Sp. Def" },
+  { key: "spe", label: "Sort: Speed" },
+];
+
+// Posición de cada stat en el array de pokemon-stats.ts
+const STAT_INDEX: Record<string, number> = {
+  hp: 0,
+  atk: 1,
+  def: 2,
+  spa: 3,
+  spd: 4,
+  spe: 5,
+};
+
+// El valor por el que se ordena, o null si ese Pokémon no tiene datos
+function statValue(id: number, key: SortKey): number | null {
+  const stats = POKEMON_STATS[id];
+  if (!stats) return null;
+  if (key === "total") return stats.reduce((a, b) => a + b, 0);
+  return stats[STAT_INDEX[key]] ?? null;
 }
 
 // Botón que se prende y apaga, mismo estilo que Defense / Offense
@@ -84,6 +119,22 @@ export function PokemonBox({
   const [hideTeam, setHideTeam] = useState(false);
   const [openPanel, setOpenPanel] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
+  const [sortKey, setSortKey] = useState<SortKey>("dex");
+  const [coverOnly, setCoverOnly] = useState(false);
+
+  // Los tipos donde el equipo da negativo en el Team Analysis.
+  // null mientras cargan los datos del equipo.
+  const defense = useTeamDefense(members, game);
+  const weakTypes = defense
+    ? defense.filter((d) => d.total < 0).map((d) => d.type)
+    : null;
+  // Cuántos de esos tipos resiste (o anula) un Pokémon, con sus tipos de hoy
+  const coverCount = (types: string[]) =>
+    (weakTypes ?? []).filter(
+      (atk) => defenseMultiplier(atk, types, game.gen) < 1,
+    ).length;
+  // El filtro solo actúa si está prendido y hay debilidades para cubrir
+  const covering = coverOnly && !!weakTypes && weakTypes.length > 0;
 
   const available = new Set(GAME_POKEMON[game.group] ?? []);
   const regional = new Set(REGIONAL_DEX[game.group] ?? []);
@@ -103,6 +154,7 @@ export function PokemonBox({
     if (hideTeam && inTeam.has(e.id)) return false;
     if (types.length && !types.some((t) => e.types.includes(t))) return false;
     if (gens.length && !gens.includes(REGION_GEN[e.region] ?? 0)) return false;
+    if (covering && coverCount(e.types) === 0) return false;
     if (
       q &&
       !e.name.includes(q) &&
@@ -111,6 +163,16 @@ export function PokemonBox({
       return false;
     return true;
   }).sort((a, b) => {
+    // Por stat: de mayor a menor (los que no tienen datos, al final)
+    if (sortKey !== "dex") {
+      const diff =
+        (statValue(b.id, sortKey) ?? -1) - (statValue(a.id, sortKey) ?? -1);
+      if (diff) return diff;
+    } else if (covering) {
+      // Cubriendo debilidades: primero los que cubren más tipos
+      const diff = coverCount(b.types) - coverCount(a.types);
+      if (diff) return diff;
+    }
     // Primero los de la Pokédex del juego, en su orden;
     // después el resto, por número nacional
     const ia = dexOrder.get(dexNumber(a.id)) ?? Infinity;
@@ -124,6 +186,7 @@ export function PokemonBox({
     gens.length > 0 ||
     finalOnly ||
     hideTeam ||
+    coverOnly ||
     q !== "";
 
   function clearFilters() {
@@ -133,6 +196,8 @@ export function PokemonBox({
     setGens([]);
     setFinalOnly(false);
     setHideTeam(false);
+    setCoverOnly(false);
+    setSortKey("dex");
   }
 
   // Solo hasta la generación del juego
@@ -203,6 +268,25 @@ export function PokemonBox({
         <Toggle active={hideTeam} onClick={() => setHideTeam((v) => !v)}>
           Hide team
         </Toggle>
+        {/* Solo tiene sentido con al menos un Pokémon en el equipo */}
+        {members.length > 0 && (
+          <Toggle active={coverOnly} onClick={() => setCoverOnly((v) => !v)}>
+            Covers weaknesses
+          </Toggle>
+        )}
+
+        {/* Orden de la caja */}
+        <select
+          value={sortKey}
+          onChange={(e) => setSortKey(e.target.value as SortKey)}
+          className="item-select"
+        >
+          {SORT_OPTIONS.map((o) => (
+            <option key={o.key} value={o.key}>
+              {o.label}
+            </option>
+          ))}
+        </select>
 
         {anyFilter && (
           <button
@@ -214,6 +298,25 @@ export function PokemonBox({
           </button>
         )}
       </div>
+
+      {/* Con "Covers weaknesses": qué tipos se están cubriendo */}
+      {coverOnly && members.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5 mb-4 text-xs text-gray-500 [&_.type-badge]:flex-none">
+          {!weakTypes ? (
+            "Loading team..."
+          ) : weakTypes.length === 0 ? (
+            "Your team has no weaknesses to cover."
+          ) : (
+            <>
+              <span>Showing Pokémon that resist:</span>
+              {weakTypes.map((t) => (
+                <TypeBadge key={t} type={t} />
+              ))}
+              <span>(most covered first)</span>
+            </>
+          )}
+        </div>
+      )}
 
       {/* La caja: click agrega al equipo */}
       {box.length === 0 ? (
@@ -235,7 +338,7 @@ export function PokemonBox({
                 onClick={() => onAdd(e.id)}
                 disabled={full}
                 title={`#${dexNumber(e.id)} ${getRegionalDisplayName(e.name)}`}
-                className="flex items-center justify-center w-16 h-16 rounded-lg bg-white border border-gray-200 hover:border-red-300 transition cursor-pointer disabled:cursor-not-allowed disabled:hover:border-gray-200"
+                className="relative flex items-center justify-center w-16 h-16 rounded-lg bg-white border border-gray-200 hover:border-red-300 transition cursor-pointer disabled:cursor-not-allowed disabled:hover:border-gray-200"
               >
                 <img
                   src={teamIconUrl(e.id, game)}
@@ -244,6 +347,12 @@ export function PokemonBox({
                   className={`${art ? "w-11 h-11" : "w-12 h-12"} object-contain`}
                   style={spriteStyle(!art)}
                 />
+                {/* Con un stat elegido, su valor abajo a la derecha */}
+                {sortKey !== "dex" && (
+                  <span className="absolute bottom-0.5 right-1 text-[10px] font-bold text-gray-500 tabular-nums">
+                    {statValue(e.id, sortKey) ?? "—"}
+                  </span>
+                )}
               </button>
             ))}
           </div>

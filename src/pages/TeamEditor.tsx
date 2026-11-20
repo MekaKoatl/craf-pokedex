@@ -17,6 +17,7 @@ import { cdnSprite } from "../lib/sprites";
 import { megaLabel } from "../lib/teamRules";
 import { transferMembers } from "../lib/teamTransfer";
 import { useTeamForms } from "../hooks/useTeamForms";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import { SpriteImg } from "../components/SpriteImg";
 import { TypeBadge } from "../components/badges/TypeBadge";
 import { MemberPanel } from "../components/team/MemberPanel";
@@ -24,6 +25,7 @@ import { TeamAnalysis } from "../components/team/TeamAnalysis";
 import { GameSelect } from "../components/team/GameSelect";
 import { ExportPanel } from "../components/team/ExportPanel";
 import { PokemonBox } from "../components/team/PokemonBox";
+import { GameTag } from "../components/team/GameTag";
 
 const ENTRY_BY_ID = new Map(POKEMON_DATA.map((e) => [e.id, e]));
 
@@ -75,6 +77,10 @@ export function TeamEditor() {
   // Va antes del return temprano: los hooks siempre en el mismo orden
   const forms = useTeamForms(team?.members ?? []);
 
+  // Arrastrar solo con mouse: en el celular agarraba el dedo y no dejaba bajar.
+  // Es un hook para que se actualice si cambia el modo (celular ↔ compu)
+  const canDrag = useMediaQuery("(pointer: fine)");
+
   if (!team || !game) {
     return (
       <section className="max-w-7xl mx-auto px-4 py-8">
@@ -90,9 +96,6 @@ export function TeamEditor() {
 
   // Juegos de Switch: arte oficial en lugar de sprites pixel
   const art = usesArtwork(game);
-
-  // Arrastrar solo con mouse: en el celular agarraba el dedo y no dejaba bajar
-  const canDrag = window.matchMedia("(pointer: fine)").matches;
 
   const startEdit = () => {
     setDraft(team.name);
@@ -165,15 +168,18 @@ export function TeamEditor() {
     setDragOver(null);
   };
 
-  const handleDrop = (to: number) => {
-    if (dragFrom === null || dragFrom === to) return resetDrag();
-    // El mismo movimiento sobre las posiciones, para que el panel
-    // abierto siga al Pokémon que tenía
+  // Mueve un casillero de lugar. El panel abierto sigue a su Pokémon:
+  // se hace el mismo movimiento sobre las posiciones para saber dónde quedó
+  const move = (from: number, to: number) => {
     const order = team.members.map((_, i) => i);
-    const [moved] = order.splice(dragFrom, 1);
+    const [moved] = order.splice(from, 1);
     order.splice(Math.min(to, order.length), 0, moved);
-    moveMember(team.id, dragFrom, to);
+    moveMember(team.id, from, to);
     if (selected !== null) setSelected(order.indexOf(selected));
+  };
+
+  const handleDrop = (to: number) => {
+    if (dragFrom !== null && dragFrom !== to) move(dragFrom, to);
     resetDrag();
   };
 
@@ -197,7 +203,6 @@ export function TeamEditor() {
       >
         ← Teams
       </Link>
-
       {/* Título, o el formulario para renombrar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-2">
         {editing ? (
@@ -257,11 +262,11 @@ export function TeamEditor() {
       </div>
       {editing && renameError && (
         <p className="text-xs text-red-500 mt-1">{renameError}</p>
-      )}
-      <p className="text-sm text-gray-400 mt-1 mb-6">
-        Pokémon {game.label} · {genLabel(game.gen)}
-      </p>
-
+      )}{" "}
+      <div className="flex items-center gap-2 mt-1 mb-6">
+        <GameTag game={game} />
+        <span className="text-sm text-gray-400">{genLabel(game.gen)}</span>
+      </div>
       {/* Formulario para duplicar */}
       {duplicating && (
         <div className="mb-6 bg-gray-50 border border-gray-200 rounded-xl p-4">
@@ -323,7 +328,7 @@ export function TeamEditor() {
             ✕
           </button>
           <p className="text-xs font-bold uppercase tracking-wide text-amber-700 mb-1">
-            Changes in this copy
+            Changes made to this team
           </p>
           <ul className="text-sm text-amber-900 list-disc pl-5">
             {notes.map((n) => (
@@ -332,12 +337,10 @@ export function TeamEditor() {
           </ul>
         </div>
       )}
-
       {/* 1) Análisis, plegable */}
       {team.members.length > 0 && (
         <TeamAnalysis members={team.members} game={game} />
       )}
-
       {/* 2) Los 6 casilleros: se pueden arrastrar para reordenar */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {Array.from({ length: TEAM_SIZE }, (_, i) => {
@@ -380,7 +383,7 @@ export function TeamEditor() {
               onDragLeave={() => setDragOver(null)}
               onDrop={() => handleDrop(i)}
               onClick={() => setSelected(i === selected ? null : i)}
-              className={`flex flex-col items-center gap-1 h-48 p-3 rounded-xl border transition ${
+              className={`relative flex flex-col items-center gap-1 h-48 p-3 rounded-xl border transition ${
                 canDrag
                   ? "cursor-grab active:cursor-grabbing"
                   : "cursor-pointer"
@@ -392,6 +395,54 @@ export function TeamEditor() {
                     : "border-gray-200 bg-gray-50 hover:border-red-300"
               }`}
             >
+              {/* Celular: flechas para reordenar (arrastrar solo anda con mouse) */}
+              {!canDrag && i > 0 && (
+                <button
+                  onClick={(e) => {
+                    // Que el click no abra el panel de este casillero
+                    e.stopPropagation();
+                    move(i, i - 1);
+                  }}
+                  aria-label="Move left"
+                  className="absolute top-0 left-0 w-[45px] h-[45px] flex items-center justify-center rounded-tl-xl text-gray-400 hover:text-gray-700 cursor-pointer"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m15 18-6-6 6-6" />
+                  </svg>
+                </button>
+              )}
+              {!canDrag && i < team.members.length - 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    move(i, i + 1);
+                  }}
+                  aria-label="Move right"
+                  className="absolute top-0 right-0 w-[45px] h-[45px] flex items-center justify-center rounded-tr-xl text-gray-400 hover:text-gray-700 cursor-pointer"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </button>
+              )}
               <SpriteImg
                 src={
                   mega
@@ -443,7 +494,6 @@ export function TeamEditor() {
           );
         })}
       </div>
-
       {/* 3) El panel del miembro elegido */}
       {selected !== null && team.members[selected] && (
         <MemberPanel

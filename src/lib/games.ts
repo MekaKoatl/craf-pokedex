@@ -146,6 +146,62 @@ export const GENERATIONS = [...new Set(GAMES.map((g) => g.gen))];
 const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
 export const genLabel = (gen: number) => `Gen ${ROMAN[gen] ?? gen}`;
 
+// ── Colores de cada juego (para las etiquetas) ─────────────────
+
+// bg: fondo, fg: texto. border solo hace falta si el fondo es casi blanco
+export interface GameColor {
+  bg: string;
+  fg: string;
+  border?: string;
+}
+
+// El color de la portada de cada versión
+const GAME_COLORS: Record<string, GameColor> = {
+  red: { bg: "#e3350d", fg: "#ffffff" },
+  blue: { bg: "#2e6fd8", fg: "#ffffff" },
+  yellow: { bg: "#ffcb05", fg: "#3b2f00" },
+  gold: { bg: "#d4af37", fg: "#3b2f00" },
+  silver: { bg: "#c0c0c8", fg: "#1f2937" },
+  crystal: { bg: "#7fd3e8", fg: "#0c3b47" },
+  ruby: { bg: "#c1121f", fg: "#ffffff" },
+  sapphire: { bg: "#1f4fbf", fg: "#ffffff" },
+  emerald: { bg: "#149e5a", fg: "#ffffff" },
+  firered: { bg: "#e8541e", fg: "#ffffff" },
+  leafgreen: { bg: "#4caf50", fg: "#ffffff" },
+  diamond: { bg: "#8ec5ff", fg: "#0b3360" },
+  pearl: { bg: "#f4b6c8", fg: "#6b1f3a" },
+  platinum: { bg: "#8e8e99", fg: "#ffffff" },
+  heartgold: { bg: "#e0b33c", fg: "#3b2f00" },
+  soulsilver: { bg: "#b8c2cc", fg: "#1f2937" },
+  black: { bg: "#222222", fg: "#ffffff" },
+  white: { bg: "#ffffff", fg: "#374151", border: "#d1d5db" },
+  "black-2": { bg: "#2b2f3a", fg: "#ffffff" },
+  "white-2": { bg: "#f8e8ec", fg: "#7a2340", border: "#f0c9d3" },
+  x: { bg: "#1e63b5", fg: "#ffffff" },
+  y: { bg: "#c8102e", fg: "#ffffff" },
+  "omega-ruby": { bg: "#a3121a", fg: "#ffffff" },
+  "alpha-sapphire": { bg: "#1a3e9e", fg: "#ffffff" },
+  sun: { bg: "#f28c28", fg: "#ffffff" },
+  moon: { bg: "#6c4ab6", fg: "#ffffff" },
+  "ultra-sun": { bg: "#e86a1a", fg: "#ffffff" },
+  "ultra-moon": { bg: "#8e3fbf", fg: "#ffffff" },
+  "lets-go-pikachu": { bg: "#ffd733", fg: "#3b2f00" },
+  "lets-go-eevee": { bg: "#b07a45", fg: "#ffffff" },
+  sword: { bg: "#1ca7e0", fg: "#ffffff" },
+  shield: { bg: "#d6336c", fg: "#ffffff" },
+  "brilliant-diamond": { bg: "#3d7fd9", fg: "#ffffff" },
+  "shining-pearl": { bg: "#e58fb0", fg: "#ffffff" },
+  "legends-arceus": { bg: "#8c6d3b", fg: "#ffffff" },
+  scarlet: { bg: "#e2402f", fg: "#ffffff" },
+  violet: { bg: "#7b3fb3", fg: "#ffffff" },
+  "legends-za": { bg: "#1e9e6a", fg: "#ffffff" },
+};
+
+// Por si algún día se agrega un juego sin color
+const DEFAULT_COLOR: GameColor = { bg: "#e5e7eb", fg: "#374151" };
+
+export const gameColor = (game: Game) => GAME_COLORS[game.id] ?? DEFAULT_COLOR;
+
 // ── Imágenes del Team Planner ─────────────────
 
 // Juegos de Switch: ya no tienen íconos de PC pixel, se usa arte oficial

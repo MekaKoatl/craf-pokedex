@@ -12,6 +12,8 @@ import {
   usesArtwork,
 } from "../lib/games";
 import { SpriteImg } from "../components/SpriteImg";
+import { GameTag } from "../components/team/GameTag";
+import { ImportPanel } from "../components/team/ImportPanel";
 
 type SortKey = "oldest" | "newest" | "az" | "za" | "game";
 
@@ -40,9 +42,16 @@ function CardBody({ team }: { team: Team }) {
   return (
     <>
       <h3 className="font-bold text-gray-900 truncate pr-6">{team.name}</h3>
-      <p className="text-xs text-gray-400 mt-0.5">
-        {g ? `Pokémon ${g.label} · ${genLabel(g.gen)}` : "Unknown game"}
-      </p>
+      <div className="flex items-center gap-2 mt-1">
+        {g ? (
+          <>
+            <GameTag game={g} />
+            <span className="text-xs text-gray-400">{genLabel(g.gen)}</span>
+          </>
+        ) : (
+          <span className="text-xs text-gray-400">Unknown game</span>
+        )}
+      </div>
 
       {/* Los 6 casilleros: ocupados o vacíos */}
       <div className="flex gap-1.5 mt-3">
@@ -77,6 +86,8 @@ export function TeamPlanner() {
   const [sort, setSort] = useState<SortKey>("oldest");
   const [selecting, setSelecting] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
+
+  const [importing, setImporting] = useState(false);
 
   function handleCreate(e: FormEvent) {
     e.preventDefault();
@@ -164,6 +175,14 @@ export function TeamPlanner() {
         >
           Create
         </button>
+
+        <button
+          type="button"
+          onClick={() => setImporting((v) => !v)}
+          className={ghostBtn}
+        >
+          Import
+        </button>
       </form>
 
       {/* El error, o cuántos equipos hay */}
@@ -172,6 +191,9 @@ export function TeamPlanner() {
       >
         {error ?? `${teams.length} / ${MAX_TEAMS} teams`}
       </p>
+
+      {/* Importar desde Showdown */}
+      {importing && <ImportPanel onClose={() => setImporting(false)} />}
 
       {/* Barra: orden y selección */}
       {teams.length > 0 && (

@@ -835,7 +835,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("./assets/pokeball1.png");
+  background-image: url("./assets/pokeball1.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 75%;
@@ -938,7 +938,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("./assets/fondo1.png");
+  background-image: url("./assets/fondo1.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

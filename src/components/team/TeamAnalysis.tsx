@@ -2,17 +2,13 @@ import { useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { getMove } from "../../lib/api";
 import { useTeamForms } from "../../hooks/useTeamForms";
+import { useTeamDefense } from "../../hooks/useTeamDefense";
 import {
   moveForGame,
   typesForGame,
   type MoveInGame,
 } from "../../lib/teamRules";
-import {
-  abilityMultiplier,
-  defenseMultiplier,
-  effectiveness,
-  typesForGen,
-} from "../../lib/typeChart";
+import { effectiveness, typesForGen } from "../../lib/typeChart";
 import type { Game } from "../../lib/games";
 import { TypeBadge } from "../badges/TypeBadge";
 import type { TeamMember } from "../../context/TeamsContext";
@@ -22,15 +18,6 @@ type Mode = "defense" | "offense";
 // flex-none: el CSS global le da flex: 1 al badge y lo estiraba en columna
 const badgeCol =
   "[&_.type-badge]:inline-block [&_.type-badge]:w-16 sm:[&_.type-badge]:w-20 [&_.type-badge]:flex-none";
-
-// Cuánto suma o resta cada multiplicador al total de defensa
-function defenseScore(v: number): number {
-  if (v >= 4) return -2;
-  if (v > 1) return -1;
-  if (v === 0 || v <= 0.25) return 2;
-  if (v < 1) return 1;
-  return 0;
-}
 
 // Tarjeta de cada tipo: roja si hay un problema
 function cardClass(danger: boolean) {
@@ -54,6 +41,8 @@ function AnalysisBody({
   const [mode, setMode] = useState<Mode>("defense");
 
   const forms = useTeamForms(members);
+  // La defensa se calcula en un hook compartido con la caja de Pokémon
+  const defenseRows = useTeamDefense(members, game);
 
   const moveNames = [
     ...new Set(members.flatMap((m) => m.moves.filter(Boolean))),
@@ -68,11 +57,7 @@ function AnalysisBody({
 
   // La forma que pelea: la Mega si la tiene, si no la normal
   const pokes = forms.map((f) => f.mega ?? f.base);
-  // La Mega tiene una sola habilidad fija; si no, la elegida
-  const abilities = forms.map((f, i) =>
-    f.mega ? (f.mega.abilities[0]?.ability.name ?? null) : members[i].ability,
-  );
-  if (pokes.some((p) => !p)) {
+  if (pokes.some((p) => !p) || !defenseRows) {
     return <p className="text-xs text-gray-400 mt-4">Loading analysis...</p>;
   }
 
@@ -86,22 +71,8 @@ function AnalysisBody({
     if (r.data) moveInfo[r.data.name] = moveForGame(r.data, game);
   }
 
-  // ── Defensa: ×2 resta 1, ×4 resta 2; ×½ suma 1, ×¼ e inmunidad suman 2
-  const defense = types.map((atk) => {
-    // Tipos primero, después la habilidad elegida (si hay)
-    const mults = memberTypes.map((ts, i) =>
-      abilityMultiplier(
-        atk,
-        defenseMultiplier(atk, ts, gen),
-        abilities[i],
-        gen,
-      ),
-    );
-    const weak = mults.filter((v) => v > 1).length;
-    const resist = mults.filter((v) => v < 1).length;
-    const total = mults.reduce((sum, v) => sum + defenseScore(v), 0);
-    return { type: atk, weak, resist, total };
-  });
+  // ── Defensa: viene calculada del hook
+  const defense = defenseRows;
 
   // ── Ofensa: con qué tipos ataca cada miembro
   const attackTypes = members.map((m, i) => {

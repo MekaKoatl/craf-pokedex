@@ -130,7 +130,7 @@ export function DexStats() {
     <th key={key} className={`py-2 px-3 ${right ? "text-right" : "text-left"}`}>
       <button
         onClick={() => toggleSort(key)}
-        className={`inline-flex items-center gap-1 uppercase tracking-wide cursor-pointer transition ${
+        className={`min-h-[45px] sm:min-h-0 inline-flex items-center gap-1 uppercase tracking-wide cursor-pointer transition ${
           sortKey === key ? "text-red-500" : "text-gray-400 hover:text-gray-600"
         }`}
       >
@@ -183,7 +183,8 @@ export function DexStats() {
                     key={r.id}
                     className="border-t border-gray-200 hover:bg-gray-50"
                   >
-                    <td className="py-1.5 pl-3 pr-5 whitespace-nowrap">
+                    <td className="py-1.5 pl-3 pr-2 sm:pr-5 whitespace-nowrap">
+                      {" "}
                       <div className="flex items-center gap-2 [&_img]:shrink-0">
                         <SpriteImg
                           src={iconOrSprite(r.id)}
@@ -192,15 +193,20 @@ export function DexStats() {
                           className="w-10 h-10 object-contain"
                           style={{ imageRendering: "pixelated" }}
                         />
-                        <span className="shrink-0 text-gray-500 tabular-nums">
+                        <span className="hidden sm:inline shrink-0 text-gray-500 tabular-nums">
+                          {" "}
                           {String(r.dex).padStart(4, "0")}
                         </span>
                       </div>
                     </td>
                     <td className="py-1.5 px-3">
+                      {/* Celular: el número va chico arriba del nombre */}
+                      <span className="sm:hidden block text-[11px] text-gray-400 tabular-nums">
+                        #{String(r.dex).padStart(4, "0")}
+                      </span>
                       <Link
                         to={`/details/${r.id}`}
-                        className="font-semibold text-gray-900 hover:text-red-600 transition"
+                        className="font-semibold text-gray-900 hover:text-red-600 transition whitespace-nowrap"
                       >
                         {r.display}
                       </Link>
@@ -233,7 +239,7 @@ export function DexStats() {
             <div className="flex justify-center mt-8">
               <button
                 onClick={() => setPage({ key: listKey, count: count + PAGE })}
-                className="px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition cursor-pointer"
+                className="min-h-[45px] sm:min-h-0 px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition cursor-pointer"
               >
                 Load More
               </button>
