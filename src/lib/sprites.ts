@@ -68,7 +68,3 @@ export function itemArtUrls(name: string): string[] {
   ];
 }
 
-// Ícono de PC si existe; si no, arte oficial (para las vistas chicas)
-export function iconOrArtwork(id: number): string {
-  return hasBoxIcon(id) ? boxIconUrl(id) : artworkUrl(id);
-}
