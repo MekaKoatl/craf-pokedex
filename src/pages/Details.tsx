@@ -11,6 +11,7 @@ import { SavedIn } from "../components/details/SavedIn";
 import { getRegionalDisplayName } from "../lib/regional";
 import { idFromUrl } from "../lib/text";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { NotFoundMessage } from "../components/NotFoundMessage";
 import { TypeBadge } from "../components/badges/TypeBadge";
 import { StatBars } from "../components/details/StatBar";
 import { SpriteGallery } from "../components/details/SpriteGallery";
@@ -76,7 +77,12 @@ export function Details() {
       </div>
     );
   if (isError || !data)
-    return <p className="p-8 text-gray-600">Pokémon not found.</p>;
+    return (
+      <NotFoundMessage
+        title="This Pokémon doesn't exist... yet!"
+        message={`There's no Pokémon with the ID "${id}".`}
+      />
+    );
 
   const { pokemon, species, femaleForm, hasGenders } = data;
 
@@ -109,7 +115,7 @@ export function Details() {
     species.genera.find((g) => g.language.name === "en")?.genus ?? "";
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-6">
         {/* Celular: primera fila con volver y guardar */}
         <div className="flex items-center justify-between gap-4 mb-3 sm:hidden">
@@ -280,6 +286,6 @@ export function Details() {
       )}
       <LearnedMovesPanel pokemon={shown} />
       <MoreInfoPanel pokemon={shown} species={species} />
-    </main>
+    </div>
   );
 }

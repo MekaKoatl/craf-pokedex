@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
+import pokeball from "../assets/pokeball1.webp";
 
 type NavItem = { to: string; label: string };
 
@@ -111,6 +112,13 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
+  // El título se muestra 2 segundos al cargar y después se esconde
+  const [showTitle, setShowTitle] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setShowTitle(false), 2000);
+    return () => clearTimeout(t);
+  }, []);
+
   // Cierra el menú si la ventana pasa a tamaño escritorio
   useEffect(() => {
     function onResize() {
@@ -135,16 +143,25 @@ export function Navbar() {
   return (
     <nav className="bg-red-600 shadow-lg text-white">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/1280px-Pok%C3%A9_Ball_icon.svg.png"
-              alt="Pokeball"
-              className="w-8 h-8"
-            />
-            <h1 className="text-lg sm:text-2xl font-bold tracking-wide whitespace-nowrap">
-              MekaDragon's Pokédex
-            </h1>
+        <Link
+          to="/"
+          aria-label="MekaDragon's Pokédex"
+          className="group flex items-center"
+        >
+          <img src={pokeball} alt="" className="w-12 h-12 shrink-0" />
+          {/* El título se esconde detrás de la Pokéball; vuelve a salir con hover */}
+          <div
+            className={`grid transition-all duration-700 ease-in-out motion-reduce:transition-none group-hover:grid-cols-[1fr] group-hover:opacity-100 ${
+              showTitle
+                ? "grid-cols-[1fr] opacity-100"
+                : "grid-cols-[0fr] opacity-0"
+            }`}
+          >
+            <div className="min-w-0 overflow-hidden flex justify-end">
+              <h1 className="pl-3 shrink-0 text-lg sm:text-2xl font-bold tracking-wide whitespace-nowrap">
+                MekaDragon's Pokédex
+              </h1>
+            </div>
           </div>
         </Link>
 

@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 import { BackToTop } from "./components/BackToTop";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { Home } from "./pages/Home";
@@ -41,36 +42,54 @@ const TeamPlanner = lazy(() =>
 const TeamEditor = lazy(() =>
   import("./pages/TeamEditor").then((m) => ({ default: m.TeamEditor })),
 );
+const NotFound = lazy(() =>
+  import("./pages/NotFound").then((m) => ({ default: m.NotFound })),
+);
+const Disclaimer = lazy(() =>
+  import("./pages/Disclaimer").then((m) => ({ default: m.Disclaimer })),
+);
+const FAQ = lazy(() => import("./pages/FAQ").then((m) => ({ default: m.FAQ })));
+const Feedback = lazy(() =>
+  import("./pages/Feedback").then((m) => ({ default: m.Feedback })),
+);
 
 function App() {
   return (
-    <>
+    // min-h-screen + flex-1 en main: el footer queda abajo aunque la página sea corta
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      {/* Suspense muestra la pokébola mientras se descarga una página */}
-      <Suspense
-        fallback={
-          <div className="max-w-7xl mx-auto px-4 py-8">
-            <LoadingSpinner />
-          </div>
-        }
-      >
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dxg" element={<DexGallery />} />
-          <Route path="/dex-stats" element={<DexStats />} />
-          <Route path="/details/:id" element={<Details />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/abilities" element={<Abilities />} />
-          <Route path="/lists" element={<Lists />} />
-          <Route path="/lists/:listId" element={<ListDetail />} />
-          <Route path="/team-planner" element={<TeamPlanner />} />
-          <Route path="/team-planner/:teamId" element={<TeamEditor />} />
-          <Route path="/items" element={<Items />} />
-          <Route path="/moves" element={<Moves />} />
-        </Routes>
-      </Suspense>
+      <main className="flex-1">
+        {/* Suspense muestra la pokébola mientras se descarga una página */}
+        <Suspense
+          fallback={
+            <div className="max-w-7xl mx-auto px-4 py-8">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/dxg" element={<DexGallery />} />
+            <Route path="/dex-stats" element={<DexStats />} />
+            <Route path="/details/:id" element={<Details />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/abilities" element={<Abilities />} />
+            <Route path="/lists" element={<Lists />} />
+            <Route path="/lists/:listId" element={<ListDetail />} />
+            <Route path="/team-planner" element={<TeamPlanner />} />
+            <Route path="/team-planner/:teamId" element={<TeamEditor />} />
+            <Route path="/items" element={<Items />} />
+            <Route path="/moves" element={<Moves />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/feedback" element={<Feedback />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </main>
+      <Footer />
       <BackToTop />
-    </>
+    </div>
   );
 }
 

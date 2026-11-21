@@ -1,141 +1,211 @@
-# CRAF Pokédex — Migración a React
+# MekaDragon's Pokédex (craf-pokedex)
 
-Migración del proyecto Pokédex de Vanilla JS/HTML a React. La migración está completa y desplegada en Vercel.
+[🇪🇸 Español](README.md) · 🇬🇧 English
+
+A web Pokédex built with React on top of [PokéAPI](https://pokeapi.co): search and filters, a full page for every Pokémon, item, ability and move tables, favorites, custom lists and a per-game team planner. It deploys to Vercel from the `main` branch.
+
+This README is for whoever is going to work on the code: how to run it, how it's organized, where the data comes from and what to keep in mind.
+
+---
+
+## Contents
+
+1. [Running the project](#running-the-project)
+2. [Stack](#stack)
+3. [Pages and routes](#pages-and-routes)
+4. [Folder structure](#folder-structure)
+5. [Data: local and from the API](#data-local-and-from-the-api)
+6. [Data scripts](#data-scripts)
+7. [What is stored in the browser](#what-is-stored-in-the-browser)
+8. [Conventions](#conventions)
+9. [Technical notes](#technical-notes)
+10. [To do](#to-do)
+
+---
+
+## Running the project
+
+You need **Node 20.19 or newer** (Vite 8 doesn't run on older versions).
+
+```bash
+npm install       # once
+npm run dev       # dev server (http://localhost:5173)
+npm run build     # TypeScript check + production build into dist/
+npm run preview   # serves the dist/ build to test it
+npm run lint      # ESLint
+```
+
+`npm run build` fails on unused variables or imports (`noUnusedLocals` is on). Run it before every commit.
+
+**Deploy:** Vercel builds automatically on every push to `main`. `vercel.json` rewrites every route to `index.html`, so direct links like `/details/25` work.
 
 ## Stack
 
-- **Vite** + **React 19** + **TypeScript**
-- **React Router** — navegación entre páginas
-- **TanStack Query (React Query)** — fetching y caché de la PokéAPI
-- **Tailwind CSS v4** — estilos (combinado con CSS propio en `index.css`)
-- **PokéAPI** (pokeapi.co) — datos
-- **Vercel** — deploy, con `vercel.json` (rewrites para SPA)
+| Tool | Used for |
+|---|---|
+| Vite 8 + React 19 + TypeScript | project base |
+| React Router 7 | routes and navigation |
+| TanStack Query 5 | PokéAPI requests with caching |
+| Tailwind CSS 4 | styles, together with custom CSS in `src/index.css` |
+| PokéAPI + sprites on jsDelivr | data and images |
 
-## Estado
+## Pages and routes
 
-Migración terminada y funcional.
+| Route | Page | What it does |
+|---|---|---|
+| `/` | `Home` | Pokémon of the day (guess or reveal), animated icon strip and quick search |
+| `/dxg` | `DexGallery` | Full gallery with filters and "Load More" |
+| `/dex-stats` | `DexStats` | Base stats table, sortable by any column |
+| `/details/:id` | `Details` | Full page: sprites, types, matchups, evolutions, forms, learned moves and more |
+| `/items` | `Items` | Item table with search, categories and A–Z letters |
+| `/abilities` | `Abilities` | Ability table; `?open=<name>` opens one directly |
+| `/moves` | `Moves` | Move table with type and category filters |
+| `/favorites` | `Favorites` | Favorites, with a search box to add more and filters |
+| `/lists` · `/lists/:listId` | `Lists` · `ListDetail` | Custom lists (up to 20) |
+| `/team-planner` · `/team-planner/:teamId` | `TeamPlanner` · `TeamEditor` | Per-game teams (up to 30): analysis, stats, Showdown export and import |
 
-- [x] Setup del proyecto — Vite + React + TypeScript
-- [x] Dependencias — React Router, React Query y Tailwind CSS v4
-- [x] Providers — QueryClient, Router y Favoritos conectados en `main.tsx`
-- [x] Tipos — `PokemonEntry`, `Pokemon`, `PokemonFull`, `Species`, `EvoNode`, `EvolutionChain`, `FormBadge`
-- [x] Datos y utilidades — dataset local y helpers portados del proyecto original
-- [x] Capa de API — fetchers de la PokéAPI
-- [x] FavoritesContext — estado global de favoritos (localStorage)
-- [x] Componentes base — FavButton, badges, DexCard
-- [x] Sistema de filtros — Type, Region, Generation, Evolutions, Forms
-- [x] Páginas — Home, DXG, Favorites, Details
-- [x] Home rediseñado — "Who's that Pokémon?" diario + cinta de iconos
-- [x] Feedback de carga — gif de Unown mientras resuelve cada sprite
-- [x] Navbar con dropdown "More data", que toma el nombre de la página activa
-- [x] Páginas Items y Abilities — listado, buscador, filtros y expansión en línea
-- [x] Details unificado por género — una sola página por especie
-- [x] Cadena evolutiva completa, con panel de requisitos
-- [x] Items y Abilities en formato tabla — encabezados ordenables y tira de letras A–Z
-- [x] Las habilidades de Details enlazan a su ficha en Abilities
+`Home` loads right away. Every other page is downloaded the first time you visit it (`lazy` in `src/App.tsx`).
 
-## Páginas
+## Folder structure
 
-**Home**
-- Sección "Pokémon of the day": silueta del Pokémon del día (determinista por fecha), con botones Reveal y Guess. El resultado se guarda en localStorage por día y hay un contador hasta la medianoche local.
-- Cinta de iconos de PC: 50 Pokémon aleatorios en loop infinito. Se frena al hacer hover y muestra una tarjeta flotante con número, sprite animado, nombre y tipos. Click → Details.
-- Búsqueda rápida: buscador (nombre o número), filtros de Type/Region/Generation y un grid inicial de 15.
+```
+scripts/                  Node scripts that generate the files in src/data
+src/
+  App.tsx                 Routes (pages are loaded with lazy)
+  main.tsx                Providers: Query > Favorites > Lists > Teams > Router
+  index.css               Tailwind + custom CSS (cards, tables, filters, mobile)
+  assets/                 Images used by the CSS (fondo1.webp, pokeball1.webp)
+  data/                   Generated by the scripts. Don't edit by hand.
+  types/                  TypeScript types for the API (pokemon, move, item, ability)
+  lib/                    Plain functions, no React: API, rules, math, text
+  hooks/                  Custom hooks (data, filters, state, screen)
+  context/                Global state saved to localStorage
+  components/
+    badges/               TypeBadge, FormBadge
+    filters/              FilterBar, FilterPanel, FilterPill
+    details/              The sections of the Details page
+    items/ abilities/ moves/   Each table row (closed and open)
+    team/                 Everything in the Team Planner
+    (loose)               DexCard, Navbar, SearchBar, SpriteImg, AddToListButton...
+  pages/                  One per route
+```
 
-**DXG (Dex Gallery)**
-- Galería con Load More vía infinite query (lotes de 150, con las formas regionales intercaladas).
-- Buscador y filtros completos, incluidos Evolutions y Forms.
+The most important files in `src/lib`:
 
-**Favorites**
-- Favoritos guardados en localStorage, con búsqueda y filtros aplicados en memoria.
+| File | What's in it |
+|---|---|
+| `api.ts` | Every PokéAPI request |
+| `sprites.ts` | Image URLs: `cdnSprite`, box icons, official artwork, Dream World |
+| `regional.ts` | Display names ("Alolan Raichu") and regional forms |
+| `evolution.ts` | Walking the evolution chain and building the requirements |
+| `dexOrder.ts` | Pokédex number (regional forms use their species') and ordering |
+| `games.ts` | Game list, what each game has, tag colors and which image to use |
+| `teamRules.ts` | Per-game rules: abilities, moves, items, Megas, natures and stat formulas |
+| `typeChart.ts` | Type chart by generation and abilities that change damage |
+| `teamTransfer.ts` | Moving members to another game, dropping what isn't valid there (Duplicate and Import) |
+| `showdown.ts` | Export and import of the Pokémon Showdown text format |
+| `daily.ts` | Pokémon of the day |
 
-**Details**
-- Galería de sprites: imagen principal arriba y tira horizontal de selección abajo (incluye los iconos de PC).
-- Cadena evolutiva completa con ramas, formas regionales y panel colapsable de requisitos.
-- Conmutador de género cuando la especie tiene variedades separadas.
-- Tipos, generación, habitat, flavor text, altura, peso, habilidades y stats base. Cada habilidad enlaza a `/abilities?open=<slug>`.
-- More Info: acordeón lazy con egg groups, ratio de género, captura, color, locations expandibles y más.
-- Regional Forms y Alt Forms (Mega/Gmax con diff de stats contra la forma base).
+## Data: local and from the API
 
-**Items**
-- Tabla de Name / Category / Effect. Los encabezados de Name y Category ordenan: primer click ascendente, segundo descendente, tercero vuelve al orden original de la API.
-- Buscador, filtro por categoría (8 grupos propios sobre las 54 categorías de la API) y tira de letras A–Z.
-- Al hacer click, la fila se expande en línea con el detalle del objeto, entre dos líneas rojas.
-- En mobile los encabezados se ocultan y el orden se elige con un `select`.
+There are two sources:
 
-**Abilities**
-- Tabla de Name / Pokémon / Description / Gen. Ordenan Name y Gen.; la cuenta de Pokémon se muestra pero no ordena (ver notas técnicas).
-- Buscador, tira de letras A–Z y la misma expansión en línea, con las grillas de Pokémon que la tienen, normal y oculta, enlazadas a Details.
+- **Local data (`src/data/`).** Generated by the scripts and shipped inside the build. Used for anything that has to be instant or is read in bulk: filters, search, the Team Planner box and the stats table.
+- **PokéAPI.** Everything else is fetched when needed and kept in TanStack Query's cache: full Pokémon data, moves, items, abilities, species and evolution chains.
 
-## Estructura
+| File | What it holds | Script |
+|---|---|---|
+| `pokemon-data.ts` | 1082 entries (1025 species + regional forms): name, types, region, form badges, whether it's a final evolution | `fetch-pokemon-data.mjs` |
+| `pokemon-stats.ts` | The 6 base stats of each entry | `fetch-stats.mjs` |
+| `pokemon-games.ts` | Which Pokémon are in each game group | `fetch-games.mjs` |
+| `regional-dex.ts` | Each game's regional Pokédex, in order | `fetch-regional-dex.mjs` |
+| `held-items.ts` | Holdable items, their category and the generation they appeared in | `fetch-items.mjs` |
 
-    src/
-      data/
-        pokemon-data.ts          · dataset local (1042 Pokémon)
-      types/
-        pokemon.ts · item.ts · ability.ts
-      lib/
-        constants.ts             · BASE_URL, totales, sufijos regionales
-        api.ts                   · fetchers de la PokéAPI
-        regional.ts              · nombres regionales y formas regionales
-        sprites.ts               · cdnSprite(), iconos de PC, sprite de carga
-        filterPokemon.ts         · filtrado del dataset local
-        searchNames.ts           · match de nombres (incluye regionales)
-        evolution.ts             · recorrido de la cadena y requisitos
-        itemGroups.ts            · las 54 categorías de la API en 8 grupos
-        items.ts · abilities.ts  · helpers de texto de objetos y habilidades
-        daily.ts                 · Pokémon del día y countdown
-        text.ts                  · prettyName(), normalize(), idFromUrl()
-      hooks/
-        usePokemon · usePokemonDetails · usePokemonNames
-        useDexGallery · useFilters · useFilteredPokemon · useSearchPokemon
-        useFavorites · useDailyPokemon · useTickerPokemon
-        useItemNames · useItemList · useItemCategoryMap
-        useAbilityNames · useAbilityList · useAbilityGenMap
-      context/
-        FavoritesContext.tsx     · favoritos (key "craf-favorites")
-      components/
-        DexCard · Navbar · FavButton · LoadingSpinner · EmptyState
-        SearchBar · BackToTop · WhosThatPokemon · SpriteTicker · SpriteImg
-        badges/     · TypeBadge, FormBadge
-        filters/    · FilterBar, FilterPanel, FilterPill
-        details/    · SpriteGallery, ImageModal, EvoChain, RegionalForms,
-                      MoreInfoPanel, AltFormsAccordion, StatBar
-        items/      · ItemRow
-        abilities/  · AbilityRow
-      pages/
-        Home · DexGallery · Favorites · Details · Items · Abilities
+## Data scripts
 
-## Notas técnicas
+Run them from the project root, e.g. `node scripts/fetch-stats.mjs`. Each one fetches from PokéAPI and rewrites its file in `src/data/`. They can take several minutes.
 
-- **Sprites y rate limit.** Los sprites de GitHub devolvían 429. `cdnSprite()` reescribe las URLs a jsDelivr y resuelve el problema. Todo sprite nuevo debe pasar por esa función.
-- **Dataset local vs. API.** `pokemon-data.ts` se sincronizó con las Mega Evoluciones de Pokémon Legends Z-A mediante un script que detectó 115 Pokémon con mega/gmax vía la API y actualizó 36 entradas.
-- **Formas regionales.** Viven en el dataset local con `isRegional: true` y nombres tipo `raichu-alola`. `getRegionalFormsOf()` consulta el dataset antes de pedir nada a la API, para no generar 404s.
-- **Cadena evolutiva regional.** Cuando el Pokémon es regional, `EvoChain` intenta `${nombre}${sufijo}` y cae al normal si esa forma no existe.
-- **Iconos de PC.** Están en `generation-vii/icons` y van del 1 al 809; **no existe** `generation-viii/icons` pese a que la API declara el campo. De 810 en adelante hay que caer al sprite normal, que es lo que hace `iconOrSprite()`.
-- **Loop de la cinta.** La lista se renderiza duplicada y la animación mueve el track un -50%; al reiniciarse el salto es invisible.
-- **Pokémon del día.** `daily.ts` baraja los 1025 ids con Fisher-Yates sobre un mulberry32 sembrado con el año, y después hace una pasada de reparación que garantiza al menos 25 de distancia entre Pokémon dentro de una ventana de 7 días. Resultado: ningún repetido en el año y nunca dos números cercanos en la misma semana.
-- **Variedades por género.** Algunas especies tienen variedades aparte (`meowstic-male` / `meowstic-female`) y otras solo campos `_female` en los sprites (Pyroar, Unfezant). Details unifica ambos casos en una sola página: el id de la hembra redirige al de la especie con `?gender=female`, el género vive en la URL y la variable `shown` alimenta stats, habilidades y medidas mientras el título, la galería y el favorito siguen el id de la especie.
-- **Arte oficial sin versión hembra.** `official-artwork` no tiene carpeta `female`: es un PNG por id de Pokémon. Las hembras sí existen en los sprites de juego, en `home` y en los animados de gen V. La galería resuelve cada hueco ♀ con `??`, tomando el campo `_female` del propio Pokémon o, si no hay, el sprite de la variedad hembra.
-- **Cadena evolutiva por niveles.** `getDescendantLevels()` recorre los descendientes nivel por nivel, así una rama a cualquier profundidad se muestra completa (Ralts ve a Gardevoir y Gallade, Wurmple ve a Beautifly y Dustox). `.evo-branch-grid` es flex y no grid: con `repeat(3, 1fr)` quedaba una columna vacía que corría todo hacia la izquierda.
-- **Requisitos de evolución.** `describeEvolution()` arma la lista completa de condiciones de cada vía, en vez de devolver solo la primera como `getEvoCondition()`. `evolution_details` puede traer varias vías alternativas (Milotic tiene dos).
-- **Clave de caché de las listas paginadas.** `useItemList` y `useAbilityList` reciben el array de nombres más una clave corta, porque meter el array entero en el `queryKey` es carísimo. Cualquier cosa que cambie ese array —búsqueda, filtro, letra, orden, mapa auxiliar ya cargado— tiene que estar en la clave, o React Query sirve la caché vieja y la lista no se mueve.
-- **El orden es global, no de lo cargado.** Se ordena la lista de nombres *antes* de paginar, así ordenar por nombre acomoda las ~2000 entradas aunque solo se vean las primeras.
-- **Mapas auxiliares perezosos.** `useItemCategoryMap` (las 54 categorías agrupadas) y `useAbilityGenMap` (7 llamadas a `/generation/{id}`) solo se disparan cuando el usuario toca ese encabezado, y quedan cacheados para siempre. Las generaciones 1 y 2 devuelven el array `abilities` vacío, porque las habilidades existen recién desde la 3.
-- **Por qué la columna Pokémon no ordena.** Ese número sale de `ability.pokemon.length`, o sea del detalle de cada habilidad, y no hay endpoint que los dé en bloque. Ordenarla bien exigiría traer las ~367 habilidades completas, con sus efectos en todos los idiomas: decenas de megas.
-- **Enlace Details → Abilities.** Viaja como `?open=<slug>`. Al llegar, esa habilidad se adelanta al frente de la lista de nombres para que caiga en la primera página y se vea abierta sin dar Load More.
-- **Precio de los objetos.** El campo `prices` de la API viene siempre vacío, así que no hay forma de mostrar el costo de un objeto.
-- **Flavor text.** Los objetos lo exponen como `flavor_text_entries[].text` y las habilidades como `flavor_text_entries[].flavor_text`. No son el mismo campo.
+**Order:** `fetch-stats` and `fetch-games` read `pokemon-data.ts`, so whenever that file changes, run them in this order:
 
-## Pendientes
+1. `fetch-pokemon-data.mjs`. When it finishes it prints what was added, removed or changed compared to the previous file.
+2. `fetch-stats.mjs`
+3. `fetch-games.mjs`
 
-- Un `Security Error: ... may not load or link to file:///` aparece en consola. No rompe nada; falta ubicar el origen.
-- Sin usar: los sprites de `showdown` (gifs animados) y `dream-world` (SVG), que incluyen versiones hembra.
-- Las habilidades que lista `AltFormsAccordion` en las formas Mega y Gmax todavía no enlazan a Abilities.
-- `useDexGallery.tsx` es el único hook con extensión `.tsx`; si no devuelve JSX, debería ser `.ts`.
+`fetch-regional-dex.mjs` and `fetch-items.mjs` don't depend on anything; run them when needed (for example, when a new game comes out).
 
-## Scripts
+## What is stored in the browser
 
-    npm run dev       # servidor de desarrollo
-    npm run build     # type-check + build de producción
-    npm run preview   # preview del build
-    npm run lint      # ESLint
+Everything lives in `localStorage`; there is no server and no accounts.
+
+| Key | What it stores | Handled in |
+|---|---|---|
+| `craf-favorites` | favorite ids | `context/FavoritesContext.tsx` |
+| `craf-lists` | lists `{ id, name, pokemon[] }` | `context/ListsContext.tsx` |
+| `craf-teams` | teams `{ id, name, game, members[] }` | `context/TeamsContext.tsx` |
+| `craf-wtp-<date>` | result of the Pokémon of the day | `components/WhosThatPokemon.tsx` |
+
+If the shape of stored data changes, old data must keep working. For example, `level`, `evs` and `ivs` in `TeamMember` are optional because teams saved earlier don't have them.
+
+## Conventions
+
+**Code**
+- The UI is in English; code comments are in Spanish.
+- Named exports (`export function Details`), not `export default`. That's why `App.tsx` uses `lazy(() => import(...).then((m) => ({ default: m.Details })))`.
+- Hooks go **before** any early `return`.
+- Every PokéAPI sprite goes through `cdnSprite()` or is built with the helpers in `sprites.ts` (see technical notes).
+- To show sprites, use `SpriteImg`: it shows the loading Unown and only downloads near the screen (`loading="lazy"`).
+- A new page is added to `App.tsx` with `lazy` and to `Navbar.tsx`.
+
+**Mobile** (the breakpoint is `sm:`, 640px)
+- Anything tappable is at least **45px**: `min-h-[45px] sm:min-h-0`. When that doesn't fit, the touch area grows without changing the look, using `after:absolute after:-inset-[...]`.
+- Inputs and selects use a **16px** font on mobile (`text-base sm:text-sm`). Anything smaller makes the iPhone zoom in when you tap them.
+- Hover effects go inside `@media (hover: hover)`, because on phones hover sticks after a tap.
+- To know whether it's a phone from React: `useIsMobile()`; for any other condition, `useMediaQuery()`. Don't call `window.matchMedia` directly during render: it won't notice changes.
+
+## Technical notes
+
+**Images**
+- **jsDelivr, not GitHub.** Sprites from `raw.githubusercontent.com` returned 429 (too many requests). `cdnSprite()` rewrites those URLs to jsDelivr.
+- **Box icons** exist for 1 to 809 (`MAX_ICON_ID`) and for the Alolan forms. There are no Gen VIII icons; Gen IX ones aren't pixel art. Beyond that, the normal sprite (`iconOrSprite`) or the official artwork (`iconOrArtwork`) is used.
+- **Switch games** (`ARTWORK_GROUPS` in `games.ts`): the Team Planner uses official artwork instead of pixel sprites.
+- **Cards on mobile** use the Dream World drawing (SVG). If it doesn't exist for that Pokémon, `onError` switches to the official artwork. The Regional Forms cards inside Details stay pixel (`<DexCard pixel />`).
+- **No female official artwork.** `official-artwork` has no female version; the gallery fills the ♀ slots from the `_female` field or from the female variety.
+
+**Pokémon and forms**
+- **Regional forms** live in `pokemon-data.ts` with `isRegional: true` and names like `raichu-alola` or `tauros-paldea-combat-breed`. They're detected by the suffix at the end **or in the middle** of the name.
+- **Default names.** Some Pokémon carry the form in their API name (`mimikyu-disguised`). `DEFAULT_FORMS` in `regional.ts` shows them clean.
+- **Evolution chain and regional forms.** It uses `required_pokemon_form` and `evolved_pokemon_form` from each `evolution_detail`. A path with no required form only applies to the normal form.
+- **Gender varieties.** Details shows one page per species: the female id redirects to the species with `?gender=female`, and `shown` decides where stats, abilities and measurements come from.
+- **Pokémon of the day.** `daily.ts` shuffles the 1025 ids with a per-year seed and spreads out close numbers: no repeats within the year and no similar numbers in the same week.
+
+**Tables and lists**
+- **Cache key for paginated lists.** `useItemList`, `useAbilityList` and `useMoveList` take the names plus a short key. Everything that changes the list (search, filter, letter, order) must be in that key, or the old cache is shown.
+- **Sorting covers the whole list,** not just what's loaded: it sorts before paginating.
+- **Lazy maps** (`useItemCategoryMap`, `useAbilityGenMap`, `useMoveTypeMap`, `useMoveCategoryMap`) are fetched only when sorting by that column.
+- **The Pokémon column in Abilities doesn't sort,** because that count only comes in each ability's detail.
+
+**Team Planner**
+- **Per game, not per generation:** Ruby and Omega Ruby are different games. `gameFeatures()` says what exists in each one (abilities, items, natures, Fairy type); whatever doesn't exist isn't shown.
+- **Game-accurate:** abilities use `past_abilities` and moves use `past_values` (what changed after that game). Up to Gen III, physical or special depends on the type. The type chart changes by generation (Gen I quirks; Steel resisted Ghost and Dark before Gen VI).
+- **Megas:** the Mega Stone is matched by the first 5 letters of the species, and only for species with the `M` badge (otherwise Pidgey would "get" Pidgeotite).
+- **Stats:** Gen III+ formulas; default level 50. Before Gen III only base stats are shown.
+- **Defense analysis:** ×2 subtracts 1, ×4 subtracts 2, ×½ adds 1, ×¼ or immune adds 2. It's computed by `useTeamDefense`, shared by Team Analysis and the "Covers weaknesses" filter.
+- **Duplicate and Import** go through `transferMembers()`, which drops what isn't valid in the chosen game and returns notes to show.
+- **Showdown:** without `Level:`, Showdown uses level 100. Megas are imported as the normal species holding its Mega Stone.
+- **Reordering:** drag with a mouse; arrows with a finger (`useMediaQuery("(pointer: fine)")`).
+
+**Build**
+- Pages are loaded with `lazy`, so Vite builds one JS file per page. Opening Home downloads about 100 kB compressed.
+- Images under 4 kB (like `pokeball1.webp`) are inlined into the CSS instead of being separate files.
+
+**API data that doesn't help**
+- Item `prices` is always empty.
+- Flavor text is called `text` for items and `flavor_text` for abilities.
+
+## To do
+
+- **Scrolling on mobile:** sometimes it takes more than one swipe (Home, Details, Team Planner). Needs testing on a real phone after the latest changes.
+- **Ability filter** in the Team Planner box: needs a new script that generates each Pokémon's abilities. Postponed.
+- **Move filter:** dropped; the data would be huge.
+- Check whether `Security Error: ... may not load or link to file:///` still shows in the console.
+- **Cleanup:** files nothing uses: `src/components/ComingSoon.tsx`, `src/data/pokemon-stats copy.ts`, `src/assets/heart*.png`, `hero.png`, `react.svg`, `vite.svg`, `favicon1.ico`, `hearth.af*` and `public/icons.svg`.

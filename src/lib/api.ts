@@ -5,6 +5,9 @@ import type { Item } from "../types/item";
 import type { Ability } from "../types/ability";
 import type { Move } from "../types/move";
 
+// Error para cuando la PokéAPI responde 404: lo pedido no existe
+export class NotFoundError extends Error {}
+
 // Lanza error si no existe (lo usará React Query)
 export async function getPokemon(nameOrId: string | number): Promise<Pokemon> {
   const res = await fetch(`${BASE_URL}/pokemon/${nameOrId}`);
@@ -39,7 +42,8 @@ export async function getPokemonFull(
   nameOrId: string | number,
 ): Promise<PokemonFull> {
   const res = await fetch(`${BASE_URL}/pokemon/${nameOrId}`);
-  if (!res.ok) throw new Error("Pokemon not found");
+  if (res.status === 404) throw new NotFoundError("Pokemon not found");
+  if (!res.ok) throw new Error("Could not load Pokemon");
   return res.json();
 }
 

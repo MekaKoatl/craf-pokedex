@@ -1,5 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPokemonFull, getSpecies, getEvolutionChain } from "../lib/api";
+import {
+  getPokemonFull,
+  getSpecies,
+  getEvolutionChain,
+  NotFoundError,
+} from "../lib/api";
+
 import { REGIONAL_SUFFIX_LIST } from "../lib/constants";
 import type { PokemonFull } from "../types/pokemon";
 
@@ -51,5 +57,8 @@ export function usePokemonDetails(id: string) {
         femaleForm,
       };
     },
+    // Si el Pokémon no existe, reintentar no sirve: la 404 aparece al instante
+    retry: (failureCount, error) =>
+      !(error instanceof NotFoundError) && failureCount < 3,
   });
 }
