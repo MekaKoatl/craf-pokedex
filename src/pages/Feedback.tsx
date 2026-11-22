@@ -50,7 +50,7 @@ export function Feedback() {
           </p>
           <button
             onClick={() => setStatus("idle")}
-            className="px-5 min-h-[45px] sm:min-h-0 sm:py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition text-sm cursor-pointer"
+            className="btn-primary px-5 min-h-[45px] sm:min-h-0 sm:py-2 rounded-lg text-sm"
           >
             Send another
           </button>
@@ -108,7 +108,7 @@ export function Feedback() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="self-start px-5 min-h-[45px] sm:min-h-0 sm:py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition text-sm cursor-pointer disabled:opacity-50 disabled:cursor-wait"
+            className="btn-primary self-start px-5 min-h-[45px] sm:min-h-0 sm:py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-wait"
           >
             {status === "sending" ? "Sending..." : "Send"}
           </button>

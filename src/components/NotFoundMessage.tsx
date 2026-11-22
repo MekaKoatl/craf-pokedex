@@ -17,7 +17,7 @@ export function NotFoundMessage({
       <div className="flex flex-wrap justify-center gap-3 mt-2">
         <Link
           to="/"
-          className="px-5 min-h-[45px] sm:min-h-0 sm:py-2 flex items-center bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition text-sm"
+          className="btn-primary px-5 min-h-[45px] sm:min-h-0 sm:py-2 flex items-center rounded-lg text-sm"
         >
           Back to Home
         </Link>

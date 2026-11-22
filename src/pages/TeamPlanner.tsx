@@ -35,9 +35,6 @@ const gameOrder = (id: string) => {
   return i < 0 ? GAMES.length : i;
 };
 
-const ghostBtn =
-  "min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-full border-[1.5px] border-gray-200 bg-white text-sm font-semibold text-gray-600 hover:border-gray-400 transition cursor-pointer";
-
 // Lo de adentro de la tarjeta: igual en modo normal y en modo selección
 function CardBody({ team }: { team: Team }) {
   const g = GAME_BY_ID.get(team.game);
@@ -138,7 +135,7 @@ export function TeamPlanner() {
 
         <button
           type="submit"
-          className="min-h-[45px] sm:min-h-0 px-5 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
+          className="btn-primary min-h-[45px] sm:min-h-0 px-5 py-2 rounded-full text-sm"
         >
           Create
         </button>
@@ -146,7 +143,7 @@ export function TeamPlanner() {
         <button
           type="button"
           onClick={() => setImporting((v) => !v)}
-          className={ghostBtn}
+          className="btn-ghost"
         >
           Import
         </button>

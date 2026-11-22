@@ -257,7 +257,7 @@ export function TeamEditor() {
             <button
               type="submit"
               disabled={busy}
-              className="px-5  h-[45px] sm:h-auto py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer disabled:opacity-50"
+              className="btn-primary px-5 h-[45px] sm:h-auto py-2 rounded-full text-sm disabled:opacity-50"
             >
               {busy ? "Duplicating..." : "Duplicate"}
             </button>

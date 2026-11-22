@@ -8,6 +8,7 @@ import { FilterBar } from "../components/filters/FilterBar";
 import { SearchBar } from "../components/SearchBar";
 import { DexCard } from "../components/DexCard";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { LoadMoreButton } from "../components/LoadMoreButton";
 
 export function DexGallery() {
   const { filters, toggle, clearGroup, clearAll, hasAnyActive } = useFilters();
@@ -72,17 +73,11 @@ export function DexGallery() {
               <DexCard key={`${p.id}-${i}`} pokemon={p} />
             ))}
           </div>
-          <div className="flex justify-center mt-8">
-            {gallery.hasNextPage && (
-              <button
-                onClick={() => gallery.fetchNextPage()}
-                disabled={gallery.isFetchingNextPage}
-                className="px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50"
-              >
-                {gallery.isFetchingNextPage ? "Loading..." : "Load More"}
-              </button>
-            )}
-          </div>
+          <LoadMoreButton
+            show={gallery.hasNextPage}
+            loading={gallery.isFetchingNextPage}
+            onClick={() => gallery.fetchNextPage()}
+          />
         </>
       )}
     </section>

@@ -117,7 +117,7 @@ export function ImportPanel({ onClose }: { onClose: () => void }) {
           <button
             type="submit"
             disabled={busy}
-            className="min-h-[45px] sm:min-h-0 px-5 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer disabled:opacity-50"
+            className="btn-primary min-h-[45px] sm:min-h-0 px-5 py-2 rounded-full text-sm disabled:opacity-50"
           >
             {busy ? "Importing..." : "Import"}
           </button>

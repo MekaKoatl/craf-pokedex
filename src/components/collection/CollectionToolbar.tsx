@@ -1,8 +1,5 @@
 import type { Selection } from "../../hooks/useSelection";
 
-const ghostBtn =
-  "min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-full border-[1.5px] border-gray-200 bg-white text-sm font-semibold text-gray-600 hover:border-gray-400 transition cursor-pointer";
-
 type Props<K extends string> = {
   /** Clave de orden elegida. */
   sort: K;
@@ -41,22 +38,22 @@ export function CollectionToolbar<K extends string>({
 
       {s.selecting ? (
         <>
-          <button onClick={s.toggleAll} className={ghostBtn}>
+          <button onClick={s.toggleAll} className="btn-ghost">
             {s.allSelected ? "Unselect all" : "Select all"}
           </button>
           <button
             onClick={onDelete}
             disabled={s.selected.length === 0}
-            className="min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            className="btn-primary min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-full text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Delete ({s.selected.length})
           </button>
-          <button onClick={s.stop} className={ghostBtn}>
+          <button onClick={s.stop} className="btn-ghost">
             Cancel
           </button>
         </>
       ) : (
-        <button onClick={s.start} className={ghostBtn}>
+        <button onClick={s.start} className="btn-ghost">
           Select
         </button>
       )}

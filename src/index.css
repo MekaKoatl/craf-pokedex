@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* ── BOTONES ─────────────────────────── */
+/* Colores y estados compartidos. El tamaño, el padding y el borde
+   redondeado se definen en cada uso con clases de Tailwind. */
+
+/* Botón principal: rojo con texto blanco */
+@utility btn-primary {
+  @apply bg-red-600 text-white font-semibold transition cursor-pointer hover:bg-red-700;
+}
+
+/* Botón secundario: píldora blanca con borde gris */
+@utility btn-ghost {
+  @apply min-h-[45px] sm:min-h-0 px-4 py-1.5 rounded-full border-[1.5px] border-gray-200 bg-white text-sm font-semibold text-gray-600 hover:border-gray-400 transition cursor-pointer;
+}
+
 /* ── DEX CARD ─────────────────────────── */
 .dex-card {
   display: flex;

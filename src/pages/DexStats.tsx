@@ -11,6 +11,7 @@ import { FilterBar } from "../components/filters/FilterBar";
 import { SearchBar } from "../components/SearchBar";
 import { SpriteImg } from "../components/SpriteImg";
 import { TypeBadge } from "../components/badges/TypeBadge";
+import { LoadMoreButton } from "../components/LoadMoreButton";
 
 const PAGE = 50;
 
@@ -235,16 +236,10 @@ export function DexStats() {
             </table>
           </div>
 
-          {count < rows.length && (
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => setPage({ key: listKey, count: count + PAGE })}
-                className="min-h-[45px] sm:min-h-0 px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition cursor-pointer"
-              >
-                Load More
-              </button>
-            </div>
-          )}
+          <LoadMoreButton
+            show={count < rows.length}
+            onClick={() => setPage({ key: listKey, count: count + PAGE })}
+          />
         </>
       )}
     </section>

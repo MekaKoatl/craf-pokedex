@@ -48,7 +48,7 @@ export function ExportPanel({
       <div className="flex flex-wrap items-center gap-3 mt-2">
         <button
           onClick={copy}
-          className="min-h-[45px] sm:min-h-0 px-5 py-1.5 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
+          className="btn-primary min-h-[45px] sm:min-h-0 px-5 py-1.5 rounded-full text-sm"
         >
           {copied ? "Copied!" : "Copy"}
         </button>

@@ -97,7 +97,7 @@ export function Lists() {
         />
         <button
           type="submit"
-          className="min-h-[45px] sm:min-h-0 px-5 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
+          className="btn-primary min-h-[45px] sm:min-h-0 px-5 py-2 rounded-full text-sm"
         >
           Create
         </button>

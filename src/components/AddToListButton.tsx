@@ -227,7 +227,7 @@ export function AddToListButton({
         />
         <button
           type="submit"
-          className={`rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition cursor-pointer ${
+          className={`btn-primary rounded-lg ${
             big ? "min-w-[64px] px-3 text-sm" : "px-2 text-xs"
           }`}
         >
