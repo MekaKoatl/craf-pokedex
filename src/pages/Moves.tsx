@@ -1,29 +1,28 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useMoveNames } from "../hooks/useMoveNames";
-import { useMoveList } from "../hooks/useMoveList";
+import { usePagedList } from "../hooks/usePagedList";
 import { useMoveTypeMap } from "../hooks/useMoveTypeMap";
-import { getMovesOfType, getMovesInDamageClass } from "../lib/api";
+import { useMoveCategoryMap } from "../hooks/useMoveCategoryMap";
+import {
+  useListControls,
+  filterAndSort,
+  byName,
+  byMap,
+} from "../hooks/useListControls";
+import { getMove, getMovesOfType, getMovesInDamageClass } from "../lib/api";
 import { MOVE_TYPES, MOVE_CATEGORIES } from "../lib/moves";
-import { normalize, prettyName } from "../lib/text";
+import { prettyName } from "../lib/text";
 import { SearchBar } from "../components/SearchBar";
 import { MoveRow } from "../components/moves/MoveRow";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import { useMoveCategoryMap } from "../hooks/useMoveCategoryMap";
-
-const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-type SortCol = "name" | "type" | "cat";
-type SortKey = "default" | SortCol;
+import { LetterStrip } from "../components/lists/LetterStrip";
+import { LoadMoreButton } from "../components/LoadMoreButton";
 
 export function Moves() {
-  const [search, setSearch] = useState("");
+  const c = useListControls<"name" | "type" | "cat">();
   const [type, setType] = useState("all");
   const [cat, setCat] = useState("all");
-  const [openMove, setOpenMove] = useState<string | null>(null);
-  const [resetKey, setResetKey] = useState(0);
-  const [letter, setLetter] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("default");
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const { data: allNames = [] } = useMoveNames();
 
@@ -42,10 +41,9 @@ export function Moves() {
     staleTime: Infinity,
   });
 
-  const { data: catMap } = useMoveCategoryMap(sortKey === "cat");
-
   // El orden sí necesita el mapa completo, y solo entonces se pide
-  const { data: typeMap } = useMoveTypeMap(sortKey === "type");
+  const { data: typeMap } = useMoveTypeMap(c.sortKey === "type");
+  const { data: catMap } = useMoveCategoryMap(c.sortKey === "cat");
 
   // Los dos filtros se combinan: tipo primero, categoría como intersección
   const base = useMemo(() => {
@@ -57,74 +55,33 @@ export function Moves() {
     }
     return out;
   }, [allNames, type, typeNames, cat, catNames]);
-  const q = normalize(search);
 
   const names = useMemo(() => {
-    let out = base;
-    if (q) out = out.filter((n) => normalize(n).includes(q));
-    if (letter) out = out.filter((n) => n.charAt(0).toUpperCase() === letter);
-
-    const sorted =
-      sortKey === "name" ||
-      (sortKey === "type" && !!typeMap) ||
-      (sortKey === "cat" && !!catMap);
-    if (sortKey === "name") {
-      out = [...out].sort((a, b) => a.localeCompare(b));
-    } else if (sortKey === "type" && typeMap) {
-      // Empate de tipo se desempata por nombre
-      out = [...out].sort(
-        (a, b) =>
-          (typeMap[a] ?? "~").localeCompare(typeMap[b] ?? "~") ||
-          a.localeCompare(b),
-      );
-    } else if (sortKey === "cat" && catMap) {
-      // physical < special < status, empate por nombre
-      out = [...out].sort(
-        (a, b) =>
-          (catMap[a] ?? "~").localeCompare(catMap[b] ?? "~") ||
-          a.localeCompare(b),
-      );
-    }
-
-    if (sorted && sortDir === "desc") out = [...out].reverse();
-    return out;
-  }, [base, q, letter, sortKey, sortDir, typeMap, catMap]);
+    // Categoría: physical < special < status
+    const compare =
+      c.sortKey === "name"
+        ? byName
+        : c.sortKey === "type" && typeMap
+          ? byMap(typeMap)
+          : c.sortKey === "cat" && catMap
+            ? byMap(catMap)
+            : undefined;
+    return filterAndSort(base, c.q, c.letter, c.sortDir, compare);
+  }, [base, c.q, c.letter, c.sortKey, c.sortDir, typeMap, catMap]);
 
   // Todo lo que cambia la lista tiene que estar en la clave de caché
-  const listKey = `${type}|${cat}|${q}|${letter ?? ""}|${sortKey}|${sortDir}|${
-    typeMap ? 1 : 0
-  }|${catMap ? 1 : 0}`;
-  const list = useMoveList(names, listKey);
+  const listKey = `${type}|${cat}|${c.q}|${c.letter ?? ""}|${c.sortKey}|${
+    c.sortDir
+  }|${typeMap ? 1 : 0}|${catMap ? 1 : 0}`;
+
+  const list = usePagedList("move", names, listKey, getMove);
+
   const moves = list.data?.pages.flat() ?? [];
 
-  // 1er click asc, 2do desc, 3ro vuelve al orden original
-  function toggleSort(key: SortCol) {
-    if (sortKey !== key) {
-      setSortKey(key);
-      setSortDir("asc");
-    } else if (sortDir === "asc") {
-      setSortDir("desc");
-    } else {
-      setSortKey("default");
-      setSortDir("asc");
-    }
-    setOpenMove(null);
-  }
-
-  function arrow(key: SortCol) {
-    if (sortKey !== key) return "⇅";
-    return sortDir === "asc" ? "▲" : "▼";
-  }
-
   function clearAll() {
+    c.reset();
     setType("all");
     setCat("all");
-    setSearch("");
-    setOpenMove(null);
-    setLetter(null);
-    setSortKey("default");
-    setSortDir("asc");
-    setResetKey((k) => k + 1);
   }
 
   return (
@@ -134,8 +91,8 @@ export function Moves() {
       </div>
 
       <SearchBar
-        key={resetKey}
-        onSearch={setSearch}
+        key={c.resetKey}
+        onSearch={c.setSearch}
         placeholder="Search Moves by name..."
       />
 
@@ -145,7 +102,7 @@ export function Moves() {
           value={type}
           onChange={(e) => {
             setType(e.target.value);
-            setOpenMove(null);
+            c.setOpen(null);
           }}
           className="item-select"
         >
@@ -160,13 +117,8 @@ export function Moves() {
         {/* En mobile no hay encabezados, el orden se elige acá */}
         <select
           className="item-select sm:hidden"
-          value={`${sortKey}:${sortDir}`}
-          onChange={(e) => {
-            const [k, d] = e.target.value.split(":");
-            setSortKey(k as SortKey);
-            setSortDir(d as "asc" | "desc");
-            setOpenMove(null);
-          }}
+          value={`${c.sortKey}:${c.sortDir}`}
+          onChange={(e) => c.pickSort(e.target.value)}
         >
           <option value="default:asc">Default order</option>
           <option value="name:asc">Name A–Z</option>
@@ -182,14 +134,14 @@ export function Moves() {
           value={cat}
           onChange={(e) => {
             setCat(e.target.value);
-            setOpenMove(null);
+            c.setOpen(null);
           }}
           className="item-select"
         >
           <option value="all">– All –</option>
-          {MOVE_CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {prettyName(c)}
+          {MOVE_CATEGORIES.map((m) => (
+            <option key={m} value={m}>
+              {prettyName(m)}
             </option>
           ))}
         </select>
@@ -199,30 +151,7 @@ export function Moves() {
         </button>
       </div>
 
-      {/* Tira de letras */}
-      <div className="item-letters">
-        <button
-          className={`item-letter${letter === null ? " is-active" : ""}`}
-          onClick={() => {
-            setLetter(null);
-            setOpenMove(null);
-          }}
-        >
-          All
-        </button>
-        {LETTERS.map((L) => (
-          <button
-            key={L}
-            className={`item-letter${letter === L ? " is-active" : ""}`}
-            onClick={() => {
-              setLetter(letter === L ? null : L);
-              setOpenMove(null);
-            }}
-          >
-            {L}
-          </button>
-        ))}
-      </div>
+      <LetterStrip letter={c.letter} onPick={c.pickLetter} />
 
       {list.isLoading ? (
         <LoadingSpinner text="Loading moves..." />
@@ -234,25 +163,27 @@ export function Moves() {
             <div className="move-head">
               <button
                 className={`move-head-cell${
-                  sortKey === "name" ? " is-active" : ""
+                  c.sortKey === "name" ? " is-active" : ""
                 }`}
-                onClick={() => toggleSort("name")}
+                onClick={() => c.toggleSort("name")}
               >
-                Name <span className="item-sort-arrow">{arrow("name")}</span>
+                Name <span className="item-sort-arrow">{c.arrow("name")}</span>
               </button>
               <button
                 className={`move-head-cell${
-                  sortKey === "type" ? " is-active" : ""
+                  c.sortKey === "type" ? " is-active" : ""
                 }`}
-                onClick={() => toggleSort("type")}
+                onClick={() => c.toggleSort("type")}
               >
-                Type <span className="item-sort-arrow">{arrow("type")}</span>
+                Type <span className="item-sort-arrow">{c.arrow("type")}</span>
               </button>
               <button
-                className={`move-head-cell${sortKey === "cat" ? " is-active" : ""}`}
-                onClick={() => toggleSort("cat")}
+                className={`move-head-cell${
+                  c.sortKey === "cat" ? " is-active" : ""
+                }`}
+                onClick={() => c.toggleSort("cat")}
               >
-                Cat. <span className="item-sort-arrow">{arrow("cat")}</span>
+                Cat. <span className="item-sort-arrow">{c.arrow("cat")}</span>
               </button>
               <span className="move-head-cell is-static">Power</span>
               <span className="move-head-cell is-static">Acc.</span>
@@ -263,25 +194,17 @@ export function Moves() {
               <MoveRow
                 key={m.id}
                 move={m}
-                open={openMove === m.name}
-                onToggle={() =>
-                  setOpenMove(openMove === m.name ? null : m.name)
-                }
+                open={c.open === m.name}
+                onToggle={() => c.toggleOpen(m.name)}
               />
             ))}
           </div>
 
-          {list.hasNextPage && (
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => list.fetchNextPage()}
-                disabled={list.isFetchingNextPage}
-                className="min-h-[45px] sm:min-h-0 px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50"
-              >
-                {list.isFetchingNextPage ? "Loading..." : "Load More"}
-              </button>
-            </div>
-          )}
+          <LoadMoreButton
+            show={list.hasNextPage}
+            loading={list.isFetchingNextPage}
+            onClick={() => list.fetchNextPage()}
+          />
         </>
       )}
     </section>

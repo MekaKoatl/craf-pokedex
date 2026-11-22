@@ -1,27 +1,25 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useItemNames } from "../hooks/useItemNames";
-import { useItemList } from "../hooks/useItemList";
+import { usePagedList } from "../hooks/usePagedList";
 import { useItemCategoryMap } from "../hooks/useItemCategoryMap";
-import { getItemsInGroup } from "../lib/api";
+import {
+  useListControls,
+  filterAndSort,
+  byName,
+  byMap,
+} from "../hooks/useListControls";
+import { getItem, getItemsInGroup } from "../lib/api";
 import { ITEM_GROUPS } from "../lib/itemGroups";
-import { normalize } from "../lib/text";
 import { SearchBar } from "../components/SearchBar";
 import { ItemRow } from "../components/items/ItemRow";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-
-const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-type SortKey = "default" | "name" | "category";
+import { LetterStrip } from "../components/lists/LetterStrip";
+import { LoadMoreButton } from "../components/LoadMoreButton";
 
 export function Items() {
-  const [search, setSearch] = useState("");
+  const c = useListControls<"name" | "category">();
   const [group, setGroup] = useState("all");
-  const [openItem, setOpenItem] = useState<string | null>(null);
-  const [resetKey, setResetKey] = useState(0);
-  const [letter, setLetter] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("default");
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const { data: allNames = [] } = useItemNames();
 
@@ -35,65 +33,41 @@ export function Items() {
   });
 
   // Solo se pide si hace falta ordenar por categoría
-  const { data: catMap } = useItemCategoryMap(sortKey === "category");
-
-  const base = group === "all" ? allNames : (groupNames ?? []);
-  const q = normalize(search);
+  const { data: catMap } = useItemCategoryMap(c.sortKey === "category");
 
   const names = useMemo(() => {
-    let out = base;
-    if (q) out = out.filter((n) => normalize(n).includes(q));
-    if (letter) out = out.filter((n) => n.charAt(0).toUpperCase() === letter);
-
-    const sorted = sortKey === "name" || (sortKey === "category" && !!catMap);
-    if (sortKey === "name") {
-      out = [...out].sort((a, b) => a.localeCompare(b));
-    } else if (sortKey === "category" && catMap) {
-      // Empate de categoría se desempata por nombre
-      out = [...out].sort(
-        (a, b) =>
-          (catMap[a] ?? "~").localeCompare(catMap[b] ?? "~") ||
-          a.localeCompare(b),
-      );
-    }
-    if (sorted && sortDir === "desc") out = [...out].reverse();
-    return out;
-  }, [base, q, letter, sortKey, sortDir, catMap]);
+    const base = group === "all" ? allNames : (groupNames ?? []);
+    const compare =
+      c.sortKey === "name"
+        ? byName
+        : c.sortKey === "category" && catMap
+          ? byMap(catMap)
+          : undefined;
+    return filterAndSort(base, c.q, c.letter, c.sortDir, compare);
+  }, [
+    group,
+    allNames,
+    groupNames,
+    c.q,
+    c.letter,
+    c.sortKey,
+    c.sortDir,
+    catMap,
+  ]);
 
   // Todo lo que cambia la lista tiene que estar en la clave de caché
-  const listKey = `${group}|${q}|${letter ?? ""}|${sortKey}|${sortDir}|${
+  const listKey = `${group}|${c.q}|${c.letter ?? ""}|${c.sortKey}|${c.sortDir}|${
     catMap ? 1 : 0
   }`;
-  const list = useItemList(names, listKey);
+  // Los que no tienen sprite son placeholders internos de los juegos
+  const list = usePagedList("item", names, listKey, getItem, (i) =>
+    Boolean(i.sprites.default),
+  );
   const items = list.data?.pages.flat() ?? [];
 
-  // 1er click asc, 2do desc, 3ro vuelve al orden original
-  function toggleSort(key: "name" | "category") {
-    if (sortKey !== key) {
-      setSortKey(key);
-      setSortDir("asc");
-    } else if (sortDir === "asc") {
-      setSortDir("desc");
-    } else {
-      setSortKey("default");
-      setSortDir("asc");
-    }
-    setOpenItem(null);
-  }
-
-  function arrow(key: "name" | "category") {
-    if (sortKey !== key) return "⇅";
-    return sortDir === "asc" ? "▲" : "▼";
-  }
-
   function clearAll() {
+    c.reset();
     setGroup("all");
-    setSearch("");
-    setOpenItem(null);
-    setLetter(null);
-    setSortKey("default");
-    setSortDir("asc");
-    setResetKey((k) => k + 1); // fuerza a SearchBar a reiniciarse
   }
 
   return (
@@ -103,8 +77,8 @@ export function Items() {
       </div>
 
       <SearchBar
-        key={resetKey}
-        onSearch={setSearch}
+        key={c.resetKey}
+        onSearch={c.setSearch}
         placeholder="Search Items by name..."
       />
 
@@ -114,7 +88,7 @@ export function Items() {
           value={group}
           onChange={(e) => {
             setGroup(e.target.value);
-            setOpenItem(null);
+            c.setOpen(null);
           }}
           className="item-select"
         >
@@ -128,13 +102,8 @@ export function Items() {
         {/* En mobile no hay encabezados, el orden se elige acá */}
         <select
           className="item-select sm:hidden"
-          value={`${sortKey}:${sortDir}`}
-          onChange={(e) => {
-            const [k, d] = e.target.value.split(":");
-            setSortKey(k as SortKey);
-            setSortDir(d as "asc" | "desc");
-            setOpenItem(null);
-          }}
+          value={`${c.sortKey}:${c.sortDir}`}
+          onChange={(e) => c.pickSort(e.target.value)}
         >
           <option value="default:asc">Default order</option>
           <option value="name:asc">Name A–Z</option>
@@ -148,30 +117,7 @@ export function Items() {
         </button>
       </div>
 
-      {/* Tira de letras */}
-      <div className="item-letters">
-        <button
-          className={`item-letter${letter === null ? " is-active" : ""}`}
-          onClick={() => {
-            setLetter(null);
-            setOpenItem(null);
-          }}
-        >
-          All
-        </button>
-        {LETTERS.map((L) => (
-          <button
-            key={L}
-            className={`item-letter${letter === L ? " is-active" : ""}`}
-            onClick={() => {
-              setLetter(letter === L ? null : L);
-              setOpenItem(null);
-            }}
-          >
-            {L}
-          </button>
-        ))}
-      </div>
+      <LetterStrip letter={c.letter} onPick={c.pickLetter} />
 
       {list.isLoading ? (
         <LoadingSpinner text="Loading items..." />
@@ -183,20 +129,20 @@ export function Items() {
             <div className="item-head">
               <button
                 className={`item-head-cell${
-                  sortKey === "name" ? " is-active" : ""
+                  c.sortKey === "name" ? " is-active" : ""
                 }`}
-                onClick={() => toggleSort("name")}
+                onClick={() => c.toggleSort("name")}
               >
-                Name <span className="item-sort-arrow">{arrow("name")}</span>
+                Name <span className="item-sort-arrow">{c.arrow("name")}</span>
               </button>
               <button
                 className={`item-head-cell${
-                  sortKey === "category" ? " is-active" : ""
+                  c.sortKey === "category" ? " is-active" : ""
                 }`}
-                onClick={() => toggleSort("category")}
+                onClick={() => c.toggleSort("category")}
               >
                 Category{" "}
-                <span className="item-sort-arrow">{arrow("category")}</span>
+                <span className="item-sort-arrow">{c.arrow("category")}</span>
               </button>
               <span className="item-head-cell is-static">Effect</span>
             </div>
@@ -205,25 +151,17 @@ export function Items() {
               <ItemRow
                 key={item.id}
                 item={item}
-                open={openItem === item.name}
-                onToggle={() =>
-                  setOpenItem(openItem === item.name ? null : item.name)
-                }
+                open={c.open === item.name}
+                onToggle={() => c.toggleOpen(item.name)}
               />
             ))}
           </div>
 
-          {list.hasNextPage && (
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => list.fetchNextPage()}
-                disabled={list.isFetchingNextPage}
-                className="min-h-[45px] sm:min-h-0 px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50"
-              >
-                {list.isFetchingNextPage ? "Loading..." : "Load More"}
-              </button>
-            </div>
-          )}
+          <LoadMoreButton
+            show={list.hasNextPage}
+            loading={list.isFetchingNextPage}
+            onClick={() => list.fetchNextPage()}
+          />
         </>
       )}
     </section>

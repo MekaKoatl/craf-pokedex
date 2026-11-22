@@ -1,98 +1,75 @@
-import { useState, useMemo, useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAbilityNames } from "../hooks/useAbilityNames";
-import { useAbilityList } from "../hooks/useAbilityList";
+import { usePagedList } from "../hooks/usePagedList";
 import { useAbilityGenMap } from "../hooks/useAbilityGenMap";
-import { normalize } from "../lib/text";
+import {
+  useListControls,
+  filterAndSort,
+  byName,
+} from "../hooks/useListControls";
+import { getAbility } from "../lib/api";
 import { SearchBar } from "../components/SearchBar";
 import { AbilityRow } from "../components/abilities/AbilityRow";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-
-const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-type SortKey = "default" | "name" | "gen";
+import { LetterStrip } from "../components/lists/LetterStrip";
+import { LoadMoreButton } from "../components/LoadMoreButton";
 
 export function Abilities() {
   const [searchParams, setSearchParams] = useSearchParams();
   // La habilidad que llega desde Details, p. ej. /abilities?open=sticky-hold
   const focus = searchParams.get("open");
 
-  const [search, setSearch] = useState("");
-  const [openAbility, setOpenAbility] = useState<string | null>(focus);
-  const [resetKey, setResetKey] = useState(0);
-  const [letter, setLetter] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("default");
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const c = useListControls<"name" | "gen">(focus);
+  const { setOpen } = c;
 
   // Si se entra de nuevo con otra habilidad, se abre esa
   useEffect(() => {
-    if (focus) setOpenAbility(focus);
-  }, [focus]);
+    if (focus) setOpen(focus);
+  }, [focus, setOpen]);
 
   const { data: allNames = [] } = useAbilityNames();
 
   // Solo se pide si hace falta ordenar por generación
-  const { data: genMap } = useAbilityGenMap(sortKey === "gen");
-
-  const q = normalize(search);
+  const { data: genMap } = useAbilityGenMap(c.sortKey === "gen");
 
   const names = useMemo(() => {
-    let out = allNames;
-    if (q) out = out.filter((n) => normalize(n).includes(q));
-    if (letter) out = out.filter((n) => n.charAt(0).toUpperCase() === letter);
-
-    const sorted = sortKey === "name" || (sortKey === "gen" && !!genMap);
-    if (sortKey === "name") {
-      out = [...out].sort((a, b) => a.localeCompare(b));
-    } else if (sortKey === "gen" && genMap) {
-      // Empate de generación se desempata por nombre
-      out = [...out].sort(
-        (a, b) => (genMap[a] ?? 99) - (genMap[b] ?? 99) || a.localeCompare(b),
-      );
-    }
-    if (sorted && sortDir === "desc") out = [...out].reverse();
+    const compare =
+      c.sortKey === "name"
+        ? byName
+        : c.sortKey === "gen" && genMap
+          ? // Empate de generación se desempata por nombre
+            (a: string, b: string) =>
+              (genMap[a] ?? 99) - (genMap[b] ?? 99) || a.localeCompare(b)
+          : undefined;
+    const out = filterAndSort(allNames, c.q, c.letter, c.sortDir, compare);
 
     // La que viene de Details se adelanta, así cae en la primera página
     if (focus && out.includes(focus)) {
-      out = [focus, ...out.filter((n) => n !== focus)];
+      return [focus, ...out.filter((n) => n !== focus)];
     }
     return out;
-  }, [allNames, q, letter, sortKey, sortDir, genMap, focus]);
+  }, [allNames, c.q, c.letter, c.sortKey, c.sortDir, genMap, focus]);
 
   // Todo lo que cambia la lista tiene que estar en la clave de caché
-  const listKey = `${q || "all"}|${letter ?? ""}|${sortKey}|${sortDir}|${
+  const listKey = `${c.q || "all"}|${c.letter ?? ""}|${c.sortKey}|${c.sortDir}|${
     genMap ? 1 : 0
   }|${focus ?? ""}`;
-  const list = useAbilityList(names, listKey);
+
+  // Las que no son de la serie principal vienen de spin-offs
+  const list = usePagedList(
+    "ability",
+    names,
+    listKey,
+    getAbility,
+    (a) => a.is_main_series,
+  );
+
   const abilities = list.data?.pages.flat() ?? [];
 
-  // 1er click asc, 2do desc, 3ro vuelve al orden original
-  function toggleSort(key: "name" | "gen") {
-    if (sortKey !== key) {
-      setSortKey(key);
-      setSortDir("asc");
-    } else if (sortDir === "asc") {
-      setSortDir("desc");
-    } else {
-      setSortKey("default");
-      setSortDir("asc");
-    }
-    setOpenAbility(null);
-  }
-
-  function arrow(key: "name" | "gen") {
-    if (sortKey !== key) return "⇅";
-    return sortDir === "asc" ? "▲" : "▼";
-  }
-
   function clearAll() {
-    setSearch("");
-    setOpenAbility(null);
-    setLetter(null);
-    setSortKey("default");
-    setSortDir("asc");
+    c.reset();
     setSearchParams({}, { replace: true }); // suelta la habilidad fijada
-    setResetKey((k) => k + 1);
   }
 
   return (
@@ -102,8 +79,8 @@ export function Abilities() {
       </div>
 
       <SearchBar
-        key={resetKey}
-        onSearch={setSearch}
+        key={c.resetKey}
+        onSearch={c.setSearch}
         placeholder="Search Ability by name..."
       />
 
@@ -111,13 +88,8 @@ export function Abilities() {
         {/* En mobile no hay encabezados, el orden se elige acá */}
         <select
           className="item-select sm:hidden"
-          value={`${sortKey}:${sortDir}`}
-          onChange={(e) => {
-            const [k, d] = e.target.value.split(":");
-            setSortKey(k as SortKey);
-            setSortDir(d as "asc" | "desc");
-            setOpenAbility(null);
-          }}
+          value={`${c.sortKey}:${c.sortDir}`}
+          onChange={(e) => c.pickSort(e.target.value)}
         >
           <option value="default:asc">Default order</option>
           <option value="name:asc">Name A–Z</option>
@@ -131,30 +103,7 @@ export function Abilities() {
         </button>
       </div>
 
-      {/* Tira de letras */}
-      <div className="item-letters">
-        <button
-          className={`item-letter${letter === null ? " is-active" : ""}`}
-          onClick={() => {
-            setLetter(null);
-            setOpenAbility(null);
-          }}
-        >
-          All
-        </button>
-        {LETTERS.map((L) => (
-          <button
-            key={L}
-            className={`item-letter${letter === L ? " is-active" : ""}`}
-            onClick={() => {
-              setLetter(letter === L ? null : L);
-              setOpenAbility(null);
-            }}
-          >
-            {L}
-          </button>
-        ))}
-      </div>
+      <LetterStrip letter={c.letter} onPick={c.pickLetter} />
 
       {list.isLoading ? (
         <LoadingSpinner text="Loading abilities..." />
@@ -166,21 +115,21 @@ export function Abilities() {
             <div className="ability-head">
               <button
                 className={`ability-head-cell${
-                  sortKey === "name" ? " is-active" : ""
+                  c.sortKey === "name" ? " is-active" : ""
                 }`}
-                onClick={() => toggleSort("name")}
+                onClick={() => c.toggleSort("name")}
               >
-                Name <span className="item-sort-arrow">{arrow("name")}</span>
+                Name <span className="item-sort-arrow">{c.arrow("name")}</span>
               </button>
               <span className="ability-head-cell is-static">Pokémon</span>
               <span className="ability-head-cell is-static">Description</span>
               <button
                 className={`ability-head-cell${
-                  sortKey === "gen" ? " is-active" : ""
+                  c.sortKey === "gen" ? " is-active" : ""
                 }`}
-                onClick={() => toggleSort("gen")}
+                onClick={() => c.toggleSort("gen")}
               >
-                Gen. <span className="item-sort-arrow">{arrow("gen")}</span>
+                Gen. <span className="item-sort-arrow">{c.arrow("gen")}</span>
               </button>
             </div>
 
@@ -188,25 +137,17 @@ export function Abilities() {
               <AbilityRow
                 key={a.id}
                 ability={a}
-                open={openAbility === a.name}
-                onToggle={() =>
-                  setOpenAbility(openAbility === a.name ? null : a.name)
-                }
+                open={c.open === a.name}
+                onToggle={() => c.toggleOpen(a.name)}
               />
             ))}
           </div>
 
-          {list.hasNextPage && (
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => list.fetchNextPage()}
-                disabled={list.isFetchingNextPage}
-                className="min-h-[45px] sm:min-h-0 px-6 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition disabled:opacity-50"
-              >
-                {list.isFetchingNextPage ? "Loading..." : "Load More"}
-              </button>
-            </div>
-          )}
+          <LoadMoreButton
+            show={list.hasNextPage}
+            loading={list.isFetchingNextPage}
+            onClick={() => list.fetchNextPage()}
+          />
         </>
       )}
     </section>
