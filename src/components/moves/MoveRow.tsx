@@ -1,15 +1,18 @@
-import { Link } from "react-router-dom";
-import { SpriteImg } from "../SpriteImg";
 import { useRevealOnOpen } from "../../hooks/useRevealOnOpen";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { iconOrSprite } from "../../lib/sprites";
-import { getRegionalDisplayName } from "../../lib/regional";
 import { prettyName, idFromUrl } from "../../lib/text";
 import { genLabel } from "../../lib/items";
 import { TypeBadge } from "../badges/TypeBadge";
 import { CategoryBadge } from "../badges/CategoryBadge";
 import { moveShortEffect, moveEffect, moveFlavor } from "../../lib/moves";
 import type { Move } from "../../types/move";
+import {
+  CloseButton,
+  FlavorAndEffect,
+  InfoCells,
+  type InfoCell,
+} from "../lists/RowParts";
+import { PokemonLink } from "../lists/PokemonLink";
 
 const LEARNED_ROWS = 2;
 
@@ -65,7 +68,7 @@ export function MoveRow({
   const gen = genLabel(move.generation.name);
 
   // Solo se arman las celdas que tienen dato
-  const cells: { label: string; value: string }[] = [
+  const cells: InfoCell[] = [
     { label: "Power", value: move.power !== null ? String(move.power) : "—" },
     {
       label: "Accuracy",
@@ -137,13 +140,7 @@ export function MoveRow({
   const hidden = learners.length - visible.length;
   return (
     <div ref={ref} className="move-expanded">
-      <button
-        onClick={onToggle}
-        title="Close"
-        className="absolute top-1 right-1 w-[45px] h-[45px] flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-lg cursor-pointer"
-      >
-        ✕
-      </button>
+      <CloseButton onClick={onToggle} />
 
       <h3 className="text-2xl font-bold text-gray-900 leading-tight pr-8">
         {name}
@@ -160,36 +157,13 @@ export function MoveRow({
 
       {short && <p className="text-gray-700 mt-3 leading-relaxed">{short}</p>}
 
-      {flavor && (
-        <blockquote className="mt-4 border-l-4 border-red-400 pl-3 text-sm italic text-gray-500">
-          {flavor}
-        </blockquote>
-      )}
+      {/* El efecto largo solo si dice algo más que el corto */}
+      <FlavorAndEffect
+        flavor={flavor}
+        effect={effect !== short ? effect : undefined}
+      />
 
-      {effect && effect !== short && (
-        <div className="mt-4">
-          <h4 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-1">
-            Effect
-          </h4>
-          <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-            {effect}
-          </p>
-        </div>
-      )}
-
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
-        {cells.map((c) => (
-          <div
-            key={c.label}
-            className="bg-white border border-gray-200 rounded-lg p-3"
-          >
-            <h4 className="text-[0.65rem] font-bold uppercase tracking-wide text-gray-400 mb-1">
-              {c.label}
-            </h4>
-            <p className="text-xs text-gray-700">{c.value}</p>
-          </div>
-        ))}
-      </div>
+      <InfoCells cells={cells} />
 
       {visible.length > 0 && (
         <div className="mt-5">
@@ -198,26 +172,9 @@ export function MoveRow({
           </h4>
           {/* Columnas fijas para poder contar cuántos entran en 2 filas */}
           <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-1 mt-2">
-            {visible.map((p) => {
-              const id = idFromUrl(p.url);
-              return (
-                <Link
-                  key={p.name}
-                  to={`/details/${id}`}
-                  className="flex flex-col items-center gap-0.5 p-1 rounded hover:bg-white transition"
-                >
-                  <SpriteImg
-                    src={iconOrSprite(id)}
-                    alt=""
-                    className="w-12 h-12 object-contain"
-                    style={{ imageRendering: "pixelated" }}
-                  />
-                  <span className="text-[0.6rem] text-gray-500 text-center leading-tight">
-                    {getRegionalDisplayName(p.name)}
-                  </span>
-                </Link>
-              );
-            })}
+            {visible.map((p) => (
+              <PokemonLink key={p.name} id={idFromUrl(p.url)} name={p.name} />
+            ))}
             {/* El último lugar de la segunda fila */}
             {hidden > 0 && (
               <div className="flex items-center justify-center p-1 text-center text-[0.65rem] leading-tight text-gray-400">

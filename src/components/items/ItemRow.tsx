@@ -11,6 +11,12 @@ import {
   genLabel,
 } from "../../lib/items";
 import type { Item } from "../../types/item";
+import {
+  CloseButton,
+  FlavorAndEffect,
+  InfoCells,
+  type InfoCell,
+} from "../lists/RowParts";
 
 // Para qué sirve, deducido de sus atributos
 function usedFor(item: Item): string {
@@ -94,7 +100,7 @@ export function ItemRow({
   const holders = item.held_by_pokemon.map((h) => prettyName(h.pokemon.name));
 
   // Solo se arman las celdas que tienen dato
-  const cells: { label: string; value: string }[] = [];
+  const cells: InfoCell[] = [];
   if (item.attributes.length)
     cells.push({
       label: "Attributes",
@@ -113,13 +119,7 @@ export function ItemRow({
 
   return (
     <div ref={ref} className="item-expanded">
-      <button
-        onClick={onToggle}
-        title="Close"
-        className="absolute top-1 right-1 w-[45px] h-[45px] flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-lg cursor-pointer"
-      >
-        ✕
-      </button>
+      <CloseButton onClick={onToggle} />
 
       {/* Encabezado */}
       <div className="flex items-center gap-4">
@@ -142,41 +142,9 @@ export function ItemRow({
       {/* La descripción corta va debajo del encabezado, a todo el ancho */}
       {short && <p className="text-gray-700 mt-3 leading-relaxed">{short}</p>}
 
-      {/* Flavor */}
-      {flavor && (
-        <blockquote className="mt-4 border-l-4 border-red-400 pl-3 text-sm italic text-gray-500">
-          {flavor}
-        </blockquote>
-      )}
+      <FlavorAndEffect flavor={flavor} effect={effect} />
 
-      {/* Efecto */}
-      {effect && (
-        <div className="mt-4">
-          <h4 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-1">
-            Effect
-          </h4>
-          <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-            {effect}
-          </p>
-        </div>
-      )}
-
-      {/* Datos */}
-      {cells.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
-          {cells.map((c) => (
-            <div
-              key={c.label}
-              className="bg-white border border-gray-200 rounded-lg p-3"
-            >
-              <h4 className="text-[0.65rem] font-bold uppercase tracking-wide text-gray-400 mb-1">
-                {c.label}
-              </h4>
-              <p className="text-xs text-gray-700">{c.value}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      <InfoCells cells={cells} />
     </div>
   );
 }

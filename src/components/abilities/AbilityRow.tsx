@@ -1,8 +1,4 @@
-import { Link } from "react-router-dom";
-import { SpriteImg } from "../SpriteImg";
 import { useRevealOnOpen } from "../../hooks/useRevealOnOpen";
-import { iconOrSprite } from "../../lib/sprites";
-import { getRegionalDisplayName } from "../../lib/regional";
 import { prettyName } from "../../lib/text";
 import { genLabel } from "../../lib/items";
 import {
@@ -12,7 +8,8 @@ import {
   idFromUrl,
 } from "../../lib/abilities";
 import type { Ability } from "../../types/ability";
-
+import { CloseButton, FlavorAndEffect } from "../lists/RowParts";
+import { PokemonLink } from "../lists/PokemonLink";
 type Entry = Ability["pokemon"][number];
 
 // "generation-iii" → 3, para la columna compacta
@@ -31,26 +28,13 @@ const GEN_NUM: Record<string, number> = {
 function PokemonGrid({ entries }: { entries: Entry[] }) {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(68px,1fr))] gap-1 mt-2">
-      {entries.map((e) => {
-        const id = idFromUrl(e.pokemon.url);
-        return (
-          <Link
-            key={e.pokemon.name}
-            to={`/details/${id}`}
-            className="flex flex-col items-center gap-0.5 p-1 rounded hover:bg-white transition"
-          >
-            <SpriteImg
-              src={iconOrSprite(id)}
-              alt=""
-              className="w-12 h-12 object-contain"
-              style={{ imageRendering: "pixelated" }}
-            />
-            <span className="text-[0.6rem] text-gray-500 text-center leading-tight">
-              {getRegionalDisplayName(e.pokemon.name)}
-            </span>
-          </Link>
-        );
-      })}
+      {entries.map((e) => (
+        <PokemonLink
+          key={e.pokemon.name}
+          id={idFromUrl(e.pokemon.url)}
+          name={e.pokemon.name}
+        />
+      ))}
     </div>
   );
 }
@@ -101,13 +85,7 @@ export function AbilityRow({
 
   return (
     <div ref={ref} className="ability-expanded">
-      <button
-        onClick={onToggle}
-        title="Close"
-        className="absolute top-1 right-1 w-[45px] h-[45px] flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 text-lg cursor-pointer"
-      >
-        ✕
-      </button>
+      <CloseButton onClick={onToggle} />
 
       <h3 className="text-2xl font-bold text-gray-900 leading-tight pr-8">
         {" "}
@@ -120,22 +98,7 @@ export function AbilityRow({
       )}
       {short && <p className="text-gray-700 mt-2 leading-relaxed">{short}</p>}
 
-      {flavor && (
-        <blockquote className="mt-4 border-l-4 border-red-400 pl-3 text-sm italic text-gray-500">
-          {flavor}
-        </blockquote>
-      )}
-
-      {effect && (
-        <div className="mt-4">
-          <h4 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-1">
-            Effect
-          </h4>
-          <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-            {effect}
-          </p>
-        </div>
-      )}
+      <FlavorAndEffect flavor={flavor} effect={effect} />
 
       {normal.length > 0 && (
         <div className="mt-5">

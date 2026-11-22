@@ -42,10 +42,12 @@ function NavDropdown({ label, links }: { label: string; links: NavItem[] }) {
   // Si estás en una de sus páginas, el botón toma ese nombre
   const active = links.find((l) => location.pathname.startsWith(l.to));
 
-  // Al navegar, se cierra
-  useEffect(() => {
+  // Al navegar, se cierra (comparando con la ruta anterior)
+  const [lastPath, setLastPath] = useState(location.pathname);
+  if (location.pathname !== lastPath) {
+    setLastPath(location.pathname);
     setOpen(false);
-  }, [location.pathname]);
+  }
 
   // Cerrar al clickear afuera o con Escape
   useEffect(() => {
@@ -128,10 +130,13 @@ export function Navbar() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Al navegar, cerrar el menú móvil
-  useEffect(() => {
+  // Al navegar, cerrar el menú móvil. Se compara con la ruta anterior
+  // durante el render, en vez de usar un useEffect
+  const [lastPath, setLastPath] = useState(location.pathname);
+  if (location.pathname !== lastPath) {
+    setLastPath(location.pathname);
     setMenuOpen(false);
-  }, [location.pathname]);
+  }
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `px-3 py-1 rounded transition ${isActive ? "bg-red-700" : "hover:bg-red-700"}`;
