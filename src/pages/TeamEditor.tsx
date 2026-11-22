@@ -26,6 +26,7 @@ import { GameSelect } from "../components/team/GameSelect";
 import { ExportPanel } from "../components/team/ExportPanel";
 import { PokemonBox } from "../components/team/PokemonBox";
 import { GameTag } from "../components/team/GameTag";
+import { RenameForm } from "../components/collection/RenameForm";
 
 const ENTRY_BY_ID = new Map(POKEMON_DATA.map((e) => [e.id, e]));
 
@@ -52,8 +53,6 @@ export function TeamEditor() {
   const game = team ? GAME_BY_ID.get(team.game) : undefined;
 
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState("");
-  const [renameError, setRenameError] = useState<string | null>(null);
   // Qué casillero está abierto en el panel (null = ninguno)
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -98,21 +97,8 @@ export function TeamEditor() {
   const art = usesArtwork(game);
 
   const startEdit = () => {
-    setDraft(team.name);
-    setRenameError(null);
     setDuplicating(false);
     setEditing(true);
-  };
-
-  const handleRename = (e: FormEvent) => {
-    e.preventDefault();
-    const err = teamNameError(draft, team.id);
-    if (err) {
-      setRenameError(err);
-      return;
-    }
-    renameTeam(team.id, draft);
-    setEditing(false);
   };
 
   const handleDelete = () => {
@@ -206,32 +192,15 @@ export function TeamEditor() {
       {/* Título, o el formulario para renombrar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-2">
         {editing ? (
-          <form onSubmit={handleRename} className="flex flex-1 flex-wrap gap-2">
-            <input
-              autoFocus
-              value={draft}
-              onChange={(e) => {
-                setDraft(e.target.value);
-                setRenameError(null);
-              }}
-              onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
-              maxLength={40}
-              className="w-full sm:w-auto sm:flex-1 min-w-0 px-3 h-[45px] sm:h-auto py-1.5 border border-gray-300 rounded-lg text-xl font-bold text-gray-900 focus:outline-none focus:border-red-400"
-            />
-            <button
-              type="submit"
-              className="min-h-[45px] sm:min-h-0 px-4 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={() => setEditing(false)}
-              className="min-h-[45px] sm:min-h-0 px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
-            >
-              Cancel
-            </button>
-          </form>
+          <RenameForm
+            initial={team.name}
+            validate={(n) => teamNameError(n, team.id)}
+            onSave={(n) => {
+              renameTeam(team.id, n);
+              setEditing(false);
+            }}
+            onCancel={() => setEditing(false)}
+          />
         ) : (
           <>
             <h2 className="text-2xl font-bold text-gray-900">{team.name}</h2>
@@ -260,9 +229,6 @@ export function TeamEditor() {
           </>
         )}
       </div>
-      {editing && renameError && (
-        <p className="text-xs text-red-500 mt-1">{renameError}</p>
-      )}{" "}
       <div className="flex items-center gap-2 mt-1 mb-6">
         <GameTag game={game} />
         <span className="text-sm text-gray-400">{genLabel(game.gen)}</span>

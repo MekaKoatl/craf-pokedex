@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import { useLists } from "../hooks/useLists";
@@ -10,6 +10,7 @@ import { DexCard } from "../components/DexCard";
 import { FilterBar } from "../components/filters/FilterBar";
 import { AddPokemonSearch } from "../components/AddPokemonSearch";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { RenameForm } from "../components/collection/RenameForm";
 import type { Pokemon } from "../types/pokemon";
 
 export function ListDetail() {
@@ -27,8 +28,6 @@ export function ListDetail() {
   const { filters, toggle, clearGroup, clearAll } = useFilters();
 
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState("");
-  const [renameError, setRenameError] = useState<string | null>(null);
 
   // Los hooks van antes de cualquier return, aunque la lista no exista
   const ids = list ? [...list.pokemon].sort(compareDex) : [];
@@ -54,23 +53,6 @@ export function ListDetail() {
     );
   }
 
-  const startEdit = () => {
-    setDraft(list.name);
-    setRenameError(null);
-    setEditing(true);
-  };
-
-  const handleRename = (e: FormEvent) => {
-    e.preventDefault();
-    const err = listNameError(draft, list.id);
-    if (err) {
-      setRenameError(err);
-      return;
-    }
-    renameList(list.id, draft);
-    setEditing(false);
-  };
-
   const handleDelete = () => {
     if (!confirm(`Delete "${list.name}"?`)) return;
     deleteList(list.id);
@@ -89,32 +71,15 @@ export function ListDetail() {
       {/* Título, o el formulario para renombrar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-2 mb-6">
         {editing ? (
-          <form onSubmit={handleRename} className="flex flex-1 flex-wrap gap-2">
-            <input
-              autoFocus
-              value={draft}
-              onChange={(e) => {
-                setDraft(e.target.value);
-                setRenameError(null);
-              }}
-              onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
-              maxLength={40}
-              className="w-full sm:w-auto sm:flex-1 min-w-0 px-3 h-[45px] sm:h-auto py-1.5 border border-gray-300 rounded-lg text-xl font-bold text-gray-900 focus:outline-none focus:border-red-400"
-            />
-            <button
-              type="submit"
-              className="min-h-[45px] sm:min-h-0 px-4 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition cursor-pointer"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={() => setEditing(false)}
-              className=" min-h-[45px] sm:min-h-0 px-2 text-sm font-semibold text-gray-400 hover:text-gray-600 cursor-pointer"
-            >
-              Cancel
-            </button>
-          </form>
+          <RenameForm
+            initial={list.name}
+            validate={(n) => listNameError(n, list.id)}
+            onSave={(n) => {
+              renameList(list.id, n);
+              setEditing(false);
+            }}
+            onCancel={() => setEditing(false)}
+          />
         ) : (
           <>
             <h2 className="text-2xl font-bold text-gray-900">
@@ -125,7 +90,7 @@ export function ListDetail() {
             </h2>
             <div className="flex gap-4 text-sm font-semibold">
               <button
-                onClick={startEdit}
+                onClick={() => setEditing(true)}
                 className="min-h-[45px] sm:min-h-0 text-gray-400 hover:text-gray-600 transition cursor-pointer"
               >
                 Rename
@@ -140,9 +105,6 @@ export function ListDetail() {
           </>
         )}
       </div>
-      {editing && renameError && (
-        <p className="text-xs text-red-500 -mt-4 mb-6">{renameError}</p>
-      )}
 
       {/* Agregar: en su propia tarjeta, igual que en Favorites */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
