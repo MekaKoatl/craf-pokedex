@@ -1,15 +1,22 @@
-// Genera src/data/pokemon-data.ts con todas las especies (1 a 1025)
-// y sus formas regionales. Al final compara con el archivo anterior
-// y muestra qué se agregó, qué se quitó y qué cambió.
-// Uso, desde la raíz del proyecto:
-//   node scripts/fetch-pokemon-data.mjs
+/**
+ * Genera `src/data/pokemon-data.ts`: todas las especies (1 a 1025) y sus
+ * formas regionales, con tipos, regiones, largo de cadena evolutiva e
+ * insignias. Al terminar compara con el archivo anterior y muestra qué se
+ * agregó, quitó o cambió.
+ *
+ * Es la base de los demás datasets: después de correrlo, correr también
+ * `fetch-stats.mjs` y `fetch-games.mjs`.
+ *
+ * Uso, desde la raíz del proyecto:
+ *   node scripts/fetch-pokemon-data.mjs
+ */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const OUT = new URL("../src/data/pokemon-data.ts", import.meta.url);
 const API = "https://pokeapi.co/api/v2";
 const LAST_SPECIES = 1025;
 
-// Generación de la especie → región
+// Región principal de cada generación
 const GEN_REGION = {
   "generation-i": "kanto",
   "generation-ii": "johto",
@@ -22,7 +29,7 @@ const GEN_REGION = {
   "generation-ix": "paldea",
 };
 
-// Pokédex regional original → región (las ampliadas no cuentan)
+// Pokédex regional original → región (no se usan las versiones ampliadas)
 const DEX_REGION = {
   kanto: "kanto",
   "original-johto": "johto",
@@ -38,10 +45,10 @@ const REGION_ORDER = Object.values(GEN_REGION);
 
 // Formas regionales: "-alola", "-galar-standard", "-paldea-aqua-breed"...
 const REGIONAL_RE = /-(alola|galar|hisui|paldea)(?=-|$)/;
-// Variantes con sufijo regional que no son formas regionales de verdad
+// Variantes con sufijo regional que no son formas regionales
 const NOT_REGIONAL_RE = /-(totem|cap|zen)(-|$)/;
 
-// // Pendiente
+// TODO: insignia "B" para especies con formas especiales. Pendiente de definir.
 // const SPECIAL_FORMS = new Set([
 //   "rotom",
 //   "arceus",
@@ -58,7 +65,7 @@ const NOT_REGIONAL_RE = /-(totem|cap|zen)(-|$)/;
 
 const idOf = (url) => Number(url.split("/").filter(Boolean).pop());
 
-// Pide JSON con reintentos: con miles de pedidos, alguno puede fallar
+// Pide JSON con reintentos: entre miles de pedidos, alguno puede fallar
 async function get(path) {
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
@@ -72,7 +79,7 @@ async function get(path) {
   throw new Error(`No se pudo bajar ${path}`);
 }
 
-// Corre fn sobre todos los items, de a `size` a la vez
+// Aplica fn a todos los items, de a `size` en paralelo
 async function inBatches(items, fn, label, size = 20) {
   const out = [];
   for (let i = 0; i < items.length; i += size) {
@@ -85,7 +92,7 @@ async function inBatches(items, fn, label, size = 20) {
   return out;
 }
 
-// Cantidad de etapas del camino más largo de la cadena
+// Cantidad de etapas del camino más largo de una cadena evolutiva
 function chainDepth(node) {
   return 1 + Math.max(0, ...node.evolves_to.map(chainDepth));
 }
@@ -117,9 +124,9 @@ function indexChain(node) {
 }
 chainList.forEach((c) => indexChain(c.chain));
 
-// ¿Esta forma evoluciona? form = null para la forma normal.
-// Cada vía pide una forma (required_pokemon_form); si no pide una
-// regional, es de la forma normal (Farfetch'd normal no evoluciona).
+// Indica si una forma evoluciona (form = null para la forma normal).
+// Cada vía indica la forma requerida (required_pokemon_form); si no es
+// regional, aplica a la forma normal. Ej.: solo el Farfetch'd de Galar evoluciona.
 function evolves(speciesName, form) {
   const node = nodeBySpecies.get(speciesName);
   return (node?.evolves_to ?? []).some((child) =>
@@ -154,7 +161,7 @@ const pokemonList = await inBatches(
 );
 const pokemonById = new Map(pokemonIds.map((id, i) => [id, pokemonList[i]]));
 
-// 4) Armar las entradas
+// 4) Arma las entradas
 const entries = [];
 const regionals = [];
 
@@ -165,8 +172,8 @@ for (const s of species) {
   );
   const evoChainLength = chainDepthById.get(idOf(s.evolution_chain.url));
 
-  // Regiones: las Pokédex originales donde aparece.
-  // Si no aparece en ninguna, la región de su generación.
+  // Regiones: las Pokédex originales donde aparece; si no aparece en
+  // ninguna, la región de su generación
   let regions = REGION_ORDER.filter((r) =>
     s.pokedex_numbers.some((p) => DEX_REGION[p.pokedex.name] === r),
   );
@@ -212,13 +219,13 @@ for (const s of species) {
 regionals.sort((a, b) => a.id - b.id);
 const all = [...entries, ...regionals];
 
-// 5) Comparar con el archivo anterior, si existe
+// 5) Compara con el archivo anterior, si existe
 function readOld() {
   if (!existsSync(OUT)) return [];
   const text = readFileSync(OUT, "utf8");
   const start = text.indexOf("[");
   const end = text.lastIndexOf("]");
-  // Es nuestro propio archivo: se evalúa como JavaScript
+  // Es un archivo generado por este script: se evalúa como JavaScript
   return new Function(`return ${text.slice(start, end + 1)}`)();
 }
 const old = readOld();
@@ -243,7 +250,7 @@ for (const e of all) {
   }
 }
 
-// 6) Escribir el archivo
+// 6) Escribe el archivo
 const fmt = (e) => {
   const lines = [
     `    id: ${e.id},`,

@@ -1,9 +1,15 @@
-// Genera src/data/pokemon-stats.ts con los 6 stats base de cada Pokémon
-// del dataset local. Uso, desde la raíz del proyecto:
-//   node scripts/fetch-stats.mjs
+/**
+ * Genera `src/data/pokemon-stats.ts`: los 6 stats base de cada Pokémon del
+ * dataset local.
+ *
+ * Depende de `src/data/pokemon-data.ts` (correr antes `fetch-pokemon-data.mjs`).
+ *
+ * Uso, desde la raíz del proyecto:
+ *   node scripts/fetch-stats.mjs
+ */
 import { readFileSync, writeFileSync } from "node:fs";
 
-// Rutas relativas a este archivo, no a la terminal
+// Rutas relativas a este archivo, no al directorio de trabajo
 const DATA = new URL("../src/data/pokemon-data.ts", import.meta.url);
 const OUT = new URL("../src/data/pokemon-stats.ts", import.meta.url);
 
@@ -16,7 +22,7 @@ const ORDER = [
   "speed",
 ];
 
-// Saca los ids del dataset sin tener que importar TypeScript
+// Lee los ids del dataset con una expresión regular, sin importar TypeScript
 const ids = [...readFileSync(DATA, "utf8").matchAll(/\bid:\s*(\d+)/g)].map(
   (m) => Number(m[1]),
 );

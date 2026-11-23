@@ -1,13 +1,16 @@
-// Genera src/data/held-items.ts: los objetos que se pueden equipar
-// y desde qué generación existen.
-// Uso, desde la raíz del proyecto:
-//   node scripts/fetch-items.mjs
+/**
+ * Genera `src/data/held-items.ts`: los objetos equipables, su categoría y
+ * la generación en la que aparecen. No depende de otros datasets.
+ *
+ * Uso, desde la raíz del proyecto:
+ *   node scripts/fetch-items.mjs
+ */
 import { writeFileSync } from "node:fs";
 
 const OUT = new URL("../src/data/held-items.ts", import.meta.url);
 const API = "https://pokeapi.co/api/v2";
 
-// Categorías de la API con objetos que se pueden equipar
+// Categorías de la API con objetos equipables
 const CATEGORIES = [
   "choice",
   "held-items",
@@ -29,7 +32,7 @@ const CATEGORIES = [
   "z-crystals",
 ];
 
-// Están en esas categorías pero no se equipan
+// Objetos de esas categorías que no se pueden equipar
 const EXCLUDE = new Set([
   "red-nectar", // los Nectars se usan en Oricorio
   "yellow-nectar",
@@ -59,13 +62,13 @@ async function get(path) {
       if (res.ok) return await res.json();
       if (res.status === 404) break;
     } catch {
-      // se reintenta
+      // reintenta
     }
   }
   throw new Error(`No se pudo bajar ${path}`);
 }
 
-// 1) Los nombres de los objetos de cada categoría
+// 1) Objetos de cada categoría
 const categoryOf = {}; // objeto → categoría
 for (const cat of CATEGORIES) {
   const data = await get(`item-category/${cat}`);
@@ -76,7 +79,7 @@ for (const cat of CATEGORIES) {
 const list = Object.keys(categoryOf);
 console.log(`${list.length} objetos`);
 
-// 2) Desde qué generación existe cada uno
+// 2) Generación de aparición de cada objeto
 const result = {}; // objeto → [categoría, generación]
 const skipped = [];
 for (let i = 0; i < list.length; i += 20) {
@@ -86,7 +89,7 @@ for (let i = 0; i < list.length; i += 20) {
       const gens = item.game_indices
         .map((g) => GEN_NUM[g.generation.name])
         .filter(Boolean);
-      // Sin datos de juego: todavía no se puede saber dónde existe
+      // Sin datos de juegos: se omite
       if (!gens.length) return skipped.push(name);
       result[name] = [categoryOf[name], Math.min(...gens)];
     }),
@@ -111,4 +114,7 @@ ${lines.join("\n")}
 
 console.log(`Listo: src/data/held-items.ts (${lines.length} objetos)`);
 if (skipped.length)
-  console.log(`Sin datos de juego, quedan afuera (${skipped.length}):`, skipped.join(", "));
+  console.log(
+    `Sin datos de juego, quedan afuera (${skipped.length}):`,
+    skipped.join(", "),
+  );

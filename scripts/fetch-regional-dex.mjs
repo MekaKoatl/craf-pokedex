@@ -1,13 +1,17 @@
-// Genera src/data/regional-dex.ts: qué especies están en la Pokédex
-// regional de cada juego (Unova en Black 2, Galar + DLC en Sword...).
-// Uso, desde la raíz del proyecto:
-//   node scripts/fetch-regional-dex.mjs
+/**
+ * Genera `src/data/regional-dex.ts`: las especies de la Pokédex regional de
+ * cada juego, en su orden (Unova en Black 2, Galar + DLC en Sword...).
+ * No depende de otros datasets.
+ *
+ * Uso, desde la raíz del proyecto:
+ *   node scripts/fetch-regional-dex.mjs
+ */
 import { writeFileSync } from "node:fs";
 
 const OUT = new URL("../src/data/regional-dex.ts", import.meta.url);
 const API = "https://pokeapi.co/api/v2";
 
-// Los mismos juegos que fetch-games.mjs
+// Mismos grupos de versiones que fetch-games.mjs
 const GROUPS = [
   "red-blue",
   "yellow",
@@ -43,20 +47,20 @@ async function get(path) {
       if (res.ok) return await res.json();
       if (res.status === 404) break;
     } catch {
-      // se reintenta
+      // reintenta
     }
   }
   throw new Error(`No se pudo bajar ${path}`);
 }
 
-// Varias versiones comparten Pokédex (Kanto): se pide una sola vez
+// Varias versiones comparten Pokédex (p. ej. Kanto): cada una se pide una sola vez
 const dexCache = new Map();
 async function dexSpecies(name) {
   if (!dexCache.has(name)) {
     const dex = await get(`pokedex/${name}`);
     dexCache.set(
       name,
-      // En el orden de la Pokédex (entry_number), no el nacional
+      // En el orden de la Pokédex regional (entry_number), no el nacional
       [...dex.pokemon_entries]
         .sort((a, b) => a.entry_number - b.entry_number)
         .map((e) => idOf(e.pokemon_species.url)),
@@ -68,12 +72,11 @@ async function dexSpecies(name) {
 const lines = [];
 for (const g of GROUPS) {
   const vg = await get(`version-group/${g}`);
-  // La Nacional no es regionalf
+  // Se excluye la Pokédex Nacional
   const dexNames = vg.pokedexes
     .map((d) => d.name)
     .filter((n) => n !== "national");
-  // Un Set no repite y guarda el orden en que se agregan:
-  // primero la Pokédex principal, después las de los DLC
+  // Set: sin repetidos y en orden de inserción (Pokédex principal, después DLC)
   const ids = new Set();
   for (const n of dexNames) for (const id of await dexSpecies(n)) ids.add(id);
   const sorted = [...ids];

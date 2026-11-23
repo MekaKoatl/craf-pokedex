@@ -1,15 +1,21 @@
-// Genera src/data/pokemon-games.ts: qué Pokémon hay en cada juego.
-// Un Pokémon está en un juego si la API le da movimientos en ese juego.
-// Uso, desde la raíz del proyecto:
-//   node scripts/fetch-games.mjs
+/**
+ * Genera `src/data/pokemon-games.ts`: los Pokémon disponibles en cada juego.
+ * Se considera que un Pokémon está en un juego si la API le asigna
+ * movimientos en ese grupo de versiones.
+ *
+ * Depende de `src/data/pokemon-data.ts` (correr antes `fetch-pokemon-data.mjs`).
+ *
+ * Uso, desde la raíz del proyecto:
+ *   node scripts/fetch-games.mjs
+ */
 import { readFileSync, writeFileSync } from "node:fs";
 
-// Rutas relativas a este archivo, no a la terminal
+// Rutas relativas a este archivo, no al directorio de trabajo
 const DATA = new URL("../src/data/pokemon-data.ts", import.meta.url);
 const OUT = new URL("../src/data/pokemon-games.ts", import.meta.url);
 
-// Los "version groups" de juegos principales, de más viejo a más nuevo.
-// Quedan afuera Colosseum/XD, las versiones japonesas y Champions.
+// Grupos de versiones de juegos principales, del más viejo al más nuevo.
+// Se excluyen Colosseum/XD, las versiones japonesas y Champions.
 const GROUPS = [
   "red-blue",
   "yellow",
@@ -35,7 +41,7 @@ const GROUPS = [
   "legends-za",
 ];
 
-// Saca los ids del dataset sin tener que importar TypeScript
+// Lee los ids del dataset con una expresión regular, sin importar TypeScript
 const ids = [...readFileSync(DATA, "utf8").matchAll(/\bid:\s*(\d+)/g)].map(
   (m) => Number(m[1]),
 );
@@ -67,7 +73,7 @@ for (let i = 0; i < ids.length; i += 20) {
   console.log(`${Math.min(i + 20, ids.length)} / ${ids.length}`);
 }
 
-// Los lotes terminan en cualquier orden: se ordenan los ids
+// Los lotes terminan en cualquier orden, así que se ordenan los ids
 const lines = GROUPS.map((g) => {
   byGroup[g].sort((a, b) => a - b);
   return `  "${g}": [${byGroup[g].join(", ")}],`;
