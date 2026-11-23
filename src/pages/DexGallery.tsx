@@ -10,6 +10,11 @@ import { DexCard } from "../components/DexCard";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { LoadMoreButton } from "../components/LoadMoreButton";
 
+/**
+ * Página Pokédex Search (`/dxg`): toda la Pokédex en lotes, con búsqueda
+ * por nombre o número y filtros. Con búsqueda o filtros activos muestra
+ * esos resultados en lugar de la galería.
+ */
 export function DexGallery() {
   const { filters, toggle, clearGroup, clearAll, hasAnyActive } = useFilters();
   const [search, setSearch] = useState("");

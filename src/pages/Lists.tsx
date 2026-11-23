@@ -13,15 +13,15 @@ import { useSelection } from "../hooks/useSelection";
 import { CollectionToolbar } from "../components/collection/CollectionToolbar";
 import { SelectableCard } from "../components/collection/SelectableCard";
 
-// Cuántos íconos se ven en la tarjeta de cada lista
+/** Íconos de vista previa en cada tarjeta. */
 const PREVIEW = 6;
 
-// Lo de adentro de la tarjeta: igual en modo normal y en modo selección
+/** Contenido de la tarjeta de una lista: nombre, cantidad y vista previa. */
 function CardBody({ list }: { list: PokemonList }) {
   const preview = [...list.pokemon].sort(compareDex).slice(0, PREVIEW);
   const extra = list.pokemon.length - preview.length;
-  // Si algún Pokémon no tiene ícono de PC (Gen VIII en adelante,
-  // regionales de Galar/Hisui/Paldea), toda la lista usa arte oficial
+  // Si algún Pokémon no tiene ícono de PC (Gen VIII en adelante o formas
+  // de Galar, Hisui y Paldea), la vista previa usa arte oficial para todos
   const art = list.pokemon.some((id) => !hasBoxIcon(id));
 
   return (
@@ -41,7 +41,7 @@ function CardBody({ list }: { list: PokemonList }) {
               src={art ? artworkUrl(id) : boxIconUrl(id)}
               alt=""
               className={`${art ? "w-9 h-9" : "w-10 h-10"} object-contain`}
-              // Pixelado solo para los íconos de PC, no para el arte
+              // Pixelado solo para íconos de PC
               style={art ? undefined : { imageRendering: "pixelated" }}
             />
           ))
@@ -56,6 +56,10 @@ function CardBody({ list }: { list: PokemonList }) {
   );
 }
 
+/**
+ * Página Lists (`/lists`): crear listas y ver, ordenar, seleccionar y
+ * borrar las existentes.
+ */
 export function Lists() {
   const { lists, createList, deleteList, listNameError } = useLists();
   const [name, setName] = useState("");
@@ -64,7 +68,6 @@ export function Lists() {
   const [sort, setSort] = useState<CollectionSort>("oldest");
 
   function handleCreate(e: FormEvent) {
-    // Un <form> recarga la página por defecto; esto lo evita
     e.preventDefault();
     const err = listNameError(name);
     if (err) {
@@ -82,7 +85,7 @@ export function Lists() {
     <section className="max-w-7xl mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Lists</h2>
 
-      {/* Crear lista: Enter o el botón */}
+      {/* Crear lista */}
       <form onSubmit={handleCreate} className="flex gap-2 mb-2">
         <input
           type="text"
@@ -103,7 +106,7 @@ export function Lists() {
         </button>
       </form>
 
-      {/* El error, o cuántas listas hay */}
+      {/* Error o cantidad de listas */}
       <p
         className={`text-xs px-4 mb-6 ${error ? "text-red-500" : "text-gray-400"}`}
       >

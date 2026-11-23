@@ -28,11 +28,19 @@ import { PokemonBox } from "../components/team/PokemonBox";
 import { GameTag } from "../components/team/GameTag";
 import { RenameForm } from "../components/collection/RenameForm";
 
+/** Índice de entradas del dataset por id. */
 const ENTRY_BY_ID = new Map(POKEMON_DATA.map((e) => [e.id, e]));
 
+/** Estilo de los botones de texto del encabezado (Rename, Duplicate, Export...). */
 const linkBtn =
   "min-h-[45px] sm:min-h-0 text-gray-400 hover:text-gray-600 transition cursor-pointer";
 
+/**
+ * Editor de un equipo (`/team-planner/:teamId`): análisis, los 6 casilleros
+ * (reordenables arrastrando con mouse o con flechas en celular), el panel del
+ * miembro elegido y la caja para agregar Pokémon. También permite renombrar,
+ * duplicar a otro juego, exportar a Showdown y borrar el equipo.
+ */
 export function TeamEditor() {
   const { teamId } = useParams();
   const navigate = useNavigate();
@@ -53,31 +61,30 @@ export function TeamEditor() {
   const game = team ? GAME_BY_ID.get(team.game) : undefined;
 
   const [editing, setEditing] = useState(false);
-  // Qué casillero está abierto en el panel (null = ninguno)
+  // Casillero abierto en el panel (null = ninguno)
   const [selected, setSelected] = useState<number | null>(null);
 
-  // Duplicar
+  // Formulario de duplicar
   const [duplicating, setDuplicating] = useState(false);
   const [dupName, setDupName] = useState("");
   const [dupGame, setDupGame] = useState("");
   const [dupError, setDupError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [exporting, setExporting] = useState(false);
-  // Arrastrar: qué casillero se está moviendo y sobre cuál está
+  // Arrastre: casillero de origen y casillero bajo el cursor
   const [dragFrom, setDragFrom] = useState<number | null>(null);
   const [dragOver, setDragOver] = useState<number | null>(null);
-  // Para enfocar el buscador desde un casillero vacío
+  // Ref del buscador, para enfocarlo desde un casillero vacío
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // Aviso de lo que se quitó al duplicar (llega por el estado de la navegación)
+  // Avisos de duplicar o importar (llegan en el estado de la navegación)
   const notes = (location.state as { notes?: string[] } | null)?.notes ?? [];
   const [notesHidden, setNotesHidden] = useState(false);
 
-  // Va antes del return temprano: los hooks siempre en el mismo orden
   const forms = useTeamForms(team?.members ?? []);
 
-  // Arrastrar solo con mouse: en el celular agarraba el dedo y no dejaba bajar.
-  // Es un hook para que se actualice si cambia el modo (celular ↔ compu)
+  // El arrastre se habilita solo con puntero fino (mouse): en pantallas
+  // táctiles impedía hacer scroll
   const canDrag = useMediaQuery("(pointer: fine)");
 
   if (!team || !game) {
@@ -93,7 +100,7 @@ export function TeamEditor() {
 
   const full = team.members.length >= TEAM_SIZE;
 
-  // Juegos de Switch: arte oficial en lugar de sprites pixel
+  // Juegos de Switch: arte oficial en lugar de sprites pixelados
   const art = usesArtwork(game);
 
   const startEdit = () => {
@@ -128,7 +135,7 @@ export function TeamEditor() {
     setBusy(true);
     try {
       const result = await transferMembers(team.members, target, (id) =>
-        // Del caché si ya está; si no, lo pide
+        // Desde la caché si ya se pidió
         queryClient.fetchQuery({
           queryKey: ["pokemon-full", id],
           queryFn: () => getPokemonFull(id),
@@ -144,7 +151,6 @@ export function TeamEditor() {
     } catch {
       setDupError("Couldn't load the Pokémon data. Try again.");
     } finally {
-      // finally corre siempre, haya salido bien o mal
       setBusy(false);
     }
   };
@@ -154,8 +160,8 @@ export function TeamEditor() {
     setDragOver(null);
   };
 
-  // Mueve un casillero de lugar. El panel abierto sigue a su Pokémon:
-  // se hace el mismo movimiento sobre las posiciones para saber dónde quedó
+  // Mueve un miembro. Si había un panel abierto, sigue a su Pokémon: se
+  // aplica el mismo movimiento a los índices para saber su nueva posición
   const move = (from: number, to: number) => {
     const order = team.members.map((_, i) => i);
     const [moved] = order.splice(from, 1);
@@ -174,7 +180,7 @@ export function TeamEditor() {
     searchRef.current?.focus({ preventScroll: true });
   };
 
-  // Dejar soltar sobre este casillero (el navegador no lo permite por defecto)
+  // Permite soltar sobre el casillero (el navegador lo impide por defecto)
   const allowDrop = (i: number) => (e: React.DragEvent) => {
     if (dragFrom === null) return;
     e.preventDefault();
@@ -189,7 +195,7 @@ export function TeamEditor() {
       >
         ← Teams
       </Link>
-      {/* Título, o el formulario para renombrar */}
+      {/* Título o formulario para renombrar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-2">
         {editing ? (
           <RenameForm
@@ -283,7 +289,7 @@ export function TeamEditor() {
           onClose={() => setExporting(false)}
         />
       )}
-      {/* Aviso de lo que se quitó al duplicar */}
+      {/* Avisos de duplicar o importar */}
       {notes.length > 0 && !notesHidden && (
         <div className="relative mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 pr-10">
           <button
@@ -307,7 +313,7 @@ export function TeamEditor() {
       {team.members.length > 0 && (
         <TeamAnalysis members={team.members} game={game} />
       )}
-      {/* 2) Los 6 casilleros: se pueden arrastrar para reordenar */}
+      {/* 2) Casilleros del equipo */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {Array.from({ length: TEAM_SIZE }, (_, i) => {
           const m = team.members[i];
@@ -339,7 +345,7 @@ export function TeamEditor() {
               key={i}
               draggable={canDrag}
               onDragStart={(e) => {
-                // Firefox no arrastra si no hay datos
+                // Firefox no inicia el arrastre sin datos
                 e.dataTransfer.setData("text/plain", String(i));
                 e.dataTransfer.effectAllowed = "move";
                 setDragFrom(i);
@@ -361,11 +367,11 @@ export function TeamEditor() {
                     : "border-gray-200 bg-gray-50 hover:border-red-300"
               }`}
             >
-              {/* Celular: flechas para reordenar (arrastrar solo anda con mouse) */}
+              {/* Celular: flechas para reordenar */}
               {!canDrag && i > 0 && (
                 <button
                   onClick={(e) => {
-                    // Que el click no abra el panel de este casillero
+                    // Evita abrir el panel del casillero
                     e.stopPropagation();
                     move(i, i - 1);
                   }}
@@ -447,7 +453,7 @@ export function TeamEditor() {
               </div>
               <button
                 onClick={(e) => {
-                  // Que el click no abra el panel de este casillero
+                  // Evita abrir el panel del casillero
                   e.stopPropagation();
                   removeMember(team.id, i);
                   setSelected(null);
@@ -460,7 +466,7 @@ export function TeamEditor() {
           );
         })}
       </div>
-      {/* 3) El panel del miembro elegido */}
+      {/* 3) Panel del miembro elegido */}
       {selected !== null && team.members[selected] && (
         <MemberPanel
           key={selected}
@@ -473,7 +479,7 @@ export function TeamEditor() {
           onClose={() => setSelected(null)}
         />
       )}
-      {/* 4) La galería: buscador, filtros y caja */}
+      {/* 4) Caja de Pokémon */}
       <PokemonBox
         game={game}
         members={team.members}

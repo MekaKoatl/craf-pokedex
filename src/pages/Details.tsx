@@ -22,6 +22,7 @@ import { AltFormsAccordion } from "../components/details/AltFormsAccordion";
 import { LearnedMovesPanel } from "../components/details/LearnedMovesPanel";
 import { TypeMatchups } from "../components/details/TypeMatchups";
 
+/** Número romano y región de cada generación de la API. */
 const GEN_MAP: Record<string, string> = {
   "generation-i": "I",
   "generation-ii": "II",
@@ -45,7 +46,7 @@ const REGION_MAP: Record<string, string> = {
   "generation-ix": "Paldea",
 };
 
-// Las formas regionales debutaron en otra generación que su especie
+/** Generación y región de debut de las formas regionales (distintas de las de su especie). */
 const REGIONAL_GEN: Record<string, { gen: string; region: string }> = {
   alola: { gen: "VII", region: "Alola" },
   galar: { gen: "VIII", region: "Galar" },
@@ -53,13 +54,19 @@ const REGIONAL_GEN: Record<string, { gen: string; region: string }> = {
   paldea: { gen: "IX", region: "Paldea" },
 };
 
+/**
+ * Página de detalles de un Pokémon (`/details/:id`): imágenes, tipos,
+ * generación, entrada de Pokédex, evoluciones, medidas, habilidades, stats,
+ * formas, movimientos y más datos. `?gender=female` muestra la forma hembra
+ * en las especies que la tienen. Si el id no existe, muestra un 404.
+ */
 export function Details() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, isLoading, isError } = usePokemonDetails(id!);
 
-  // Si se entra por el id de la hembra, la URL se normaliza a la especie
+  // Si se entra por el id de la variedad hembra, redirige a la especie con ?gender=female
   useEffect(() => {
     if (!data) return;
     const def = data.species.varieties.find((v) => v.is_default);
@@ -86,7 +93,7 @@ export function Details() {
 
   const { pokemon, species, femaleForm, hasGenders } = data;
 
-  // El género vive en la URL, así el enlace se puede compartir
+  // El género va en la URL para que el enlace se pueda compartir
   const gender = searchParams.get("gender") === "female" ? "female" : "male";
   function pickGender(g: "male" | "female") {
     setSearchParams(g === "female" ? { gender: "female" } : {}, {
@@ -94,11 +101,11 @@ export function Details() {
     });
   }
 
-  // De acá salen stats, habilidades, medidas y tipos
+  // Forma mostrada: define stats, habilidades, medidas y tipos
   const shown = gender === "female" && femaleForm ? femaleForm : pokemon;
 
   const gen = species.generation?.name ?? "";
-  // includes y no endsWith: "tauros-paldea-combat-breed"
+  // includes y no endsWith, por nombres como "tauros-paldea-combat-breed"
   const regionalKey = data.isRegional
     ? Object.keys(REGIONAL_GEN).find((k) => pokemon.name.includes(`-${k}`))
     : undefined;
@@ -129,7 +136,7 @@ export function Details() {
         </div>
 
         <div className="flex items-start gap-6">
-          {/* Escritorio: todo en una fila, como antes */}
+          {/* Escritorio: todo en una fila */}
           <button
             onClick={() => history.back()}
             className="hidden sm:block mt-2 text-gray-500 hover:text-red-600 transition font-semibold text-sm"
@@ -184,7 +191,7 @@ export function Details() {
       <TypeMatchups types={shown.types.map((t) => t.type.name)} />
       <hr className="border-gray-200 my-6" />
 
-      {/* Flavor */}
+      {/* Entrada de Pokédex */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
         <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-3">
           Pokédex Entry
@@ -208,7 +215,7 @@ export function Details() {
 
       <hr className="border-gray-200 my-6" />
 
-      {/* Conmutador de género: solo cuando hay datos distintos */}
+      {/* Selector de género, solo si hay datos distintos por género */}
       {hasGenders && (
         <div className="flex justify-center gap-2 mb-6">
           {(["male", "female"] as const).map((g) => (
@@ -227,7 +234,7 @@ export function Details() {
         </div>
       )}
 
-      {/* Altura / Peso / Habilidades — siempre visibles */}
+      {/* Altura, peso y habilidades */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
           <h3 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
@@ -280,7 +287,7 @@ export function Details() {
 
       <hr className="border-gray-200 my-6" />
 
-      {/* Mega y Gigamax son solo de la forma original, nunca de las regionales */}
+      {/* Mega y Gigamax solo existen para la forma original */}
       {!data.isRegional && (
         <AltFormsAccordion species={species} baseStats={shown.stats} />
       )}

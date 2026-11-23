@@ -1,4 +1,4 @@
-// Lista de agradecimientos: agregá o quitá entradas acá
+/** Sitios y proyectos de la sección "Thanks to". */
 const thanks = [
   { name: "PokéAPI", url: "https://pokeapi.co", note: "Pokémon data" },
   {
@@ -38,6 +38,7 @@ const thanks = [
   },
 ];
 
+/** Página Disclaimer & Thanks (`/disclaimer`): aviso legal y agradecimientos. */
 export function Disclaimer() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-8">
@@ -71,10 +72,12 @@ export function Disclaimer() {
           designer and fan than experienced developer, I took courses to
           familiarize myself with essential coding tools and whenever said
           knowledge failed me is when I filled the gaps with machine.
-          <br /><br />
+          <br />
+          <br />
           When AI came out I saw it as a potentially good tool for coding,
           medicine, research and search engines, an actual tool if you may.
-          <br /><br />
+          <br />
+          <br />
           And,then I saw that same exact "tool" be used to worsen the lives of
           most but a few at the top. I wish and want to use the tech as what I
           saw in the beginning, but sadly it seems that is not the vision the
@@ -84,7 +87,11 @@ export function Disclaimer() {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-bold">Thanks to</h2>
-        <p className="text-gray-600 leading-relaxed">Thank you to the minds behindn the Pokemon games, to the fans who developed the databases the fandom has relied on in the past, and to you for using this website</p>
+        <p className="text-gray-600 leading-relaxed">
+          Thank you to the minds behindn the Pokemon games, to the fans who
+          developed the databases the fandom has relied on in the past, and to
+          you for using this website
+        </p>
         <ul className="flex flex-col gap-2">
           {thanks.map((t) => (
             <li key={t.url}>

@@ -13,6 +13,10 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { RenameForm } from "../components/collection/RenameForm";
 import type { Pokemon } from "../types/pokemon";
 
+/**
+ * Página de una lista (`/lists/:listId`): sus Pokémon en orden de Pokédex,
+ * con buscador para agregar, filtros, renombrar y borrar.
+ */
 export function ListDetail() {
   const { listId } = useParams();
   const navigate = useNavigate();
@@ -29,7 +33,6 @@ export function ListDetail() {
 
   const [editing, setEditing] = useState(false);
 
-  // Los hooks van antes de cualquier return, aunque la lista no exista
   const ids = list ? [...list.pokemon].sort(compareDex) : [];
   const results = useQueries({
     queries: ids.map((id) => ({
@@ -68,7 +71,7 @@ export function ListDetail() {
         ← Lists
       </Link>
 
-      {/* Título, o el formulario para renombrar */}
+      {/* Título o formulario para renombrar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-2 mb-6">
         {editing ? (
           <RenameForm
@@ -106,7 +109,7 @@ export function ListDetail() {
         )}
       </div>
 
-      {/* Agregar: en su propia tarjeta, igual que en Favorites */}
+      {/* Agregar */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
         <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
           Add Pokémon
@@ -118,7 +121,7 @@ export function ListDetail() {
         />
       </div>
 
-      {/* Los Pokémon de la lista, en orden de Pokédex */}
+      {/* Pokémon de la lista */}
       {list.pokemon.length === 0 ? (
         <p className="text-gray-400 text-center py-8">
           This list is empty. Use the search bar to add Pokémon.

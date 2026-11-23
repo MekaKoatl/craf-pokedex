@@ -1,20 +1,29 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 
-// La Access Key de Web3Forms es pública: solo sirve para mandarte mensajes a vos
+/**
+ * Access Key de Web3Forms. Es pública por diseño: solo permite enviar
+ * mensajes al mail asociado a la cuenta.
+ */
 const WEB3FORMS_KEY = "da148403-87b9-4da4-ba6a-dfe1b458bd15";
 
+/** Estado del envío. */
 type Status = "idle" | "sending" | "sent" | "error";
 
+/** Clases compartidas por los campos del formulario. */
 const inputClass =
   "w-full px-3 min-h-[45px] sm:min-h-0 sm:py-2 border border-gray-300 rounded-lg text-base sm:text-sm focus:outline-none focus:border-red-500";
 
+/**
+ * Página Feedback (`/feedback`): formulario que envía el mensaje por mail
+ * mediante la API de Web3Forms. Incluye un campo trampa para bots.
+ */
 export function Feedback() {
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault(); // evita que el navegador recargue la página
-    const form = e.currentTarget; // se guarda antes del await, después deja de existir
+    e.preventDefault();
+    const form = e.currentTarget; // se guarda antes del await: después es null
     setStatus("sending");
 
     const data = new FormData(form);
@@ -61,7 +70,7 @@ export function Feedback() {
             Found a bug or have an idea? Let me know.
           </p>
 
-          {/* Trampa para bots: es invisible, solo un bot la marcaría */}
+          {/* Campo trampa: oculto para las personas; si llega marcado, Web3Forms descarta el envío */}
           <input
             type="checkbox"
             name="botcheck"

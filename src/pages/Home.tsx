@@ -13,6 +13,10 @@ import type { Pokemon } from "../types/pokemon";
 import { WhosThatPokemon } from "../components/WhosThatPokemon";
 import { SpriteTicker } from "../components/SpriteTicker";
 
+/**
+ * Página de inicio (`/`): "Who's that Pokémon?", la tira de íconos y una
+ * búsqueda rápida con filtros. Sin búsqueda muestra los primeros 15 Pokémon.
+ */
 export function Home() {
   const { filters, toggle, clearGroup, clearAll, hasAnyActive } = useFilters();
   const [search, setSearch] = useState("");

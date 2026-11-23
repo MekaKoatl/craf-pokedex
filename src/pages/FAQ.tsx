@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-// Preguntas y respuestas: la respuesta puede ser texto o JSX (con links, negritas, etc.)
+/** Preguntas frecuentes. La respuesta acepta texto o JSX. */
 const faqs: { q: string; a: ReactNode }[] = [
   {
     q: "Why not use one of the already existing databases?",
@@ -120,6 +120,7 @@ const faqs: { q: string; a: ReactNode }[] = [
   },
 ];
 
+/** Página FAQ (`/faq`): preguntas frecuentes en acordeón (`<details>`). */
 export function FAQ() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6">

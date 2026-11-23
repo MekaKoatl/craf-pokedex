@@ -14,13 +14,17 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { EmptyState } from "../components/EmptyState";
 import type { Pokemon } from "../types/pokemon";
 
+/**
+ * Página Favorites (`/favorites`): Pokémon favoritos en orden de Pokédex,
+ * con buscador para agregar, búsqueda dentro de la lista y filtros.
+ */
 export function Favorites() {
   const { favorites, isFavorite, toggleFavorite, clearFavorites } =
     useFavorites();
   const { filters, toggle, clearGroup, clearAll } = useFilters();
   const [search, setSearch] = useState("");
 
-  // Uno por Pokémon: al agregar uno nuevo, solo se pide ese
+  // Una consulta por Pokémon, así al agregar uno solo se pide ese
   const ids = [...favorites].sort(compareDex);
   const results = useQueries({
     queries: ids.map((id) => ({
@@ -32,7 +36,7 @@ export function Favorites() {
   const pokes = results.map((r) => r.data).filter((p): p is Pokemon => !!p);
   const loading = results.some((r) => r.isLoading);
 
-  // Buscar dentro de los favoritos + filtros
+  // Búsqueda y filtros sobre los favoritos
   const q = search.trim().toLowerCase();
   const filtered = pokes.filter(
     (p) =>
@@ -65,7 +69,7 @@ export function Favorites() {
         )}
       </div>
 
-      {/* Agregar: en su propia tarjeta */}
+      {/* Agregar */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
         <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
           Add Pokémon
@@ -81,7 +85,7 @@ export function Favorites() {
         <EmptyState />
       ) : (
         <>
-          {/* Buscar dentro: lupa y fondo gris, distinto del de agregar */}
+          {/* Buscar dentro de la lista (estilo distinto del buscador para agregar) */}
           <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
             Search in your favorites
           </p>

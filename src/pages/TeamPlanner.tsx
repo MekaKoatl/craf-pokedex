@@ -22,6 +22,7 @@ import { useSelection } from "../hooks/useSelection";
 import { CollectionToolbar } from "../components/collection/CollectionToolbar";
 import { SelectableCard } from "../components/collection/SelectableCard";
 
+/** Órdenes de la página: los comunes más "por juego". */
 type SortKey = CollectionSort | "game";
 
 const SORT_LABELS: Record<SortKey, string> = {
@@ -29,13 +30,13 @@ const SORT_LABELS: Record<SortKey, string> = {
   game: "By game",
 };
 
-// Posición del juego en la lista, para ordenar de Red a Scarlet/Violet
+/** Posición cronológica del juego, para ordenar por juego. */
 const gameOrder = (id: string) => {
   const i = GAMES.findIndex((g) => g.id === id);
   return i < 0 ? GAMES.length : i;
 };
 
-// Lo de adentro de la tarjeta: igual en modo normal y en modo selección
+/** Contenido de la tarjeta de un equipo: nombre, juego y los 6 casilleros. */
 function CardBody({ team }: { team: Team }) {
   const g = GAME_BY_ID.get(team.game);
   const art = !!g && usesArtwork(g);
@@ -53,7 +54,6 @@ function CardBody({ team }: { team: Team }) {
         )}
       </div>
 
-      {/* Los 6 casilleros: ocupados o vacíos */}
       <div className="flex gap-1.5 mt-3">
         {Array.from({ length: TEAM_SIZE }, (_, i) => {
           const m = team.members[i];
@@ -77,6 +77,10 @@ function CardBody({ team }: { team: Team }) {
   );
 }
 
+/**
+ * Página Team Planner (`/team-planner`): crear equipos por juego, importarlos
+ * desde Showdown y ver, ordenar, seleccionar y borrar los existentes.
+ */
 export function TeamPlanner() {
   const { teams, createTeam, deleteTeam, teamNameError } = useTeams();
   const [name, setName] = useState("");
@@ -96,7 +100,7 @@ export function TeamPlanner() {
     }
     createTeam(name, game);
     setName("");
-    // El juego queda elegido: es cómodo para crear varios del mismo
+    // El juego queda seleccionado para crear otro del mismo
   }
 
   // Por juego (de Red a Scarlet/Violet); dentro del mismo juego, por nombre
@@ -112,7 +116,7 @@ export function TeamPlanner() {
     <section className="max-w-7xl mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Team Planner</h2>
 
-      {/* Crear equipo: nombre + juego */}
+      {/* Crear equipo */}
       <form onSubmit={handleCreate} className="flex flex-wrap gap-2 mb-2">
         <input
           type="text"
@@ -149,7 +153,7 @@ export function TeamPlanner() {
         </button>
       </form>
 
-      {/* El error, o cuántos equipos hay */}
+      {/* Error o cantidad de equipos */}
       <p
         className={`text-xs px-4 mb-6 ${error ? "text-red-500" : "text-gray-400"}`}
       >

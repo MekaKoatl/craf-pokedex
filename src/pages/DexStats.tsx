@@ -13,9 +13,10 @@ import { SpriteImg } from "../components/SpriteImg";
 import { TypeBadge } from "../components/badges/TypeBadge";
 import { LoadMoreButton } from "../components/LoadMoreButton";
 
+/** Filas visibles por página. */
 const PAGE = 50;
 
-// Mismo orden que el array de pokemon-stats.ts
+/** Columnas de stats, en el orden de las tuplas de `src/data/pokemon-stats.ts`. */
 const STAT_COLS = [
   { key: "hp", label: "HP" },
   { key: "atk", label: "Attack" },
@@ -28,9 +29,11 @@ const STAT_COLS = [
 type StatKey = (typeof STAT_COLS)[number]["key"];
 type SortKey = "dex" | "name" | "total" | StatKey;
 
+/** Fila de la tabla, precalculada desde los datasets locales. */
 interface Row {
   id: number;
-  dex: number; // número de Pokédex (las regionales usan el de su especie)
+  /** Número de Pokédex; las formas regionales usan el de su especie. */
+  dex: number;
   name: string;
   display: string;
   types: string[];
@@ -39,13 +42,14 @@ interface Row {
   total: number;
 }
 
+/** Id del dataset por nombre, para obtener el número de una especie. */
 const DEX_BY_NAME = new Map(POKEMON_DATA.map((e) => [e.name, e.id]));
 
-// Se arma una sola vez al cargar el archivo: los datos no cambian
+/** Todas las filas, construidas una vez al cargar el módulo. */
 const ALL_ROWS: Row[] = POKEMON_DATA.flatMap((e) => {
   const stats = POKEMON_STATS[e.id];
   if (!stats) return [];
-  // "raticate-alola" → "raticate", para buscar su número
+  // "raticate-alola" → "raticate", para obtener su número de Pokédex
   const base = e.isRegional ? e.name.slice(0, e.name.lastIndexOf("-")) : e.name;
   return [
     {
@@ -61,12 +65,18 @@ const ALL_ROWS: Row[] = POKEMON_DATA.flatMap((e) => {
   ];
 });
 
+/** Valor numérico de una fila para la columna de orden. */
 function sortValue(r: Row, key: Exclude<SortKey, "name">): number {
   if (key === "dex") return r.dex;
   if (key === "total") return r.total;
   return r.stats[STAT_COLS.findIndex((c) => c.key === key)];
 }
 
+/**
+ * Página Pokédex by Stats (`/dex-stats`): tabla de todos los Pokémon con sus
+ * stats base, ordenable por columna, con búsqueda y filtros. Usa solo datos
+ * locales, sin pedidos a la API.
+ */
 export function DexStats() {
   const { filters, toggle, clearGroup, clearAll } = useFilters();
   const [search, setSearch] = useState("");
@@ -92,19 +102,19 @@ export function DexStats() {
         sortKey === "name"
           ? a.display.localeCompare(b.display)
           : sortValue(a, sortKey) - sortValue(b, sortKey);
-      // El desempate va siempre por número, sin importar la dirección
+      // Desempate por número, siempre ascendente
       return (
         dir * main || a.dex - b.dex || Number(a.regional) - Number(b.regional)
       );
     });
   }, [filters, q, sortKey, sortDir]);
 
-  // Si cambia cualquier cosa que afecte la lista, se vuelve a 50 filas
+  // Al cambiar filtros, búsqueda u orden, vuelve a la primera página
   const listKey = `${JSON.stringify(filters)}|${q}|${sortKey}|${sortDir}`;
   const count = page.key === listKey ? page.count : PAGE;
   const visible = rows.slice(0, count);
 
-  // Cambiar de columna: nombre y # arrancan A→Z, los stats de mayor a menor
+  // Al elegir una columna nueva: # y nombre empiezan ascendente; los stats, descendente
   function toggleSort(key: SortKey) {
     if (key === sortKey) {
       setSortDir((d) => (d === "asc" ? "desc" : "asc"));
@@ -201,7 +211,7 @@ export function DexStats() {
                       </div>
                     </td>
                     <td className="py-1.5 px-3">
-                      {/* Celular: el número va chico arriba del nombre */}
+                      {/* Celular: número arriba del nombre */}
                       <span className="sm:hidden block text-[11px] text-gray-400 tabular-nums">
                         #{String(r.dex).padStart(4, "0")}
                       </span>

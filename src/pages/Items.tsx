@@ -17,6 +17,10 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { LetterStrip } from "../components/lists/LetterStrip";
 import { LoadMoreButton } from "../components/LoadMoreButton";
 
+/**
+ * Página Items (`/items`): lista de objetos con búsqueda, filtro por
+ * categoría y letra, orden por nombre o categoría y fila expandible.
+ */
 export function Items() {
   const c = useListControls<"name" | "category">();
   const [group, setGroup] = useState("all");
@@ -32,7 +36,7 @@ export function Items() {
     staleTime: Infinity,
   });
 
-  // Solo se pide si hace falta ordenar por categoría
+  // Solo se pide al ordenar por categoría
   const { data: catMap } = useItemCategoryMap(c.sortKey === "category");
 
   const names = useMemo(() => {
@@ -55,11 +59,11 @@ export function Items() {
     catMap,
   ]);
 
-  // Todo lo que cambia la lista tiene que estar en la clave de caché
+  // La clave de caché incluye todo lo que cambia la lista
   const listKey = `${group}|${c.q}|${c.letter ?? ""}|${c.sortKey}|${c.sortDir}|${
     catMap ? 1 : 0
   }`;
-  // Los que no tienen sprite son placeholders internos de los juegos
+  // Se excluyen los objetos sin sprite (marcadores internos de los juegos)
   const list = usePagedList("item", names, listKey, getItem, (i) =>
     Boolean(i.sprites.default),
   );
@@ -99,7 +103,7 @@ export function Items() {
           ))}
         </select>
 
-        {/* En mobile no hay encabezados, el orden se elige acá */}
+        {/* En celular no hay encabezados: el orden se elige con este selector */}
         <select
           className="item-select sm:hidden"
           value={`${c.sortKey}:${c.sortDir}`}

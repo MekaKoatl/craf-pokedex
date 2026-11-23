@@ -8,6 +8,7 @@ import { FavoritesProvider } from "./context/FavoritesContext";
 import { ListsProvider } from "./context/ListsContext";
 import { TeamsProvider } from "./context/TeamsContext";
 
+/** Caché de TanStack Query compartida por toda la app. */
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(

@@ -6,9 +6,9 @@ import { BackToTop } from "./components/BackToTop";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { Home } from "./pages/Home";
 
-// Cada página se descarga recién la primera vez que la visitás.
-// lazy() espera un "export default", pero nuestras páginas usan
-// "export function Nombre"; el .then se la entrega en ese formato.
+// Las páginas se cargan bajo demanda (code splitting): cada una se descarga
+// la primera vez que se visita. Como usan exports con nombre, el `.then`
+// las adapta al `default` que espera `lazy()`. Home se importa directo.
 const DexGallery = lazy(() =>
   import("./pages/DexGallery").then((m) => ({ default: m.DexGallery })),
 );
@@ -53,13 +53,14 @@ const Feedback = lazy(() =>
   import("./pages/Feedback").then((m) => ({ default: m.Feedback })),
 );
 
+/** Estructura de la app: barra de navegación, rutas, pie de página y botón de volver arriba. */
 function App() {
   return (
-    // min-h-screen + flex-1 en main: el footer queda abajo aunque la página sea corta
+    // min-h-screen + flex-1 en main: el footer queda al fondo en páginas cortas
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">
-        {/* Suspense muestra la pokébola mientras se descarga una página */}
+        {/* Indicador de carga mientras se descarga una página */}
         <Suspense
           fallback={
             <div className="max-w-7xl mx-auto px-4 py-8">

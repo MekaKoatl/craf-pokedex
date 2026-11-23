@@ -1,3 +1,9 @@
+/*
+ * Estilos globales de la app.
+ * Tailwind CSS 4 cubre la mayoría de los estilos desde las clases de los
+ * componentes; este archivo define las clases propias (tarjetas, insignias,
+ * filtros, tablas, etc.) y los ajustes para celular (corte en 640px).
+ */
 @import "tailwindcss";
 
 /* ── BOTONES ─────────────────────────── */
@@ -33,7 +39,7 @@
   text-decoration: none;
 }
 
-/* Solo con mouse: en el celular el hover se queda pegado después de tocar */
+/* Hover solo con mouse: en pantallas táctiles queda activo después de tocar */
 @media (hover: hover) {
   .dex-card:hover {
     transform: translateY(-4px);
@@ -69,7 +75,7 @@
   padding: 0 0.5rem;
 }
 
-/* Estado en estatico */
+/* Sprite estático (sin hover) */
 .sprite-static {
   opacity: 1;
   transform: scale(1);
@@ -90,7 +96,7 @@
   }
 }
 
-/* Dream World y arte oficial no son pixel: se ven suaves */
+/* Dream World y arte oficial no son pixel art: se escalan con suavizado */
 .dex-card-sprite img.dex-card-art {
   image-rendering: auto;
   padding: 4px;
@@ -594,7 +600,7 @@
   width: 100%;
 }
 
-/* Flecha (desktop) */
+/* Flecha (escritorio) */
 .evo-arrow {
   display: flex;
   flex-direction: column;
@@ -631,7 +637,7 @@
   max-width: 360px;
 }
 
-/* Cadena evolutiva mobil*/
+/* Cadena evolutiva en celular */
 @media (max-width: 639px) {
   .evo-chain-wrapper {
     flex-direction: column;
@@ -669,7 +675,7 @@
   }
 }
 
-/* Alt Forms - Details ----------------------------------- */
+/* ── FORMAS ALTERNATIVAS (DETAILS) ─────────────────── */
 .form-alt-card {
   background: #fff;
   border: 0.5px solid #e5e7eb;
@@ -967,7 +973,7 @@
   padding: 0.35rem 1.25rem;
 }
 
-/* ── ITEMS ─────────────────────────── */
+/* ── FILTRO POR LETRA Y SELECTORES DE LAS LISTAS ─────────── */
 .item-letters {
   display: flex;
   flex-wrap: wrap;
@@ -1148,7 +1154,7 @@
 .item-head {
   padding: 0 0.4rem;
 }
-/* "Name" arranca donde arranca el nombre, no el círculo */
+/* "Name" se alinea con el nombre, no con el círculo del sprite */
 .item-head-cell:first-child {
   padding-left: calc(36px + 0.75rem);
 }
@@ -1170,7 +1176,7 @@
   font-weight: 600;
   color: #111827;
 }
-/* El círculo donde va el sprite */
+/* Círculo del sprite */
 .item-sprite {
   flex: 0 0 36px;
   width: 36px;
@@ -1195,7 +1201,7 @@
   white-space: nowrap;
 }
 
-/* El + de la derecha */
+/* Botón + de cada fila (compartido por las tres tablas) */
 .item-plus {
   justify-self: center;
   width: 32px;
@@ -1288,7 +1294,7 @@
   }
 }
 
-/* Tira de sprites en Details */
+/* ── DETAILS: TIRA DE SPRITES ─────────────────────────── */
 .sprite-strip {
   scrollbar-width: thin;
   scrollbar-color: #d1d5db transparent;
@@ -1304,7 +1310,7 @@
   border-radius: 999px;
 }
 
-/* Requisitos de evolución */
+/* ── DETAILS: REQUISITOS DE EVOLUCIÓN ─────────────────── */
 .evo-req {
   margin-top: 0.25rem;
 }
@@ -1376,6 +1382,7 @@
   color: #ef4444;
 }
 
+/* ── MOVES ─────────────────────────── */
 /* Nombre · Tipo · Categoría · Power · Acc · PP · Efecto · + */
 .move-head,
 .move-row {
@@ -1415,7 +1422,7 @@
   color: #fff;
   border-left: 2px solid rgba(0, 0, 0, 0.2);
 }
-/* Sobre estos tres el blanco no se lee */
+/* Tipos con fondo claro: el texto blanco no se lee */
 .move-cell-name.type-electric,
 .move-cell-name.type-ground,
 .move-cell-name.type-steel,
@@ -1433,7 +1440,7 @@
   padding: 0.5rem 0.25rem;
   font-variant-numeric: tabular-nums;
 }
-/* Una sola línea con "..." para que la fila no se deforme */
+/* Una sola línea con "…" para no deformar la fila */
 .move-cell-effect {
   display: block;
   align-self: center;
@@ -1550,7 +1557,7 @@
   color: #ef4444;
   transform: scale(1.1);
 }
-/* Ya está en favoritos o en alguna lista */
+/* Guardado en favoritos o en alguna lista */
 .add-btn.is-saved {
   background: #ef4444;
   border-color: #ef4444;
@@ -1572,7 +1579,7 @@
     height: 34px;
     font-size: 1.1rem;
   }
-  /* Se ve de 34px, pero el área que responde al dedo es de 46px */
+  /* 34px visibles con un área táctil de 46px */
   .add-btn::after {
     content: "";
     position: absolute;
@@ -1599,7 +1606,7 @@
   .panel-clear-link {
     min-height: 45px;
   }
-  /* 16px: con menos, el iPhone hace zoom al abrir un select */
+  /* 16px: con menos, iOS hace zoom al abrir un select */
   .item-select {
     font-size: 16px;
     padding: 6px 14px;

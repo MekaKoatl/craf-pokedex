@@ -15,22 +15,26 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { LetterStrip } from "../components/lists/LetterStrip";
 import { LoadMoreButton } from "../components/LoadMoreButton";
 
+/**
+ * Página Abilities (`/abilities`): lista de habilidades con búsqueda, filtro
+ * por letra, orden por nombre o generación y fila expandible.
+ * `?open=nombre` abre esa habilidad y la muestra primera (se usa desde Details).
+ */
 export function Abilities() {
   const [searchParams, setSearchParams] = useSearchParams();
-  // La habilidad que llega desde Details, p. ej. /abilities?open=sticky-hold
   const focus = searchParams.get("open");
 
   const c = useListControls<"name" | "gen">(focus);
   const { setOpen } = c;
 
-  // Si se entra de nuevo con otra habilidad, se abre esa
+  // Abre la habilidad indicada si cambia el parámetro
   useEffect(() => {
     if (focus) setOpen(focus);
   }, [focus, setOpen]);
 
   const { data: allNames = [] } = useAbilityNames();
 
-  // Solo se pide si hace falta ordenar por generación
+  // Solo se pide al ordenar por generación
   const { data: genMap } = useAbilityGenMap(c.sortKey === "gen");
 
   const names = useMemo(() => {
@@ -38,25 +42,25 @@ export function Abilities() {
       c.sortKey === "name"
         ? byName
         : c.sortKey === "gen" && genMap
-          ? // Empate de generación se desempata por nombre
+          ? // Desempate por nombre
             (a: string, b: string) =>
               (genMap[a] ?? 99) - (genMap[b] ?? 99) || a.localeCompare(b)
           : undefined;
     const out = filterAndSort(allNames, c.q, c.letter, c.sortDir, compare);
 
-    // La que viene de Details se adelanta, así cae en la primera página
+    // La habilidad de `?open=` va primera, para que esté en la primera página
     if (focus && out.includes(focus)) {
       return [focus, ...out.filter((n) => n !== focus)];
     }
     return out;
   }, [allNames, c.q, c.letter, c.sortKey, c.sortDir, genMap, focus]);
 
-  // Todo lo que cambia la lista tiene que estar en la clave de caché
+  // La clave de caché incluye todo lo que cambia la lista
   const listKey = `${c.q || "all"}|${c.letter ?? ""}|${c.sortKey}|${c.sortDir}|${
     genMap ? 1 : 0
   }|${focus ?? ""}`;
 
-  // Las que no son de la serie principal vienen de spin-offs
+  // Se excluyen las habilidades de spin-offs
   const list = usePagedList(
     "ability",
     names,
@@ -69,7 +73,7 @@ export function Abilities() {
 
   function clearAll() {
     c.reset();
-    setSearchParams({}, { replace: true }); // suelta la habilidad fijada
+    setSearchParams({}, { replace: true }); // quita `?open=`
   }
 
   return (
@@ -85,7 +89,7 @@ export function Abilities() {
       />
 
       <div className="filter-bar items-center">
-        {/* En mobile no hay encabezados, el orden se elige acá */}
+        {/* En celular no hay encabezados: el orden se elige con este selector */}
         <select
           className="item-select sm:hidden"
           value={`${c.sortKey}:${c.sortDir}`}

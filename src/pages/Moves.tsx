@@ -19,6 +19,10 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { LetterStrip } from "../components/lists/LetterStrip";
 import { LoadMoreButton } from "../components/LoadMoreButton";
 
+/**
+ * Página Moves (`/moves`): lista de movimientos con búsqueda, filtros por
+ * tipo, categoría y letra, orden por nombre, tipo o categoría y fila expandible.
+ */
 export function Moves() {
   const c = useListControls<"name" | "type" | "cat">();
   const [type, setType] = useState("all");
@@ -26,7 +30,7 @@ export function Moves() {
 
   const { data: allNames = [] } = useMoveNames();
 
-  // El filtro pide un solo tipo; es una request
+  // El filtro por tipo pide solo la lista de ese tipo
   const { data: typeNames } = useQuery({
     queryKey: ["move-type", type],
     queryFn: () => getMovesOfType(type),
@@ -41,11 +45,11 @@ export function Moves() {
     staleTime: Infinity,
   });
 
-  // El orden sí necesita el mapa completo, y solo entonces se pide
+  // Los mapas completos solo se piden al ordenar por esa columna
   const { data: typeMap } = useMoveTypeMap(c.sortKey === "type");
   const { data: catMap } = useMoveCategoryMap(c.sortKey === "cat");
 
-  // Los dos filtros se combinan: tipo primero, categoría como intersección
+  // Combina los filtros: lista del tipo, intersectada con la de la categoría
   const base = useMemo(() => {
     let out = allNames;
     if (type !== "all") out = typeNames ?? [];
@@ -57,7 +61,7 @@ export function Moves() {
   }, [allNames, type, typeNames, cat, catNames]);
 
   const names = useMemo(() => {
-    // Categoría: physical < special < status
+    // Por categoría el orden alfabético es physical < special < status
     const compare =
       c.sortKey === "name"
         ? byName
@@ -69,7 +73,7 @@ export function Moves() {
     return filterAndSort(base, c.q, c.letter, c.sortDir, compare);
   }, [base, c.q, c.letter, c.sortKey, c.sortDir, typeMap, catMap]);
 
-  // Todo lo que cambia la lista tiene que estar en la clave de caché
+  // La clave de caché incluye todo lo que cambia la lista
   const listKey = `${type}|${cat}|${c.q}|${c.letter ?? ""}|${c.sortKey}|${
     c.sortDir
   }|${typeMap ? 1 : 0}|${catMap ? 1 : 0}`;
@@ -114,7 +118,7 @@ export function Moves() {
           ))}
         </select>
 
-        {/* En mobile no hay encabezados, el orden se elige acá */}
+        {/* En celular no hay encabezados: el orden se elige con este selector */}
         <select
           className="item-select sm:hidden"
           value={`${c.sortKey}:${c.sortDir}`}
