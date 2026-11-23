@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FavoritesContext } from "../context/FavoritesContext";
+import { FavoritesContext } from "../context/contexts";
 
 /**
  * Acceso a los favoritos del usuario y sus acciones.

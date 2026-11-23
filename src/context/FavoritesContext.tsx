@@ -1,21 +1,8 @@
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
+import { FavoritesContext } from "./contexts";
 
 /** Clave de `localStorage` donde se guardan los favoritos. */
 const STORAGE_KEY = "craf-favorites";
-
-/** Valor que expone el contexto de favoritos. */
-interface FavoritesContextValue {
-  /** Ids de Pokémon favoritos, en el orden en que se agregaron. */
-  favorites: number[];
-  isFavorite: (id: number) => boolean;
-  toggleFavorite: (id: number) => void;
-  clearFavorites: () => void;
-}
-
-/** Contexto de favoritos. Es null fuera de `FavoritesProvider`; usar `useFavorites`. */
-export const FavoritesContext = createContext<FavoritesContextValue | null>(
-  null,
-);
 
 /** Favoritos guardados, o [] si no hay o el JSON es inválido. */
 function readInitial(): number[] {

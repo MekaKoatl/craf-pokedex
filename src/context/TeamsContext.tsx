@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
+import { TeamsContext } from "./contexts";
 
 /** Clave de `localStorage` donde se guardan los equipos. */
 const STORAGE_KEY = "craf-teams";
@@ -34,43 +35,6 @@ export interface Team {
   /** Hasta `TEAM_SIZE` miembros. */
   members: TeamMember[];
 }
-
-/** Valor que expone el contexto de equipos. */
-interface TeamsContextValue {
-  teams: Team[];
-  /**
-   * Valida un nombre de equipo. Devuelve null si es válido o el mensaje de error.
-   * `ignoreId` excluye un equipo de la comparación (al renombrarlo).
-   */
-  teamNameError: (name: string, ignoreId?: string) => string | null;
-  /**
-   * Crea un equipo, vacío o con `members` (al duplicar). Devuelve su id,
-   * o null si el nombre no es válido.
-   */
-  createTeam: (
-    name: string,
-    game: string,
-    members?: TeamMember[],
-  ) => string | null;
-  /** Renombra un equipo. Devuelve false si el nombre no es válido. */
-  renameTeam: (teamId: string, name: string) => boolean;
-  deleteTeam: (teamId: string) => void;
-  /** Agrega un miembro con configuración vacía; no hace nada si el equipo está lleno. */
-  addMember: (teamId: string, pokemonId: number) => void;
-  /** Quita el miembro de la posición `index` (por posición: un Pokémon puede repetirse). */
-  removeMember: (teamId: string, index: number) => void;
-  /** Mueve un miembro de `from` a `to`; si `to` supera el final, va al final. */
-  moveMember: (teamId: string, from: number, to: number) => void;
-  /** Actualiza solo los campos indicados de un miembro, p. ej. `{ ability: "blaze" }`. */
-  updateMember: (
-    teamId: string,
-    index: number,
-    changes: Partial<TeamMember>,
-  ) => void;
-}
-
-/** Contexto de equipos. Es null fuera de `TeamsProvider`; usar `useTeams`. */
-export const TeamsContext = createContext<TeamsContextValue | null>(null);
 
 /** Equipos guardados, o [] si no hay o el JSON es inválido. */
 function readInitial(): Team[] {

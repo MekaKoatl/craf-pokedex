@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
+import { ListsContext } from "./contexts";
 
 /** Clave de `localStorage` donde se guardan las listas. */
 const STORAGE_KEY = "craf-lists";
@@ -13,27 +14,6 @@ export interface PokemonList {
   /** Ids de Pokémon, en el orden en que se agregaron. */
   pokemon: number[];
 }
-
-/** Valor que expone el contexto de listas. */
-interface ListsContextValue {
-  lists: PokemonList[];
-  /**
-   * Valida un nombre de lista. Devuelve null si es válido o el mensaje de error.
-   * `ignoreId` excluye una lista de la comparación (al renombrarla).
-   */
-  listNameError: (name: string, ignoreId?: string) => string | null;
-  /** Crea una lista vacía. Devuelve su id, o null si el nombre no es válido. */
-  createList: (name: string) => string | null;
-  /** Renombra una lista. Devuelve false si el nombre no es válido. */
-  renameList: (listId: string, name: string) => boolean;
-  deleteList: (listId: string) => void;
-  isInList: (listId: string, pokemonId: number) => boolean;
-  /** Agrega el Pokémon a la lista o lo quita si ya estaba. */
-  toggleInList: (listId: string, pokemonId: number) => void;
-}
-
-/** Contexto de listas. Es null fuera de `ListsProvider`; usar `useLists`. */
-export const ListsContext = createContext<ListsContextValue | null>(null);
 
 /** Listas guardadas, o [] si no hay o el JSON es inválido. */
 function readInitial(): PokemonList[] {

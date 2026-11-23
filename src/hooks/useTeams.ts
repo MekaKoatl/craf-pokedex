@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TeamsContext } from "../context/TeamsContext";
+import { TeamsContext } from "../context/contexts";
 
 /**
  * Acceso a los equipos del usuario y sus acciones.

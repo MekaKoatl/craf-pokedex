@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ListsContext } from "../context/ListsContext";
+import { ListsContext } from "../context/contexts";
 
 /**
  * Acceso a los listas del usuario y sus acciones.
