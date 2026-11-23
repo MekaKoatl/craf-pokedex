@@ -19,7 +19,7 @@ import { TypeBadge } from "../badges/TypeBadge";
 import { useTeamDefense } from "../../hooks/useTeamDefense";
 import type { TeamMember } from "../../context/TeamsContext";
 
-// Región de origen → generación (las de Hisui son de Gen VIII)
+/** Generación de cada región de origen (Hisui pertenece a la Gen VIII). */
 const REGION_GEN: Record<string, number> = {
   kanto: 1,
   johto: 2,
@@ -33,17 +33,18 @@ const REGION_GEN: Record<string, number> = {
   paldea: 9,
 };
 
-// 3 filas de casilleros de 64px + 2 espacios de 6px
+/** Alto de la caja cerrada: 3 filas de 64px más 2 espacios de 6px. */
 const COLLAPSED_HEIGHT = 204;
 
-// Agrega o quita un valor de una lista
+/** Agrega el valor si no está o lo quita si está. */
 function toggleIn<T>(arr: T[], v: T): T[] {
   return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
 }
 
-// Cómo ordenar la caja. Los stats van de mayor a menor.
+/** Orden de la caja: número de Pokédex o un stat (de mayor a menor). */
 type SortKey = "dex" | "total" | "hp" | "atk" | "def" | "spa" | "spd" | "spe";
 
+/** Opciones del selector de orden. */
 const SORT_OPTIONS: { key: SortKey; label: string }[] = [
   { key: "dex", label: "Sort: Pokédex" },
   { key: "total", label: "Sort: Total" },
@@ -55,7 +56,7 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
   { key: "spe", label: "Sort: Speed" },
 ];
 
-// Posición de cada stat en el array de pokemon-stats.ts
+/** Posición de cada stat en las tuplas de `src/data/pokemon-stats.ts`. */
 const STAT_INDEX: Record<string, number> = {
   hp: 0,
   atk: 1,
@@ -65,7 +66,7 @@ const STAT_INDEX: Record<string, number> = {
   spe: 5,
 };
 
-// El valor por el que se ordena, o null si ese Pokémon no tiene datos
+/** Valor de orden de un Pokémon, o null si no tiene datos de stats. */
 function statValue(id: number, key: SortKey): number | null {
   const stats = POKEMON_STATS[id];
   if (!stats) return null;
@@ -73,7 +74,7 @@ function statValue(id: number, key: SortKey): number | null {
   return stats[STAT_INDEX[key]] ?? null;
 }
 
-// Botón que se prende y apaga, mismo estilo que Defense / Offense
+/** Botón de filtro que se activa y desactiva. */
 function Toggle({
   active,
   onClick,
@@ -98,6 +99,14 @@ function Toggle({
   );
 }
 
+/**
+ * Caja de Pokémon del Team Planner: los Pokémon disponibles en el juego, con
+ * búsqueda, filtros (Pokédex del juego, tipo, generación y "Covers weaknesses")
+ * y orden por Pokédex o por stat. Tocar un Pokémon lo agrega al equipo.
+ *
+ * @param full El equipo está completo; se desactiva agregar.
+ * @param inputRef Ref del buscador, para enfocarlo desde la página.
+ */
 export function PokemonBox({
   game,
   members,
@@ -122,23 +131,22 @@ export function PokemonBox({
   const [sortKey, setSortKey] = useState<SortKey>("dex");
   const [coverOnly, setCoverOnly] = useState(false);
 
-  // Los tipos donde el equipo da negativo en el Team Analysis.
-  // null mientras cargan los datos del equipo.
+  // Tipos con total negativo en el análisis defensivo; null mientras cargan
   const defense = useTeamDefense(members, game);
   const weakTypes = defense
     ? defense.filter((d) => d.total < 0).map((d) => d.type)
     : null;
-  // Cuántos de esos tipos resiste (o anula) un Pokémon, con sus tipos de hoy
+  // Cuántos de esos tipos resiste o anula un Pokémon, según sus tipos actuales
   const coverCount = (types: string[]) =>
     (weakTypes ?? []).filter(
       (atk) => defenseMultiplier(atk, types, game.gen) < 1,
     ).length;
-  // El filtro solo actúa si está prendido y hay debilidades para cubrir
+  // El filtro aplica solo si está activo y hay debilidades
   const covering = coverOnly && !!weakTypes && weakTypes.length > 0;
 
   const available = new Set(GAME_POKEMON[game.group] ?? []);
   const regional = new Set(REGIONAL_DEX[game.group] ?? []);
-  // Posición de cada especie en la Pokédex del juego, para ordenar la caja
+  // Posición de cada especie en la Pokédex regional del juego
   const dexOrder = new Map(
     (REGIONAL_DEX[game.group] ?? []).map((id, i) => [id, i]),
   );
@@ -148,7 +156,7 @@ export function PokemonBox({
 
   const box = POKEMON_DATA.filter((e) => {
     if (!available.has(e.id)) return false;
-    // La Pokédex regional guarda especies: Alolan Rattata cuenta como #19
+    // La Pokédex regional guarda especies: Alolan Rattata toma la posición de Rattata
     if (dex === "regional" && !regional.has(dexNumber(e.id))) return false;
     if (finalOnly && !e.isFinal) return false;
     if (hideTeam && inTeam.has(e.id)) return false;
@@ -163,18 +171,18 @@ export function PokemonBox({
       return false;
     return true;
   }).sort((a, b) => {
-    // Por stat: de mayor a menor (los que no tienen datos, al final)
+    // Por stat: de mayor a menor; sin datos, al final
     if (sortKey !== "dex") {
       const diff =
         (statValue(b.id, sortKey) ?? -1) - (statValue(a.id, sortKey) ?? -1);
       if (diff) return diff;
     } else if (covering) {
-      // Cubriendo debilidades: primero los que cubren más tipos
+      // Con "Covers weaknesses": primero los que cubren más tipos
       const diff = coverCount(b.types) - coverCount(a.types);
       if (diff) return diff;
     }
-    // Primero los de la Pokédex del juego, en su orden;
-    // después el resto, por número nacional
+    // Primero los de la Pokédex del juego, en su orden; después el resto,
+    // por número nacional
     const ia = dexOrder.get(dexNumber(a.id)) ?? Infinity;
     const ib = dexOrder.get(dexNumber(b.id)) ?? Infinity;
     return ia - ib || compareDex(a.id, b.id);
@@ -200,7 +208,7 @@ export function PokemonBox({
     setSortKey("dex");
   }
 
-  // Solo hasta la generación del juego
+  // Generaciones hasta la del juego
   const genOptions = Array.from({ length: game.gen }, (_, i) => ({
     value: i + 1,
     label: genLabel(i + 1),
@@ -235,7 +243,6 @@ export function PokemonBox({
         <ClearButton show={search !== ""} onClear={() => setSearch("")} />
       </div>
 
-      {/* Filtros */}
       <div className="relative flex flex-wrap items-center gap-2 mb-4">
         <Toggle active={dex === "all"} onClick={() => setDex("all")}>
           All available
@@ -268,14 +275,13 @@ export function PokemonBox({
         <Toggle active={hideTeam} onClick={() => setHideTeam((v) => !v)}>
           Hide team
         </Toggle>
-        {/* Solo tiene sentido con al menos un Pokémon en el equipo */}
+        {/* Requiere al menos un miembro en el equipo */}
         {members.length > 0 && (
           <Toggle active={coverOnly} onClick={() => setCoverOnly((v) => !v)}>
             Covers weaknesses
           </Toggle>
         )}
 
-        {/* Orden de la caja */}
         <select
           value={sortKey}
           onChange={(e) => setSortKey(e.target.value as SortKey)}
@@ -299,7 +305,7 @@ export function PokemonBox({
         )}
       </div>
 
-      {/* Con "Covers weaknesses": qué tipos se están cubriendo */}
+      {/* Con "Covers weaknesses": tipos que se están cubriendo */}
       {coverOnly && members.length > 0 && (
         <div className="flex flex-wrap items-center gap-1.5 mb-4 text-xs text-gray-500 [&_.type-badge]:flex-none">
           {!weakTypes ? (
@@ -318,7 +324,7 @@ export function PokemonBox({
         </div>
       )}
 
-      {/* La caja: click agrega al equipo */}
+      {/* Caja: tocar un Pokémon lo agrega al equipo */}
       {box.length === 0 ? (
         <p className="text-sm text-gray-400 text-center py-6">
           No Pokémon match these filters.
@@ -326,7 +332,7 @@ export function PokemonBox({
       ) : (
         <>
           <div
-            // Cerrada, se corta a 3 filas
+            // Cerrada, se limita a 3 filas
             style={expanded ? undefined : { maxHeight: COLLAPSED_HEIGHT }}
             className={`grid grid-cols-[repeat(auto-fill,64px)] justify-between gap-1.5 overflow-hidden ${
               full ? "opacity-40" : ""
@@ -347,7 +353,7 @@ export function PokemonBox({
                   className={`${art ? "w-11 h-11" : "w-12 h-12"} object-contain`}
                   style={spriteStyle(!art)}
                 />
-                {/* Con un stat elegido, su valor abajo a la derecha */}
+                {/* Con orden por stat, su valor abajo a la derecha */}
                 {sortKey !== "dex" && (
                   <span className="absolute bottom-0.5 right-1 text-[10px] font-bold text-gray-500 tabular-nums">
                     {statValue(e.id, sortKey) ?? "—"}

@@ -1,5 +1,6 @@
 import { GAMES, GENERATIONS, genLabel } from "../../lib/games";
 
+/** Selector de juego con las opciones agrupadas por generación. `value` es el id del juego. */
 export function GameSelect({
   value,
   onChange,
@@ -16,7 +17,6 @@ export function GameSelect({
       <option value="" disabled>
         Choose a game...
       </option>
-      {/* Un grupo por generación */}
       {GENERATIONS.map((gen) => (
         <optgroup key={gen} label={genLabel(gen)}>
           {GAMES.filter((g) => g.gen === gen).map((g) => (

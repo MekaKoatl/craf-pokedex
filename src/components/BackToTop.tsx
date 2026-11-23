@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+/** Botón fijo para volver al inicio de la página; aparece después de bajar 400px. */
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
 
@@ -8,7 +9,7 @@ export function BackToTop() {
       setVisible(window.scrollY > 400);
     }
     window.addEventListener("scroll", onScroll);
-    onScroll(); // por si la página ya carga scrolleada
+    onScroll(); // estado inicial, por si la página carga ya desplazada
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 

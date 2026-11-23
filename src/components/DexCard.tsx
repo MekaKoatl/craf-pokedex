@@ -10,15 +10,21 @@ import { FormBadge } from "./badges/FormBadge";
 import { AddToListButton } from "./AddToListButton";
 import { SpriteImg } from "./SpriteImg";
 
+/**
+ * Tarjeta de un Pokémon con imagen, número, nombre y tipos, que lleva a su página.
+ * En celular muestra el arte de Dream World (o el oficial si no existe);
+ * en escritorio, el sprite pixelado, animado al pasar el mouse.
+ */
 export function DexCard({
   pokemon,
   pixel = false,
 }: {
   pokemon: Pokemon;
-  pixel?: boolean; // true = siempre sprite pixel (las cards dentro de Details)
+  /** Usa siempre el sprite pixelado, también en celular (tarjetas dentro de Details). */
+  pixel?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  // Si este Pokémon no tiene Dream World, se pasa al arte oficial
+  // true si el arte de Dream World falló y se usa el oficial
   const [noDreamWorld, setNoDreamWorld] = useState(false);
   const isMobile = useIsMobile();
   const showArt = isMobile && !pixel;
@@ -66,7 +72,7 @@ export function DexCard({
             onError={() => setNoDreamWorld(true)}
           />
         ) : (
-          // Escritorio: pixel, y animado al pasar el mouse
+          // Escritorio: sprite pixelado, animado al pasar el mouse
           <>
             <SpriteImg
               className="sprite-static"

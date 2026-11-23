@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { PokemonFull, Species } from "../../types/pokemon";
 
+/** Color de muestra para cada color de Pokédex de la API. */
 const COLOR_MAP: Record<string, string> = {
   black: "#1f2937",
   blue: "#3b82f6",
@@ -15,6 +16,7 @@ const COLOR_MAP: Record<string, string> = {
   yellow: "#eab308",
 };
 
+/** Tarjeta con un título y su contenido. */
 function Card({
   label,
   children,
@@ -32,6 +34,7 @@ function Card({
   );
 }
 
+/** Lugares donde se encuentra el Pokémon, como chips. */
 function LocationChips({ locations }: { locations: string[] }) {
   const [showAll, setShowAll] = useState(false);
   const SHOW = 8;
@@ -59,6 +62,10 @@ function LocationChips({ locations }: { locations: string[] }) {
   );
 }
 
+/**
+ * Panel desplegable de Details con datos adicionales: grupos huevo, género,
+ * experiencia base, ratio de captura, forma, color, amistad, crecimiento y lugares.
+ */
 export function MoreInfoPanel({
   pokemon,
   species,

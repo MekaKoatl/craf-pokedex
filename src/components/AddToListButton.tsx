@@ -9,15 +9,16 @@ import { createPortal } from "react-dom";
 import { useFavorites } from "../hooks/useFavorites";
 import { useLists } from "../hooks/useLists";
 
-// Alto aproximado: si no entra abajo del botón, se abre hacia arriba
+/** Alto aproximado del menú; si no entra debajo del botón, se abre hacia arriba. */
 const MENU_MAX_HEIGHT = 320;
 
-// En pantallas así de chicas se abre un modal en vez del menú flotante
+/** Por debajo de este ancho se usa un modal en lugar del menú flotante. */
 const MOBILE_QUERY = "(max-width: 639px)";
 
-// Dónde se dibuja el menú flotante. null = cerrado
+/** Posición del menú flotante en la pantalla. */
 type Pos = { left: number; top?: number; bottom?: number };
 
+/** Opción del menú (Favorites o una lista), marcada si el Pokémon está guardado ahí. */
 function Option({
   label,
   checked,
@@ -29,7 +30,8 @@ function Option({
   checked: boolean;
   onToggle: () => void;
   count?: number;
-  big?: boolean; // en el modal: filas de 45px, fáciles de tocar
+  /** Versión del modal: filas de 45px. */
+  big?: boolean;
 }) {
   return (
     <label
@@ -51,13 +53,19 @@ function Option({
   );
 }
 
+/**
+ * Botón "+" para guardar un Pokémon en favoritos o en listas, o crear una
+ * lista nueva con él. En escritorio abre un menú flotante; en celular, un modal.
+ */
 export function AddToListButton({
   id,
   name,
   variant = "card",
 }: {
   id: number;
-  name?: string; // para el título del modal
+  /** Nombre visible, para el título del modal. */
+  name?: string;
+  /** "card" para tarjetas; "details" para el encabezado de Details. */
   variant?: "card" | "details";
 }) {
   const { favorites, isFavorite, toggleFavorite } = useFavorites();
@@ -75,7 +83,7 @@ export function AddToListButton({
   const details = variant === "details";
   const menuWidth = details ? 260 : 220;
 
-  // ¿Está guardado en algún lado? Cambia el aspecto del botón
+  // Si está guardado en algún lado, el botón se ve marcado
   const saved = isFavorite(id) || lists.some((l) => l.pokemon.includes(id));
 
   const btnClass = details
@@ -93,19 +101,19 @@ export function AddToListButton({
   };
 
   function handleClick(e: ReactMouseEvent) {
-    // En las cards, que el click no llegue al Link
+    // En las tarjetas, evita que el clic active el Link
     e.preventDefault();
     e.stopPropagation();
     if (open || !btnRef.current) {
       close();
       return;
     }
-    // Celular: modal centrado
+    // Celular: modal
     if (window.matchMedia(MOBILE_QUERY).matches) {
       setModal(true);
       return;
     }
-    // Escritorio: menú flotante al lado del botón
+    // Escritorio: menú flotante junto al botón
     const r = btnRef.current.getBoundingClientRect();
     const left = Math.max(
       8,
@@ -119,7 +127,7 @@ export function AddToListButton({
     );
   }
 
-  // Menú flotante: se cierra con click afuera, Escape, scroll o cambio de tamaño
+  // El menú flotante se cierra con clic afuera, Escape, scroll o cambio de tamaño
   useEffect(() => {
     if (!popoverOpen) return;
     const closeMenu = () => setPos(null);
@@ -134,7 +142,7 @@ export function AddToListButton({
       if (e.key === "Escape") closeMenu();
     }
     function onScroll(e: Event) {
-      // El scroll dentro del propio menú no lo cierra
+      // El scroll dentro del menú no lo cierra
       if (!menuRef.current?.contains(e.target as Node)) closeMenu();
     }
 
@@ -150,7 +158,7 @@ export function AddToListButton({
     };
   }, [popoverOpen]);
 
-  // Modal: Escape lo cierra, y la página de atrás queda quieta
+  // El modal se cierra con Escape y bloquea el scroll de la página
   useEffect(() => {
     if (!modal) return;
     function onKey(e: KeyboardEvent) {
@@ -160,7 +168,7 @@ export function AddToListButton({
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", onKey);
     return () => {
-      // Al cerrar, todo vuelve como estaba
+      // Restaura el scroll al cerrar
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
     };
@@ -173,15 +181,13 @@ export function AddToListButton({
       setCreateError(err);
       return;
     }
-    // Crea la lista y mete este Pokémon de una
+    // Crea la lista con este Pokémon
     const listId = createList(newName);
     if (listId) toggleInList(listId, id);
     setNewName("");
   }
 
-  // El contenido es el mismo en el menú y en el modal.
-  // Es una función común que devuelve JSX, así no se escribe dos veces.
-  // big = versión del modal (todo más grande para el dedo)
+  // Contenido compartido por el menú y el modal; `big` agranda todo para el modal
   const body = (big: boolean) => (
     <>
       <div
@@ -220,7 +226,7 @@ export function AddToListButton({
           }}
           placeholder="New list..."
           maxLength={40}
-          // 16px en el modal: con menos, el iPhone hace zoom al tocar
+          // 16px en el modal: con menos, iOS hace zoom al enfocar
           className={`flex-1 min-w-0 px-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-400 ${
             big ? "h-[45px] text-base" : "py-1 text-xs"
           }`}
@@ -252,11 +258,11 @@ export function AddToListButton({
         {btnLabel}
       </button>
 
-      {/* Escritorio: menú flotante */}
+      {/* Escritorio: menú flotante, dibujado en <body> con un portal */}
       {pos &&
         createPortal(
-          // stopPropagation: aunque se dibuja en el <body>, en React
-          // el evento igual subiría hasta el Link de la card
+          // Los eventos de React suben por el árbol de componentes aunque el
+          // portal esté en <body>; se detienen para no activar el Link de la tarjeta
           <div
             ref={menuRef}
             onClick={(e) => e.stopPropagation()}
@@ -277,7 +283,7 @@ export function AddToListButton({
           document.body,
         )}
 
-      {/* Celular: modal centrado. Tocar el fondo oscuro lo cierra */}
+      {/* Celular: modal centrado; tocar el fondo lo cierra */}
       {modal &&
         createPortal(
           <div
@@ -290,7 +296,7 @@ export function AddToListButton({
             <div
               role="dialog"
               aria-modal="true"
-              // Tocar adentro de la ventana no la cierra
+              // Los toques dentro de la ventana no la cierran
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-4"
             >

@@ -1,14 +1,19 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 import { LOADING_SPRITE } from "../lib/sprites";
 
 type Props = React.ImgHTMLAttributes<HTMLImageElement> & { src: string };
 
-// Los sprites se piden a jsDelivr (un CDN, más rápido). Si falla,
-// se vuelve a pedir el mismo archivo directo a GitHub.
+// Origen principal (CDN) y de respaldo de los sprites
 const JSDELIVR = "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/";
 const GITHUB_RAW = "https://raw.githubusercontent.com/PokeAPI/sprites/master/";
 
-// loading="lazy": la imagen se descarga recién cuando te acercás a ella
+/**
+ * `<img>` para sprites del repositorio PokeAPI/sprites.
+ * - Muestra un Unown animado de fondo mientras carga.
+ * - Si falla una URL de jsDelivr, reintenta una vez desde GitHub y recién
+ *   entonces llama a `onError`.
+ * - Usa carga diferida (`loading="lazy"`) por defecto.
+ */
 export function SpriteImg({
   src,
   alt = "",
@@ -18,38 +23,39 @@ export function SpriteImg({
   decoding = "async",
   ...rest
 }: Props) {
-  const [loaded, setLoaded] = useState(false);
-  // true = jsDelivr ya falló y estamos probando con GitHub
-  const [useBackup, setUseBackup] = useState(false);
-  const ref = useRef<HTMLImageElement>(null);
+  // El estado se guarda por URL: al cambiar `src`, el de la imagen anterior
+  // deja de aplicar sin necesidad de reiniciarlo.
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
+  const [backupFor, setBackupFor] = useState<string | null>(null);
 
+  const useBackup = backupFor === src;
   const finalSrc = useBackup ? src.replace(JSDELIVR, GITHUB_RAW) : src;
+  const loaded = loadedSrc === finalSrc;
 
-  // Al cambiar de imagen vuelve a mostrar el cargando y olvida el reintento.
-  // Si ya estaba en caché, el navegador no dispara onLoad: hay que preguntarle.
-  useEffect(() => {
-    setLoaded(false);
-    setUseBackup(false);
-    const img = ref.current;
-    if (img?.complete && img.naturalWidth > 0) setLoaded(true);
-  }, [src]);
+  // Una imagen en caché puede terminar de cargar antes de que React escuche
+  // onLoad, así que al montarse (o cambiar de URL) se consulta `complete`.
+  const checkCached = useCallback(
+    (img: HTMLImageElement | null) => {
+      if (img?.complete && img.naturalWidth > 0) setLoadedSrc(finalSrc);
+    },
+    [finalSrc],
+  );
 
   return (
     <img
       {...rest}
       loading={loading}
       decoding={decoding}
-      ref={ref}
+      ref={checkCached}
       src={finalSrc}
       alt={alt}
-      onLoad={() => setLoaded(true)}
+      onLoad={() => setLoadedSrc(finalSrc)}
       onError={(e) => {
-        // Primer fallo en jsDelivr: reintenta una vez desde GitHub
         if (!useBackup && src.startsWith(JSDELIVR)) {
-          setUseBackup(true);
+          setBackupFor(src);
           return;
         }
-        setLoaded(true); // si falla, al menos deja de girar
+        setLoadedSrc(finalSrc); // quita el indicador de carga
         onError?.(e);
       }}
       style={{

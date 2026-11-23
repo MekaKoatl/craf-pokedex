@@ -1,6 +1,6 @@
-// Piezas que comparten las filas abiertas de Abilities, Items y Moves
+// Piezas compartidas por las filas abiertas de Abilities, Items y Moves
 
-// La ✕ de arriba a la derecha
+/** Botón ✕ de cierre, en la esquina superior derecha de la fila abierta. */
 export function CloseButton({ onClick }: { onClick: () => void }) {
   return (
     <button
@@ -13,7 +13,7 @@ export function CloseButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-// Texto de los juegos (cita) y efecto largo; cada uno solo si existe
+/** Texto de los juegos (como cita) y efecto completo; cada uno solo si existe. */
 export function FlavorAndEffect({
   flavor,
   effect,
@@ -42,9 +42,10 @@ export function FlavorAndEffect({
   );
 }
 
+/** Dato suelto de la grilla de `InfoCells`. */
 export type InfoCell = { label: string; value: string };
 
-// Grilla de datos sueltos: Power, Fling Power, Target...
+/** Grilla de datos sueltos (Power, Fling Power, Target...). No se muestra si está vacía. */
 export function InfoCells({ cells }: { cells: InfoCell[] }) {
   if (cells.length === 0) return null;
   return (

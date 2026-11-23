@@ -12,7 +12,7 @@ import { CloseButton, FlavorAndEffect } from "../lists/RowParts";
 import { PokemonLink } from "../lists/PokemonLink";
 type Entry = Ability["pokemon"][number];
 
-// "generation-iii" → 3, para la columna compacta
+/** Número de generación para la columna Gen: "generation-iii" → 3. */
 const GEN_NUM: Record<string, number> = {
   "generation-i": 1,
   "generation-ii": 2,
@@ -25,6 +25,7 @@ const GEN_NUM: Record<string, number> = {
   "generation-ix": 9,
 };
 
+/** Grilla de Pokémon que tienen la habilidad. */
 function PokemonGrid({ entries }: { entries: Entry[] }) {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(68px,1fr))] gap-1 mt-2">
@@ -39,6 +40,11 @@ function PokemonGrid({ entries }: { entries: Entry[] }) {
   );
 }
 
+/**
+ * Fila de la lista de habilidades. Cerrada muestra nombre, cantidad de
+ * Pokémon, descripción corta y generación; abierta, una tarjeta con los
+ * textos completos y los Pokémon que la tienen.
+ */
 export function AbilityRow({
   ability,
   open,
@@ -52,9 +58,9 @@ export function AbilityRow({
   const name = prettyName(ability.name);
   const short = abilityShortEffect(ability);
 
-  // Las formas Gigamax y Mega repiten al Pokémon base y no aportan nada acá.
-  // "-mega" seguido de "-" o del final atrapa mega, mega-x, mega-y...
-  // pero no Meganium ni Yanmega (no tienen guion antes de "mega").
+  // Se excluyen las formas Gigamax y Mega, que repiten al Pokémon base.
+  // El patrón "-mega" seguido de "-" o del final cubre mega, mega-x y mega-y,
+  // pero no Meganium ni Yanmega (sin guion antes de "mega").
   const entries = ability.pokemon.filter(
     (p) =>
       !p.pokemon.name.endsWith("-gmax") && !/-mega(-|$)/.test(p.pokemon.name),

@@ -4,6 +4,10 @@ import { getRegionalFormsOf } from "../../lib/regional";
 import { DexCard } from "../DexCard";
 import type { Pokemon } from "../../types/pokemon";
 
+/**
+ * Tarjetas de las otras formas de la especie: las regionales y, si se está
+ * viendo una regional, también la forma original. No se muestra si no hay ninguna.
+ */
 export function RegionalForms({
   pokemonName,
   isRegional,
@@ -13,8 +17,8 @@ export function RegionalForms({
   isRegional: boolean;
   speciesName: string;
 }) {
-  // Las regionales de la especie (dataset local), menos la que estás viendo.
-  // Por especie y no por Pokémon: "darmanitan-standard" no encontraría nada.
+  // Formas regionales de la especie, sin la actual. Se busca por especie
+  // porque algunos nombres de Pokémon ("darmanitan-standard") no coinciden.
   const siblings = getRegionalFormsOf(speciesName).filter(
     (e) => e.name !== pokemonName,
   );
@@ -23,7 +27,7 @@ export function RegionalForms({
     queryKey: ["regional-forms", pokemonName],
     queryFn: async () => {
       const results = await Promise.all([
-        // Si estás en una regional, primero va la forma original
+        // En una forma regional, la original va primero
         isRegional ? fetchPokemonBySpecies(speciesName) : null,
         ...siblings.map((e) => fetchPokemonById(e.id)),
       ]);

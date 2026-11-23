@@ -3,7 +3,7 @@ import pokeball from "../assets/pokeball1.webp";
 
 type Props = { title?: string; message?: string };
 
-// Mensaje de "no encontrado": lo usan la página 404 y Details
+/** Mensaje 404 con links a Home y a la Pokédex. Lo usan la página 404 y Details. */
 export function NotFoundMessage({
   title = "This Pokémon fled!",
   message = "The page you're looking for doesn't exist or was moved.",

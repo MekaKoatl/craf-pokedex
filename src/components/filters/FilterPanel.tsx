@@ -1,10 +1,15 @@
 import { FilterPill } from "./FilterPill";
 
+/** Opción de un panel de filtro. */
 export interface PillOption {
   value: string | number;
   label: string;
 }
 
+/**
+ * Botón desplegable de un grupo de filtros con sus opciones como pastillas.
+ * Solo un panel está abierto a la vez; lo controla `FilterBar`.
+ */
 export function FilterPanel({
   label,
   options,

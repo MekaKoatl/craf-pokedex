@@ -18,7 +18,7 @@ import {
   type InfoCell,
 } from "../lists/RowParts";
 
-// Para qué sirve, deducido de sus atributos
+/** Uso del objeto deducido de sus atributos de la API (equipable, consumible, etc.). */
 function usedFor(item: Item): string {
   const uses: string[] = [];
   const attrs = item.attributes.map((a) => a.name);
@@ -28,8 +28,7 @@ function usedFor(item: Item): string {
   return uses.join(", ");
 }
 
-// La imagen más grande que exista: HD → Dream World → el pixel de siempre.
-// Si una falla (onError), pasa a la siguiente.
+/** Imagen grande de un objeto: prueba las URLs de `itemArtUrls` en orden y, si fallan todas, usa el sprite pixelado. */
 function ItemArt({
   name,
   fallback,
@@ -48,7 +47,7 @@ function ItemArt({
     <SpriteImg
       src={src}
       alt={alt}
-      // El pixel se agranda menos y sin suavizar; el arte, más grande
+      // El sprite pixelado se escala menos y sin suavizado
       className={`${pixel ? "w-12 h-12" : "w-16 h-16"} object-contain`}
       style={pixel ? { imageRendering: "pixelated" } : undefined}
       onError={() => setI((n) => Math.min(n + 1, urls.length - 1))}
@@ -56,6 +55,10 @@ function ItemArt({
   );
 }
 
+/**
+ * Fila de la lista de objetos. Cerrada muestra sprite, nombre, categoría y
+ * efecto corto; abierta, una tarjeta con imagen grande, textos completos y datos.
+ */
 export function ItemRow({
   item,
   open,
@@ -73,8 +76,7 @@ export function ItemRow({
     return (
       <button className="item-row" onClick={onToggle}>
         <span className="item-cell item-cell-name">
-          {/* El sprite va dentro de un círculo. Sin sprite no se monta
-              SpriteImg, si no queda el gif de carga fijo */}
+          {/* Sin sprite no se monta SpriteImg, para no dejar fijo el indicador de carga */}
           <span className="item-sprite">
             {sprite && <SpriteImg src={sprite} alt="" />}
           </span>
@@ -99,7 +101,7 @@ export function ItemRow({
   const effect = itemEffect(item);
   const holders = item.held_by_pokemon.map((h) => prettyName(h.pokemon.name));
 
-  // Solo se arman las celdas que tienen dato
+  // Solo las celdas con dato
   const cells: InfoCell[] = [];
   if (item.attributes.length)
     cells.push({
@@ -121,7 +123,6 @@ export function ItemRow({
     <div ref={ref} className="item-expanded">
       <CloseButton onClick={onToggle} />
 
-      {/* Encabezado */}
       <div className="flex items-center gap-4">
         {" "}
         <div className="w-20 h-20 flex-shrink-0 bg-white border border-gray-200 rounded-lg flex items-center justify-center">
@@ -139,7 +140,7 @@ export function ItemRow({
         </div>
       </div>
 
-      {/* La descripción corta va debajo del encabezado, a todo el ancho */}
+      {/* Descripción corta, a todo el ancho */}
       {short && <p className="text-gray-700 mt-3 leading-relaxed">{short}</p>}
 
       <FlavorAndEffect flavor={flavor} effect={effect} />

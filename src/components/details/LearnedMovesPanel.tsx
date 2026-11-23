@@ -9,8 +9,10 @@ import { LoadingSpinner } from "../LoadingSpinner";
 import type { PokemonFull } from "../../types/pokemon";
 import type { Move } from "../../types/move";
 
+/** Movimiento de una tabla; `level` solo en la de nivel. */
 type Row = { name: string; level?: number };
 
+/** Tarjeta desplegable con la tabla de movimientos de un método de aprendizaje. */
 function MoveTable({
   title,
   rows,
@@ -24,7 +26,6 @@ function MoveTable({
   showLevel?: boolean;
   empty: string;
 }) {
-  // Cada tarjeta guarda su propio estado
   const [open, setOpen] = useState(true);
 
   return (
@@ -56,7 +57,7 @@ function MoveTable({
                     )}
                     <th className="py-2 px-1 sm:px-2">Move</th>
                     <th className="py-2 px-1 sm:px-2">Type</th>
-                    {/* En celular la categoría va adentro de la columna Type */}
+                    {/* En celular la categoría va dentro de la columna Type */}
                     <th className="hidden sm:table-cell py-2 px-2">Cat.</th>
                     <th className="py-2 px-1 sm:px-2 text-right">
                       <span className="sm:hidden">Pow.</span>
@@ -68,15 +69,15 @@ function MoveTable({
                 <tbody>
                   {rows.map((r, i) => {
                     const m = moves[r.name];
-                    // Se arma una vez y se usa en dos lugares
+                    // Se usa en dos lugares (escritorio y celular)
                     const cat = m ? (
                       <CategoryBadge category={m.damage_class.name} />
                     ) : (
                       "—"
                     );
                     return (
-                      // El índice va en la key porque un movimiento puede
-                      // repetirse en level up con dos niveles distintos
+                      // La key incluye el índice: un movimiento puede aparecer
+                      // dos veces por nivel con niveles distintos
                       <tr
                         key={`${r.name}-${i}`}
                         className="border-b border-gray-100"
@@ -92,7 +93,7 @@ function MoveTable({
                         <td className="py-1.5 px-1 sm:px-2 [&_.type-badge]:inline-block [&_.type-badge]:max-w-none [&_.type-badge]:w-16 sm:[&_.type-badge]:w-20 [&_.type-badge]:text-center [&_.move-cat]:w-16 [&_.move-cat]:px-0">
                           {" "}
                           {m ? <TypeBadge type={m.type.name} /> : "—"}
-                          {/* Solo en celular: la categoría debajo del tipo */}
+                          {/* Celular: categoría debajo del tipo */}
                           <span className="sm:hidden block mt-1">{cat}</span>
                         </td>
                         <td className="hidden sm:table-cell py-1.5 px-2 [&_.move-cat]:w-24">
@@ -118,11 +119,15 @@ function MoveTable({
   );
 }
 
+/**
+ * Movimientos que aprende un Pokémon en el juego más reciente donde aparece,
+ * en cuatro tablas: por nivel, al evolucionar, por MT/MO y huevo.
+ */
 export function LearnedMovesPanel({ pokemon }: { pokemon: PokemonFull }) {
   const [open, setOpen] = useState(false);
   const learnset = useMemo(() => buildLearnset(pokemon), [pokemon]);
 
-  // Nombres sin repetir de las cuatro secciones: esto es lo que se pide
+  // Movimientos sin repetir de las cuatro tablas, para pedir sus datos
   const names = useMemo(() => {
     if (!learnset) return [];
     return [
@@ -149,7 +154,7 @@ export function LearnedMovesPanel({ pokemon }: { pokemon: PokemonFull }) {
 
   if (!learnset) return null;
 
-  // Si no hay nada que pedir, no hay que esperar a nada
+  // Sin movimientos no hay nada que esperar
   const ready = names.length === 0 || !!moves;
   const map = moves ?? {};
   const toRows = (arr: string[]) => arr.map((name) => ({ name }));

@@ -13,7 +13,7 @@ import {
 } from "../../lib/teamRules";
 import type { TeamMember } from "../../context/TeamsContext";
 
-// Nombres y colores como en las barras de Details
+/** Nombre y color de cada stat, iguales a las barras de Details. */
 const ROWS = [
   { label: "HP", color: "bg-red-500" },
   { label: "ATK", color: "bg-orange-500" },
@@ -23,49 +23,53 @@ const ROWS = [
   { label: "SPD", color: "bg-purple-500" },
 ];
 
-// Celular, dos líneas por stat:
-//   nombre | barra (ocupa 2 columnas) | total
-//   base   | IV                       | EV
-// Escritorio, una línea: nombre · base · barra · total · IV · EV
+/**
+ * Grilla de cada fila de stat.
+ * - Celular, dos líneas: nombre | barra (2 columnas) | total, y base | IV | EV.
+ * - Escritorio, una línea: nombre · base · barra · total · IV · EV.
+ */
 const rowGrid =
   "grid grid-cols-[56px_1fr_1fr_40px] sm:grid-cols-[72px_44px_1fr_48px_72px_72px] items-center gap-x-2 gap-y-1.5 sm:gap-3";
 
-// En celular: 45px de alto y letra de 16px (con menos, el iPhone hace zoom)
+/** Campo numérico. En celular: 45px de alto y letra de 16px (con menos, iOS hace zoom). */
 const numClass =
   "h-[45px] sm:h-auto px-2 py-1 border border-gray-300 rounded-md text-base sm:text-xs text-right text-gray-700 bg-white focus:outline-none focus:border-red-400";
 
-// "order-1" manda el elemento a la segunda línea en celular;
-// "sm:order-none" lo deja en su lugar normal en escritorio
+/** Pasa el elemento a la segunda línea en celular; en escritorio queda en su lugar. */
 const secondLine = "order-1 sm:order-none";
 
-// Número entero dentro de un rango; lo vacío cuenta como el mínimo
+/** Convierte un texto en entero dentro de [min, max]; vacío o inválido cuenta como `min`. */
 const clamp = (v: string, min: number, max: number) =>
   Math.max(min, Math.min(max, Math.floor(Number(v)) || min));
 
-// Copia la lista cambiando solo una posición
+/** Copia de la tupla con la posición `i` cambiada. */
 function setAt(arr: StatTuple, i: number, v: number): StatTuple {
   const next = [...arr] as StatTuple;
   next[i] = v;
   return next;
 }
 
-// El stat más alto posible a ese nivel (base 255, IV 31, 252 EVs,
-// naturaleza a favor): es el 100% de la barra
+/** Stat máximo posible a ese nivel (base 255, IV 31, 252 EVs, naturaleza a favor); es el 100% de la barra. */
 function maxStat(i: number, level: number): number {
   const core = Math.floor(((2 * 255 + 31 + 63) * level) / 100);
   return i === 0 ? core + level + 10 : Math.floor((core + 5) * 1.1);
 }
 
+/**
+ * Editor desplegable de nivel, IVs y EVs de un miembro, con los stats finales
+ * calculados y repartos de EVs rápidos. Marca en rojo el total si supera
+ * `MAX_EV_TOTAL`.
+ */
 export function StatsEditor({
   base,
   member,
   onChange,
 }: {
-  base: StatTuple | null; // null mientras cargan los datos
+  /** Stats base del Pokémon; null mientras cargan. */
+  base: StatTuple | null;
   member: TeamMember;
   onChange: (changes: Partial<TeamMember>) => void;
 }) {
-  // Arranca cerrada
   const [open, setOpen] = useState(false);
 
   const level = member.level ?? DEFAULT_LEVEL;
@@ -78,7 +82,7 @@ export function StatsEditor({
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">
-      {/* Encabezado: abre y cierra */}
+      {/* Encabezado desplegable */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -133,7 +137,7 @@ export function StatsEditor({
             )}
           </div>
 
-          {/* Títulos de las columnas: solo en escritorio */}
+          {/* Títulos de columnas, solo en escritorio */}
           <div
             className={`${rowGrid} hidden sm:grid text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-1`}
           >
@@ -145,10 +149,9 @@ export function StatsEditor({
             <span className="text-center">EV</span>
           </div>
 
-          {/* Una fila por stat */}
           <div className="flex flex-col">
             {ROWS.map((row, i) => {
-              // Rojo si la naturaleza lo sube, azul si lo baja
+              // Rojo si la naturaleza lo sube; azul si lo baja
               const mult = natureMultiplier(member.nature, i);
               const color =
                 mult > 1

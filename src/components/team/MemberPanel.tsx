@@ -32,6 +32,7 @@ import { StatsEditor } from "./StatsEditor";
 import { StatBars } from "../details/StatBar";
 import type { TeamMember } from "../../context/TeamsContext";
 
+/** Índices de los 4 casilleros de movimientos. */
 const MOVE_SLOTS = [0, 1, 2, 3];
 
 const labelClass =
@@ -39,6 +40,11 @@ const labelClass =
 const selectClass =
   "w-full px-3 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-lg text-base sm:text-sm text-gray-700 bg-white focus:outline-none focus:border-red-400";
 
+/**
+ * Panel de edición de un miembro del equipo: Mega, habilidad, objeto,
+ * naturaleza, movimientos y stats. Solo ofrece lo que existe y es válido
+ * en el juego del equipo.
+ */
 export function MemberPanel({
   member,
   name,
@@ -62,7 +68,7 @@ export function MemberPanel({
   const abilities = pokemon ? abilitiesForGame(pokemon, game.gen) : [];
   const learnable = pokemon ? movesForGame(pokemon, game.group) : [];
   const items = features.items ? itemsForGame(game) : {};
-  // Si tiene su Megapiedra, los stats salen de la Mega
+  // Con su Megapiedra equipada, los stats son los de la Mega
   const megaName = pokemon
     ? megaNameFor(pokemon.species.name, member.item)
     : null;
@@ -75,21 +81,21 @@ export function MemberPanel({
   });
   const statSource = (megaName && mega) || pokemon;
 
-  // Megapiedras propias: solo especies con Mega, en juegos con Megas
+  // Megapiedras de la especie (solo si tiene Mega y el juego las admite)
   const entry = POKEMON_DATA.find((e) => e.id === member.pokemonId);
   const stones = entry?.forms.includes("M")
     ? megaStonesFor(entry.name, game)
     : [];
-  // Cuál está equipada ahora (null = ninguna, o un objeto que no es Megapiedra)
+  // Megapiedra equipada, o null si el objeto no es una
   const activeStone = stones.find((s) => s === member.item) ?? null;
 
   function setMega(stone: string | null) {
     if (stone) onChange({ item: stone });
-    // "No Mega" solo saca el objeto si era su Megapiedra
+    // "No Mega" quita el objeto solo si era su Megapiedra
     else if (activeStone) onChange({ item: null });
   }
 
-  // Los datos de cada movimiento elegido, uno por consulta
+  // Datos de cada movimiento elegido
   const chosen = member.moves.filter(Boolean);
   const moveResults = useQueries({
     queries: chosen.map((n) => ({
@@ -98,14 +104,14 @@ export function MemberPanel({
       staleTime: Infinity,
     })),
   });
-  // nombre → cómo era en este juego
+  // Nombre del movimiento → sus datos en este juego
   const moveInfo: Record<string, MoveInGame> = {};
   for (const r of moveResults) {
     if (r.data) moveInfo[r.data.name] = moveForGame(r.data, game);
   }
 
   function setMove(slot: number, moveName: string) {
-    // Siempre 4 posiciones; las vacías quedan como ""
+    // Siempre 4 posiciones; las vacías son ""
     const next = MOVE_SLOTS.map((j) =>
       j === slot ? moveName : (member.moves[j] ?? ""),
     );
@@ -131,7 +137,7 @@ export function MemberPanel({
         />
         <h3 className="text-xl font-bold text-gray-900">{name}</h3>
 
-        {/* Toggle de Mega: mismo estilo que Defense / Offense */}
+        {/* Selector de Mega */}
         {stones.length > 0 && (
           <div className="flex items-center gap-2 ml-auto">
             {[null, ...stones].map((s) => (
@@ -211,12 +217,12 @@ export function MemberPanel({
         </div>
       )}
 
-      {/* Los 4 movimientos */}
+      {/* Movimientos */}
       <label className={labelClass}>Moves</label>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {MOVE_SLOTS.map((slot) => {
           const current = member.moves[slot] ?? "";
-          // No se ofrece lo que ya está en otro casillero
+          // Excluye los movimientos elegidos en otros casilleros
           const taken = new Set(member.moves.filter((_, j) => j !== slot));
           const info = current ? moveInfo[current] : undefined;
 
@@ -257,7 +263,7 @@ export function MemberPanel({
           );
         })}
       </div>
-      {/* Stats: EVs/IVs desde Gen III; antes, solo los base */}
+      {/* Stats: editor de EVs/IVs desde la Gen III; antes, solo los base */}
       <div className="mt-6">
         {game.gen >= 3 ? (
           <StatsEditor

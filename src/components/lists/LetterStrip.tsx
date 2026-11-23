@@ -5,7 +5,7 @@ type Props = {
   onPick: (letter: string | null) => void;
 };
 
-// Tira de letras A–Z de Abilities, Items y Moves
+/** Filtro por letra inicial (All, A–Z) de Abilities, Items y Moves. */
 export function LetterStrip({ letter, onPick }: Props) {
   return (
     <div className="item-letters">

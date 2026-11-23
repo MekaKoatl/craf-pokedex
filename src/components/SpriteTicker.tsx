@@ -7,7 +7,7 @@ import { TypeBadge } from "./badges/TypeBadge";
 import type { Pokemon } from "../types/pokemon";
 import { SpriteImg } from "./SpriteImg";
 
-// Sprite más grande para la tarjeta: animado si existe
+/** Sprite de la tarjeta flotante: el animado de Gen V si existe, si no el estático. */
 function bigSpriteOf(p: Pokemon): string {
   return (
     cdnSprite(
@@ -17,7 +17,7 @@ function bigSpriteOf(p: Pokemon): string {
   );
 }
 
-// Respaldo por si el sprite de la tarjeta no carga
+/** Si falla el sprite animado, usa el estático; si falla ese, se oculta. */
 function handleImgError(e: React.SyntheticEvent<HTMLImageElement>, p: Pokemon) {
   const img = e.currentTarget;
   const fallback = cdnSprite(p.sprites.front_default);
@@ -28,12 +28,16 @@ function handleImgError(e: React.SyntheticEvent<HTMLImageElement>, p: Pokemon) {
   }
 }
 
+/**
+ * Tira de íconos de Pokémon que se desplaza en bucle en Home. Al pasar el
+ * mouse sobre un ícono, muestra una tarjeta con su sprite y su nombre.
+ */
 export function SpriteTicker() {
   const { data: pool, isLoading } = useTickerPokemon();
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState<{ p: Pokemon; x: number } | null>(null);
 
-  // Mientras se arma el lote, una fila de bloques latiendo
+  // Placeholder mientras carga
   if (isLoading) {
     return (
       <section className="ticker-section">
@@ -61,15 +65,15 @@ export function SpriteTicker() {
     const icon = e.currentTarget.getBoundingClientRect();
     const box = section.getBoundingClientRect();
 
-    // Centro del icono, relativo a la sección
+    // Centro del ícono, relativo a la sección
     let x = icon.left - box.left + icon.width / 2;
-    // No dejar que la tarjeta se salga por los bordes
+    // Mantiene la tarjeta dentro de los bordes
     x = Math.max(100, Math.min(x, box.width - 100));
 
     setActive({ p, x });
   }
 
-  // La lista va duplicada para que el loop sea continuo
+  // La lista se duplica para que el bucle de la animación no tenga cortes
   const doubled = [...pool, ...pool];
 
   return (

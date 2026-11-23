@@ -1,6 +1,6 @@
 import { gameColor, type Game } from "../../lib/games";
 
-// Pastilla con el nombre del juego, en el color de su portada
+/** Etiqueta con el nombre de un juego, en el color de su portada (ver `gameColor`). */
 export function GameTag({ game }: { game: Game }) {
   const c = gameColor(game);
   return (

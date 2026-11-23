@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 
+/** Links del pie de página. */
 const footerLinks = [
   { to: "/faq", label: "FAQ" },
   { to: "/disclaimer", label: "Disclaimer & Thanks" },
   { to: "/feedback", label: "Feedback" },
 ];
 
-// Pie de página con los links secundarios
+/** Pie de página con los links secundarios y el aviso legal. */
 export function Footer() {
   return (
     <footer className="bg-red-600 text-white mt-12">
-      {/* pb-20 en celular: deja lugar para el botón de volver arriba */}
+      {/* pb-20 en celular: espacio para el botón de volver arriba */}
       <div className="max-w-7xl mx-auto px-4 pt-6 pb-20 sm:pb-6 flex flex-col items-center gap-3 text-center">
         <ul className="flex flex-wrap justify-center gap-x-6 text-sm font-semibold">
           {footerLinks.map((l) => (
@@ -29,8 +30,8 @@ export function Footer() {
           Pokémon Company. Made for self use and for anyone that wants to use
           it. AI was used in the code and decoding and only on those areas of
           this website. The Pokemon API is the backbone of the website. Please
-          use The Pokemon Database, Serebii and The Bulbagarden websites for more
-          expansive Pokémon databases and pages.
+          use The Pokemon Database, Serebii and The Bulbagarden websites for
+          more expansive Pokémon databases and pages.
         </p>
       </div>
     </footer>

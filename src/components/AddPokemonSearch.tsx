@@ -6,22 +6,26 @@ import { compareDex, dexNumber } from "../lib/dexOrder";
 import { SpriteImg } from "./SpriteImg";
 import { ClearButton } from "./ClearButton";
 
-// Cuántos resultados muestra
+/** Cantidad máxima de resultados visibles. */
 const MAX_RESULTS = 8;
 
-// Buscador para agregar Pokémon: click agrega, otro click quita
+/**
+ * Buscador para agregar Pokémon a una lista o equipo. Tocar un resultado
+ * lo agrega; tocarlo de nuevo lo quita.
+ */
 export function AddPokemonSearch({
   isAdded,
   onToggle,
   placeholder,
 }: {
+  /** Indica si el Pokémon ya está agregado (se marca en los resultados). */
   isAdded: (id: number) => boolean;
   onToggle: (id: number) => void;
   placeholder: string;
 }) {
   const [search, setSearch] = useState("");
 
-  // Por nombre interno o por nombre visible ("alolan")
+  // Coincide por nombre de la API o por nombre visible ("alolan raichu")
   const q = search.trim().toLowerCase();
   const matches = q
     ? POKEMON_DATA.filter(
@@ -35,7 +39,6 @@ export function AddPokemonSearch({
 
   return (
     <div className="relative">
-      {/* Input con el + a la izquierda y la ✕ a la derecha */}
       <div className="relative">
         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 text-lg font-bold leading-none pointer-events-none">
           +

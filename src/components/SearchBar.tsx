@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { ClearButton } from "./ClearButton";
 
+/**
+ * Campo de búsqueda con debounce: llama a `onSearch` 400ms después de la
+ * última tecla. Vaciarlo (✕ o Escape) notifica de inmediato.
+ * Para reiniciarlo desde afuera, cambiar su `key`.
+ */
 export function SearchBar({
   onSearch,
   placeholder = "Search Pokémon by name...",
@@ -10,13 +15,11 @@ export function SearchBar({
 }) {
   const [value, setValue] = useState("");
 
-  // Debounce: espera 400ms tras dejar de teclear
   useEffect(() => {
     const t = setTimeout(() => onSearch(value.trim()), 400);
     return () => clearTimeout(t);
   }, [value, onSearch]);
 
-  // Al borrar no hace falta esperar: la lista vuelve al instante
   function clear() {
     setValue("");
     onSearch("");

@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+/** Botón 🔍 que abre la imagen ampliada en un modal, con opción de descargarla. */
 export function ImageModal({ src, alt }: { src: string; alt: string }) {
   const [open, setOpen] = useState(false);
 
@@ -14,7 +15,7 @@ export function ImageModal({ src, alt }: { src: string; alt: string }) {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      window.open(src, "_blank"); // respaldo
+      window.open(src, "_blank"); // si la descarga falla, se abre en otra pestaña
     }
   }
 

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useFavorites } from "../../hooks/useFavorites";
 import { useLists } from "../../hooks/useLists";
 
-// Cuántas listas se muestran como chip; el resto va en "N+"
+/** Listas que se muestran como chip; el resto se resume en "N+". */
 const MAX_CHIPS = 6;
 
 const chip =
@@ -10,13 +10,12 @@ const chip =
 const listChip = `${chip} bg-red-50 text-red-600 border-red-200 hover:bg-red-100`;
 const moreChip = `${chip} bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100`;
 
-// Dónde está guardado este Pokémon, con links a cada lugar
+/** Chips con los lugares donde está guardado un Pokémon (favoritos y listas), con link a cada uno. No se muestra si no está guardado. */
 export function SavedIn({ id }: { id: number }) {
   const { isFavorite } = useFavorites();
   const { lists } = useLists();
   const inLists = lists.filter((l) => l.pokemon.includes(id));
 
-  // Si no está en ningún lado, no se muestra nada
   if (!isFavorite(id) && inLists.length === 0) return null;
 
   const visible = inLists.slice(0, MAX_CHIPS);

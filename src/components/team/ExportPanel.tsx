@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toShowdown } from "../../lib/showdown";
 import type { TeamMember } from "../../context/TeamsContext";
 
+/** Panel con el equipo en formato Showdown y un botón para copiarlo. */
 export function ExportPanel({
   members,
   onClose,
@@ -16,10 +17,9 @@ export function ExportPanel({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      // Vuelve a decir "Copy" después de un momento
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      // Si el navegador no deja copiar, el texto igual se puede seleccionar a mano
+      // Sin permiso del portapapeles: el texto se puede copiar a mano
     }
   }
 
@@ -40,7 +40,7 @@ export function ExportPanel({
         readOnly
         value={text}
         rows={Math.min(24, text.split("\n").length + 1)}
-        // Al hacer click se selecciona todo, por si se quiere copiar a mano
+        // Selecciona todo al enfocar, para copiar a mano
         onFocus={(e) => e.currentTarget.select()}
         className="w-full p-3 border border-gray-300 rounded-lg bg-white font-mono text-xs text-gray-700 focus:outline-none focus:border-red-400"
       />

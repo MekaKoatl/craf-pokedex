@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import pokeball from "../assets/pokeball1.webp";
 
+/** Link de navegación. */
 type NavItem = { to: string; label: string };
 
 const homeLink: NavItem = { to: "/", label: "Home" };
 
-// Cada sección es un desplegable en escritorio y un grupo en mobile
+/** Secciones del menú: desplegables en escritorio y grupos con título en celular. */
 const sections: { label: string; links: NavItem[] }[] = [
   {
     label: "Pokédex",
@@ -33,23 +34,23 @@ const sections: { label: string; links: NavItem[] }[] = [
   },
 ];
 
-// Un desplegable con su propio estado: cada uno se abre y cierra solo
+/** Menú desplegable de una sección. Se cierra al navegar, al hacer clic afuera o con Escape. */
 function NavDropdown({ label, links }: { label: string; links: NavItem[] }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
   const location = useLocation();
 
-  // Si estás en una de sus páginas, el botón toma ese nombre
+  // En una página de la sección, el botón muestra su nombre
   const active = links.find((l) => location.pathname.startsWith(l.to));
 
-  // Al navegar, se cierra (comparando con la ruta anterior)
+  // Al cambiar de ruta se cierra (se compara con la ruta anterior durante el render)
   const [lastPath, setLastPath] = useState(location.pathname);
   if (location.pathname !== lastPath) {
     setLastPath(location.pathname);
     setOpen(false);
   }
 
-  // Cerrar al clickear afuera o con Escape
+  // Cierra con clic afuera o con Escape
   useEffect(() => {
     if (!open) return;
 
@@ -110,18 +111,22 @@ function NavDropdown({ label, links }: { label: string; links: NavItem[] }) {
   );
 }
 
+/**
+ * Barra de navegación. Al cargar muestra el título 2 segundos y lo esconde
+ * detrás de la Pokéball; vuelve a aparecer al pasar el mouse. En celular, los
+ * links pasan a un menú hamburguesa.
+ */
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  // El título se muestra 2 segundos al cargar y después se esconde
   const [showTitle, setShowTitle] = useState(true);
   useEffect(() => {
     const t = setTimeout(() => setShowTitle(false), 2000);
     return () => clearTimeout(t);
   }, []);
 
-  // Cierra el menú si la ventana pasa a tamaño escritorio
+  // Cierra el menú móvil si la ventana pasa a ancho de escritorio
   useEffect(() => {
     function onResize() {
       if (window.innerWidth >= 640) setMenuOpen(false);
@@ -130,8 +135,7 @@ export function Navbar() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Al navegar, cerrar el menú móvil. Se compara con la ruta anterior
-  // durante el render, en vez de usar un useEffect
+  // Cierra el menú móvil al cambiar de ruta (comparando durante el render)
   const [lastPath, setLastPath] = useState(location.pathname);
   if (location.pathname !== lastPath) {
     setLastPath(location.pathname);
@@ -141,7 +145,7 @@ export function Navbar() {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `px-3 py-1 rounded transition ${isActive ? "bg-red-700" : "hover:bg-red-700"}`;
 
-  // 45px de alto para el dedo
+  // 45px de alto, para tocar cómodo
   const mobileLink =
     "text-white font-semibold hover:bg-red-700 px-3 min-h-[45px] flex items-center rounded transition";
 
@@ -154,7 +158,7 @@ export function Navbar() {
           className="group flex items-center"
         >
           <img src={pokeball} alt="" className="w-12 h-12 shrink-0" />
-          {/* El título se esconde detrás de la Pokéball; vuelve a salir con hover */}
+          {/* La columna del título pasa de 1fr a 0fr para esconderlo detrás de la Pokéball */}
           <div
             className={`grid transition-all duration-700 ease-in-out motion-reduce:transition-none group-hover:grid-cols-[1fr] group-hover:opacity-100 ${
               showTitle

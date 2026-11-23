@@ -3,9 +3,12 @@ import { SpriteImg } from "../SpriteImg";
 import { iconOrSprite } from "../../lib/sprites";
 import { getRegionalDisplayName } from "../../lib/regional";
 
-// Va en su propio archivo porque usa los datos de todos los Pokémon
-// (pokemon-data, ~138 kB): así Items no los descarga sin necesidad.
-// Ícono + nombre de un Pokémon que lleva a su página
+/**
+ * Ícono y nombre de un Pokémon con link a su página.
+ *
+ * Está separado de `RowParts` porque importa `pokemon-data` (~138 kB) a
+ * través de `getRegionalDisplayName`; así Items no lo descarga.
+ */
 export function PokemonLink({ id, name }: { id: number; name: string }) {
   return (
     <Link

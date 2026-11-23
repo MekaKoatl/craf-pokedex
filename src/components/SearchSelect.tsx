@@ -1,16 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 
+/** Opción de `SearchSelect`. */
 export interface SearchOption {
   value: string;
   label: string;
 }
+/** Grupo de opciones de `SearchSelect`. */
 export interface SearchGroup {
-  label?: string; // sin label, no se dibuja el título del grupo
+  /** Título del grupo; sin título no se dibuja encabezado. */
+  label?: string;
   options: SearchOption[];
 }
 
 const inputClass =
   "w-full pl-3 pr-10 h-[45px] sm:h-auto py-2 border border-gray-300 rounded-lg text-base sm:text-sm text-gray-700 bg-white focus:outline-none focus:border-red-400 disabled:bg-gray-50";
+/**
+ * Selector con búsqueda: al enfocarlo se escribe para filtrar las opciones,
+ * agrupadas y con títulos fijos al hacer scroll. `value` null es sin selección.
+ */
 export function SearchSelect({
   value,
   groups,
@@ -32,7 +39,7 @@ export function SearchSelect({
     groups.flatMap((g) => g.options).find((o) => o.value === value)?.label ??
     "";
 
-  // Cerrar al clickear afuera
+  // Cierra al hacer clic afuera
   useEffect(() => {
     if (!open) return;
     function onDown(e: MouseEvent) {
@@ -43,7 +50,7 @@ export function SearchSelect({
     return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
 
-  // Grupos con solo las opciones que coinciden; los vacíos desaparecen
+  // Opciones que coinciden con la búsqueda; se omiten los grupos vacíos
   const q = query.trim().toLowerCase();
   const filtered = groups
     .map((g) => ({
@@ -62,7 +69,7 @@ export function SearchSelect({
   return (
     <div ref={ref} className="relative">
       <input
-        // Abierto muestra lo que escribís; cerrado, lo elegido
+        // Abierto muestra la búsqueda; cerrado, la opción elegida
         value={open ? query : selectedLabel}
         onChange={(e) => {
           setQuery(e.target.value);
@@ -103,7 +110,7 @@ export function SearchSelect({
             filtered.map((g, gi) => (
               <div key={g.label ?? gi}>
                 {g.label && (
-                  // sticky: el título queda pegado arriba al hacer scroll
+                  // sticky: el título queda fijo arriba al hacer scroll
                   <p className="sticky top-0 bg-gray-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-gray-400">
                     {g.label}
                   </p>

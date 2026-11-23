@@ -4,7 +4,7 @@ import { cdnSprite, boxIconUrl, hasBoxIcon } from "../../lib/sprites";
 import { ImageModal } from "./ImageModal";
 import { SpriteImg } from "../SpriteImg";
 
-// Atajos a los seis lugares donde viven los sprites
+/** Accesos a los seis orígenes de sprites de un Pokémon: básicos, arte oficial, Home, animados de Gen V, Showdown y Dream World. */
 function parts(p?: PokemonFull | null) {
   return {
     s: p?.sprites,
@@ -16,6 +16,13 @@ function parts(p?: PokemonFull | null) {
   };
 }
 
+/**
+ * Visor de imágenes de un Pokémon: la imagen principal y un selector con todas
+ * las que existan (arte oficial, Home, Dream World, sprites y animados, con
+ * sus variantes de hembra).
+ *
+ * @param female Datos de la variedad hembra, para especies con forma propia (Meowstic).
+ */
 export function SpriteGallery({
   pokemon,
   female,
@@ -26,9 +33,8 @@ export function SpriteGallery({
   const m = parts(pokemon);
   const w = parts(female);
 
-  // Cada hueco ♀ se resuelve de dos maneras: con el campo _female del
-  // propio Pokémon (Pyroar) o con el sprite de la variedad hembra
-  // (Meowstic). El ?? toma el que exista.
+  // Las variantes ♀ salen del campo `_female` del propio Pokémon (Pyroar)
+  // o del sprite de la variedad hembra (Meowstic), el que exista.
   const sprites = [
     { src: m.art?.front_default, label: "Artwork" },
     { src: w.art?.front_default, label: "Artwork ♀" },
@@ -108,12 +114,11 @@ export function SpriteGallery({
   const artwork =
     cdnSprite(m.art?.front_default) || cdnSprite(m.s?.front_default) || "";
   const [main, setMain] = useState(artwork);
-  // El nombre de la imagen que se está viendo
+  // Nombre de la variante visible
   const mainLabel = uniqueSprites.find((s) => s.src === main)?.label;
 
   return (
     <div className="mb-8">
-      {/* Imagen principal */}
       <div className="bg-gray-100 rounded-xl flex items-center justify-center min-h-[320px] relative">
         <SpriteImg
           src={main}
@@ -128,7 +133,7 @@ export function SpriteGallery({
         )}
       </div>
 
-      {/* Selector horizontal: con un solo sprite no tiene sentido */}
+      {/* Selector de variantes; se oculta si hay una sola */}
       {uniqueSprites.length > 1 && (
         <div className="sprite-strip mt-3 flex gap-2 overflow-x-auto pb-2">
           {uniqueSprites.map((s) => (

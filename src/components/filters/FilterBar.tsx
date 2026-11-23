@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FilterPanel } from "./FilterPanel";
 import type { FilterState } from "../../hooks/useFilters";
 
+/** Opciones de cada filtro. */
 const TYPES = [
   "normal",
   "fire",
@@ -48,6 +49,7 @@ const FORMS = [
   { value: "Baby", label: "Baby" },
 ];
 
+/** Props de `FilterBar`: el estado y las acciones de `useFilters`. */
 interface FilterBarProps {
   filters: FilterState;
   toggle: <K extends keyof FilterState>(
@@ -56,9 +58,11 @@ interface FilterBarProps {
   ) => void;
   clearGroup: <K extends keyof FilterState>(group: K) => void;
   clearAll: () => void;
+  /** Muestra también los filtros de evoluciones y formas. */
   showEvoAndForms?: boolean;
 }
 
+/** Barra de filtros de la Pokédex: un panel desplegable por grupo y un botón para limpiar todo. */
 export function FilterBar({
   filters,
   toggle,
@@ -66,10 +70,9 @@ export function FilterBar({
   clearAll,
   showEvoAndForms = false,
 }: FilterBarProps) {
-  // 
   const [openPanel, setOpenPanel] = useState<string | null>(null);
 
-  // Helpers para no repetir
+  // Props de apertura compartidas por todos los paneles
   const panelProps = (name: string) => ({
     isOpen: openPanel === name,
     onOpen: () => setOpenPanel(name),

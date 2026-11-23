@@ -4,7 +4,7 @@ type Props = {
   onClick: () => void;
 };
 
-// Botón "Load More" de las listas que cargan de a partes
+/** Botón "Load More" de las listas paginadas; no se muestra si `show` es false. */
 export function LoadMoreButton({ show, loading = false, onClick }: Props) {
   if (!show) return null;
   return (

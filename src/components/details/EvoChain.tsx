@@ -14,10 +14,12 @@ import type { EvolutionChain, Pokemon } from "../../types/pokemon";
 import { SpriteImg } from "../SpriteImg";
 import { fetchPokemonById, fetchPokemonBySpecies } from "../../lib/api";
 
-// Identificador de un paso: especie + forma
+/** Clave única de un paso de la cadena: especie y forma. */
 const keyOf = (s: FormStep) => `${s.species}|${s.form ?? ""}`;
+/** Nombre visible de un paso. */
 const labelOf = (s: FormStep) => getRegionalDisplayName(s.form ?? s.species);
 
+/** Tarjeta de un Pokémon de la cadena; resalta el que se está viendo. */
 function EvoNodeCard({
   p,
   isCurrent,
@@ -47,6 +49,7 @@ function EvoNodeCard({
   );
 }
 
+/** Flecha entre etapas, con la condición de evolución opcional. */
 function Arrow({ cond }: { cond?: string }) {
   return (
     <div className="evo-arrow">
@@ -56,25 +59,32 @@ function Arrow({ cond }: { cond?: string }) {
   );
 }
 
+/**
+ * Cadena evolutiva de la forma que se está viendo: sus antecesores, el Pokémon
+ * actual y sus descendientes por etapa, más un panel desplegable con los
+ * requisitos de cada evolución.
+ */
 export function EvoChain({
   chain,
   currentName,
   currentForm,
 }: {
   chain: EvolutionChain;
-  currentName: string; // especie
-  currentForm: string | null; // forma regional, o null si es la normal
+  /** Especie que se está viendo. */
+  currentName: string;
+  /** Forma regional que se está viendo, o null si es la normal. */
+  currentForm: string | null;
 }) {
   const [showReqs, setShowReqs] = useState(false);
 
-  // Ancestros + actual, siguiendo solo la forma que estás viendo
+  // Antecesores y actual, siguiendo solo la forma visible
   const path = buildFormPath(chain.chain, currentName, currentForm);
   const current = path[path.length - 1];
-  // Lo que viene después, nivel por nivel
+  // Descendientes, por etapa
   const levels = getFormLevels(chain.chain, current);
 
   const steps = [...path, ...levels.flat()];
-  // Cada paso con un "from" es una transición para el panel de requisitos
+  // Cada paso con `from` es una evolución para el panel de requisitos
   const transitions = steps.filter((s) => s.from);
 
   const { data: pokes } = useQuery({
@@ -83,7 +93,7 @@ export function EvoChain({
       const map: Record<string, Pokemon> = {};
       await Promise.all(
         steps.map(async (s) => {
-          // Forma regional: por nombre exacto. Normal: por especie
+          // Una forma regional se compara por nombre exacto; la normal, por especie
           const p = s.form
             ? await fetchPokemonById(s.form)
             : await fetchPokemonBySpecies(s.species);
@@ -101,7 +111,7 @@ export function EvoChain({
   return (
     <>
       <div className="evo-chain-wrapper">
-        {/* Ancestros + actual */}
+        {/* Antecesores y actual */}
         {path.map((step, i) =>
           pokes[keyOf(step)] ? (
             <div key={keyOf(step)} className="flex items-center evo-step">
@@ -114,9 +124,9 @@ export function EvoChain({
           ) : null,
         )}
 
-        {/* Descendientes, nivel por nivel */}
+        {/* Descendientes, por etapa */}
         {levels.map((level, li) => {
-          // Un solo descendiente: va en línea, con la condición en la flecha
+          // Un único descendiente: en línea, con la condición en la flecha
           if (level.length === 1) {
             const s = level[0];
             if (!pokes[keyOf(s)]) return null;
@@ -127,7 +137,7 @@ export function EvoChain({
               </div>
             );
           }
-          // Varios: flecha suelta y grid, con la condición en cada tarjeta
+          // Varios: grilla, con la condición en cada tarjeta
           return (
             <Fragment key={`evo-lvl-${li}`}>
               <Arrow />
@@ -148,7 +158,7 @@ export function EvoChain({
         })}
       </div>
 
-      {/* Requisitos de esta línea, colapsado por defecto */}
+      {/* Requisitos de cada evolución, colapsado por defecto */}
       {transitions.length > 0 && (
         <div className="evo-req">
           <button

@@ -14,8 +14,14 @@ import {
 } from "../lists/RowParts";
 import { PokemonLink } from "../lists/PokemonLink";
 
+/** Filas visibles de "Learned by" antes del "…and X more". */
 const LEARNED_ROWS = 2;
 
+/**
+ * Fila de la lista de movimientos. Cerrada muestra nombre, tipo, categoría,
+ * potencia, precisión, PP y efecto corto; abierta, una tarjeta con textos
+ * completos, datos y los Pokémon que lo aprenden.
+ */
 export function MoveRow({
   move,
   open,
@@ -28,14 +34,14 @@ export function MoveRow({
   const ref = useRevealOnOpen<HTMLDivElement>(open);
   const name = prettyName(move.name);
   const type = move.type.name;
-  // Cuántas columnas tiene "Learned by" (las mismas que sm: y lg: del grid)
+  // Columnas de "Learned by"; deben coincidir con las de la grilla en sm: y lg:
   const isSm = useMediaQuery("(min-width: 640px)");
   const isLg = useMediaQuery("(min-width: 1024px)");
 
   if (!open) {
     return (
       <button className="move-row" onClick={onToggle}>
-        {/* Nombre y tipo llevan de fondo el color del tipo */}
+        {/* Nombre y tipo con el color del tipo de fondo */}
         <span className={`move-cell move-cell-name type-${type}`}>{name}</span>
         <span className={`move-cell move-cell-type type-${type}`}>
           {prettyName(type)}
@@ -67,7 +73,7 @@ export function MoveRow({
   const short = moveShortEffect(move);
   const gen = genLabel(move.generation.name);
 
-  // Solo se arman las celdas que tienen dato
+  // Solo las celdas con dato
   const cells: InfoCell[] = [
     { label: "Power", value: move.power !== null ? String(move.power) : "—" },
     {
@@ -76,7 +82,6 @@ export function MoveRow({
     },
     { label: "PP", value: move.pp !== null ? String(move.pp) : "—" },
     { label: "Priority", value: String(move.priority) },
-    // { label: "Category", value: prettyName(move.damage_class.name) },
     { label: "Target", value: prettyName(move.target.name) },
   ];
 
@@ -91,7 +96,7 @@ export function MoveRow({
       });
     if (meta.crit_rate)
       cells.push({ label: "Crit rate", value: `+${meta.crit_rate}` });
-    // drain negativo es retroceso, positivo es absorción
+    // drain negativo es daño de retroceso; positivo, absorción
     if (meta.drain)
       cells.push({
         label: meta.drain > 0 ? "Drain" : "Recoil",
@@ -133,7 +138,7 @@ export function MoveRow({
   const learners = move.learned_by_pokemon.filter(
     (p) => !p.name.endsWith("-gmax"),
   );
-  // Hasta 2 filas; si sobran, el último lugar es para el "…and X more"
+  // Hasta LEARNED_ROWS filas; si sobran, el último lugar muestra "…and X more"
   const cols = isLg ? 12 : isSm ? 8 : 4;
   const max = cols * LEARNED_ROWS;
   const visible = learners.length > max ? learners.slice(0, max - 1) : learners;
@@ -170,12 +175,12 @@ export function MoveRow({
           <h4 className="text-xs font-bold uppercase tracking-wide text-gray-400">
             Learned by ({learners.length})
           </h4>
-          {/* Columnas fijas para poder contar cuántos entran en 2 filas */}
+          {/* Columnas fijas para calcular cuántos entran */}
           <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-12 gap-1 mt-2">
             {visible.map((p) => (
               <PokemonLink key={p.name} id={idFromUrl(p.url)} name={p.name} />
             ))}
-            {/* El último lugar de la segunda fila */}
+            {/* Último lugar de la última fila */}
             {hidden > 0 && (
               <div className="flex items-center justify-center p-1 text-center text-[0.65rem] leading-tight text-gray-400">
                 …and {hidden} more Pokémon not shown.

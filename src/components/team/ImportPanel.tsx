@@ -8,6 +8,7 @@ import { fromShowdown } from "../../lib/showdown";
 import { transferMembers } from "../../lib/teamTransfer";
 import { GameSelect } from "./GameSelect";
 
+/** Texto de ejemplo del campo de importación. */
 const EXAMPLE = `Garchomp @ Choice Scarf
 Ability: Rough Skin
 EVs: 252 Atk / 4 SpD / 252 Spe
@@ -15,7 +16,11 @@ Jolly Nature
 - Earthquake
 - Outrage`;
 
-// Pegar un equipo de Showdown y crear un equipo nuevo con él
+/**
+ * Panel para crear un equipo a partir de texto de Pokémon Showdown. Lee el
+ * texto, adapta los miembros al juego elegido (igual que Duplicate) y abre
+ * el equipo nuevo con un aviso de lo que se ignoró o cambió.
+ */
 export function ImportPanel({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -39,7 +44,7 @@ export function ImportPanel({ onClose }: { onClose: () => void }) {
     const target = GAME_BY_ID.get(game);
     if (!target) return;
 
-    // 1) Leer el texto
+    // 1) Lee el texto
     const parsed = fromShowdown(text);
     if (parsed.members.length === 0) {
       setError("No Pokémon were recognized in the text.");
@@ -48,7 +53,7 @@ export function ImportPanel({ onClose }: { onClose: () => void }) {
 
     setBusy(true);
     try {
-      // 2) Quitar lo que no vale en el juego elegido (lo mismo que Duplicate)
+      // 2) Quita lo que no es válido en el juego elegido
       const result = await transferMembers(parsed.members, target, (id) =>
         queryClient.fetchQuery({
           queryKey: ["pokemon-full", id],
@@ -56,7 +61,7 @@ export function ImportPanel({ onClose }: { onClose: () => void }) {
           staleTime: Infinity,
         }),
       );
-      // 3) Crear el equipo e ir a editarlo, con el aviso de lo que cambió
+      // 3) Crea el equipo y abre el editor con los avisos
       const id = createTeam(name, game, result.members);
       if (!id) return;
       navigate(`/team-planner/${id}`, {
@@ -92,7 +97,7 @@ export function ImportPanel({ onClose }: { onClose: () => void }) {
           }}
           rows={10}
           placeholder={EXAMPLE}
-          // 16px en celular: con menos, el iPhone hace zoom
+          // 16px en celular: con menos, iOS hace zoom al enfocar
           className="w-full p-3 border border-gray-300 rounded-lg bg-white font-mono text-base sm:text-xs text-gray-700 focus:outline-none focus:border-red-400"
         />
 

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+/** Mensaje de Favorites cuando no hay favoritos, con un link a la Pokédex. */
 export function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-4">

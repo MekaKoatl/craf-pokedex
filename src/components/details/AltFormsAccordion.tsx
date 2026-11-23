@@ -11,7 +11,7 @@ import { StatBars } from "./StatBar";
 import { SpriteGallery } from "./SpriteGallery";
 import type { Species, PokemonFull } from "../../types/pokemon";
 
-// La ficha y el panel usan la misma clave: se pide una sola vez
+/** Datos de una forma alternativa. La tarjeta y el panel comparten la clave de caché. */
 function useAltForm(name: string) {
   return useQuery({
     queryKey: ["alt-form", name],
@@ -20,14 +20,20 @@ function useAltForm(name: string) {
   });
 }
 
-/// Las regionales tienen su propia sección; las hembras, el botón de género
+/** Formas regionales, que se excluyen porque tienen su propia sección. */
 const REGIONAL_RE = /-(alola|galar|hisui|paldea)(-|$)/;
 
+/** Tipo de forma alternativa. */
 type FormKind = "mega" | "gmax" | "form";
 
-// "charizard-mega-x" → "Mega Charizard X"
-// "venusaur-gmax"    → "Gigantamax Venusaur"
-// "rotom-wash"       → "Rotom Wash"
+/**
+ * Tipo y nombre visible de una forma.
+ *
+ * @example
+ * formInfo("charizard-mega-x"); // Mega Charizard X
+ * formInfo("venusaur-gmax"); // Gigantamax Venusaur
+ * formInfo("rotom-wash"); // Rotom Wash
+ */
 function formInfo(name: string) {
   const kind: FormKind = name.includes("-mega")
     ? "mega"
@@ -46,6 +52,7 @@ function formInfo(name: string) {
   };
 }
 
+/** Etiqueta de sección del acordeón. */
 function Label({ children }: { children: React.ReactNode }) {
   return (
     <h4 className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">
@@ -54,6 +61,7 @@ function Label({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** Tarjeta de una forma; al tocarla se abre su panel. */
 function FormTile({
   name,
   active,
@@ -76,7 +84,7 @@ function FormTile({
       <span className={`form-alt-tag form-alt-tag-${info.kind}`}>
         {info.tag}
       </span>
-      {/* Sin datos todavía no se dibuja el img: un src vacío pide la página actual */}
+      {/* Sin datos no se monta el img: un src vacío pediría la página actual */}
       {p ? (
         <SpriteImg
           className="evo-node-img"
@@ -91,6 +99,7 @@ function FormTile({
   );
 }
 
+/** Panel de una forma: imágenes, tipos, habilidades y stats comparados con la forma base. */
 function FormPanel({
   name,
   baseStats,
@@ -175,6 +184,12 @@ function FormPanel({
   );
 }
 
+/**
+ * Formas alternativas de la especie (Megas, Gigamax y otras), agrupadas por
+ * tipo. Al tocar una se abre su panel. No incluye regionales, hembras ni totem.
+ *
+ * @param baseStats Stats de la forma base, para mostrar las diferencias.
+ */
 export function AltFormsAccordion({
   species,
   baseStats,
@@ -182,11 +197,10 @@ export function AltFormsAccordion({
   species: Species;
   baseStats: PokemonFull["stats"];
 }) {
-  // Va antes del return temprano: los hooks siempre en el mismo orden
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Todas las variedades menos la principal, las regionales,
-  // las hembras (tienen su botón) y las totem (son de un solo combate)
+  // Variedades sin la principal, las regionales, las hembras (tienen el
+  // selector de género) ni las totem (son de un solo combate)
   const forms = species.varieties
     .filter((v) => !v.is_default)
     .map((v) => v.pokemon.name)
@@ -197,8 +211,8 @@ export function AltFormsAccordion({
 
   if (forms.length === 0) return null;
 
-  // Si se navega a otro Pokémon sin desmontar Details, la selección
-  // vieja no pertenece a esta especie: se ignora
+  // Al navegar a otro Pokémon sin desmontar Details, una selección que no
+  // pertenece a esta especie se ignora
   const current = selected && forms.includes(selected) ? selected : null;
 
   return (
@@ -219,7 +233,7 @@ export function AltFormsAccordion({
       </div>
 
       {current ? (
-        // La key remonta el panel (y su galería) al cambiar de forma
+        // La key vuelve a montar el panel al cambiar de forma
         <FormPanel
           key={current}
           name={current}

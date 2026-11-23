@@ -4,16 +4,18 @@ import { getTypeRelations } from "../../lib/api";
 import { MOVE_TYPES } from "../../lib/moves";
 import { TypeBadge } from "../badges/TypeBadge";
 
+/** Vista de la tabla: tipos que dañan al Pokémon o tipos a los que daña. */
 type Mode = "defense" | "offense";
 type Item = [string, number];
 
+/** Multiplicador como texto: 0.5 → "×½". */
 function fmt(v: number) {
   if (v === 0.5) return "×½";
   if (v === 0.25) return "×¼";
   return `×${v}`;
 }
 
-// Separa un mapa tipo → multiplicador en fuertes, débiles y nulos
+/** Separa un mapa tipo → multiplicador en mayores a 1, menores a 1 y 0, ordenados. */
 function split(map: Record<string, number>) {
   const entries = Object.entries(map);
   return {
@@ -29,6 +31,7 @@ function split(map: Record<string, number>) {
   };
 }
 
+/** Grupo de tipos con su multiplicador. */
 function Group({ label, items }: { label: string; items: Item[] }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">
@@ -51,6 +54,11 @@ function Group({ label, items }: { label: string; items: Item[] }) {
   );
 }
 
+/**
+ * Efectividad de tipos de un Pokémon, con dos vistas: defensa (multiplicador
+ * que recibe de cada tipo) y ofensa (el mejor multiplicador de sus tipos contra
+ * cada tipo).
+ */
 export function TypeMatchups({ types }: { types: string[] }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("defense");
@@ -60,7 +68,7 @@ export function TypeMatchups({ types }: { types: string[] }) {
     queryFn: async () => {
       const rels = await Promise.all(types.map(getTypeRelations));
 
-      // Defensa: arranca en ×1 implícito y cada tipo del Pokémon multiplica
+      // Defensa: producto de los multiplicadores contra cada tipo del Pokémon
       const def: Record<string, number> = {};
       for (const r of rels) {
         for (const t of r.double_damage_from)
@@ -70,7 +78,7 @@ export function TypeMatchups({ types }: { types: string[] }) {
         for (const t of r.no_damage_from) def[t.name] = 0;
       }
 
-      // Ofensa: contra cada rival vale el mejor de sus tipos
+      // Ofensa: el mejor multiplicador entre sus tipos
       const off: Record<string, number> = {};
       for (const target of MOVE_TYPES) {
         off[target] = Math.max(
@@ -119,7 +127,7 @@ export function TypeMatchups({ types }: { types: string[] }) {
       </button>
       {open && (
         <div className="mt-4">
-          {/* Conmutador: mismo estilo que el de género */}
+          {/* Selector de vista */}
           <div className="flex items-center gap-2 mb-2">
             {(["defense", "offense"] as const).map((m) => (
               <button

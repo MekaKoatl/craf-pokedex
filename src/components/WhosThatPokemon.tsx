@@ -6,8 +6,10 @@ import { getRegionalDisplayName } from "../lib/regional";
 import { cdnSprite } from "../lib/sprites";
 import { TypeBadge } from "./badges/TypeBadge";
 
+/** Estado del juego: oculto, adivinando, revelado (se rindió) o resuelto. */
 type Status = "hidden" | "guessing" | "revealed" | "solved";
 
+/** Número romano de cada generación de la API. */
 const GEN_MAP: Record<string, string> = {
   "generation-i": "I",
   "generation-ii": "II",
@@ -20,6 +22,7 @@ const GEN_MAP: Record<string, string> = {
   "generation-ix": "IX",
 };
 
+/** Estado guardado del juego para una clave de día, o "hidden". */
 function readStatus(key: string): Status {
   try {
     return (localStorage.getItem(key) as Status) || "hidden";
@@ -28,9 +31,14 @@ function readStatus(key: string): Status {
   }
 }
 
+/**
+ * "Who's that Pokémon?" de Home: la silueta del Pokémon del día para adivinar
+ * o revelar, con una cuenta regresiva hasta el próximo. El resultado del día
+ * se guarda en `localStorage` con la clave `craf-wtp-AAAA-MM-DD`.
+ */
 export function WhosThatPokemon() {
   const { data } = useDailyPokemon();
-  // El día vive en el estado, así React puede reaccionar cuando cambia
+  // El día está en el estado para reiniciar el juego al cambiar de fecha
   const [dayKey, setDayKey] = useState(getTodayKey);
   const storageKey = `craf-wtp-${dayKey}`;
 
@@ -39,18 +47,18 @@ export function WhosThatPokemon() {
   const [wrong, setWrong] = useState(false);
   const [left, setLeft] = useState(msUntilMidnight);
 
-  // Guarda solo los estados finales
+  // Persiste solo los estados finales
   useEffect(() => {
     if (status === "revealed" || status === "solved") {
       try {
         localStorage.setItem(storageKey, status);
       } catch {
-        // sin localStorage, se pierde al recargar
+        // Sin localStorage disponible, el estado dura hasta recargar
       }
     }
   }, [status, storageKey]);
 
-  // Contador cada segundo; al cruzar la medianoche reinicia el juego
+  // Actualiza la cuenta regresiva cada segundo; a medianoche reinicia el juego
   useEffect(() => {
     const t = setInterval(() => {
       setLeft(msUntilMidnight());
@@ -109,7 +117,7 @@ export function WhosThatPokemon() {
   return (
     <section className="max-w-4xl mx-auto px-4 pt-8">
       <div className="bg-red-600 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6">
-        {/* Columna izquierda: sprite y, al revelar, los tipos */}
+        {/* Izquierda: silueta o sprite y, al revelar, los tipos */}
         <div className="flex flex-col items-center gap-3 flex-shrink-0 w-44">
           {isOpen ? (
             <Link
@@ -131,7 +139,7 @@ export function WhosThatPokemon() {
           )}
         </div>
 
-        {/* Panel derecho */}
+        {/* Derecha: título, acciones y resultado */}
         <div className="flex-1 text-white text-center sm:text-left">
           {!isOpen ? (
             <>

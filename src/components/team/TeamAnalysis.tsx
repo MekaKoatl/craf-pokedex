@@ -13,24 +13,26 @@ import type { Game } from "../../lib/games";
 import { TypeBadge } from "../badges/TypeBadge";
 import type { TeamMember } from "../../context/TeamsContext";
 
+/** Vista del análisis: defensa del equipo o cobertura ofensiva. */
 type Mode = "defense" | "offense";
 
-// flex-none: el CSS global le da flex: 1 al badge y lo estiraba en columna
+// flex-none anula el `flex: 1` que `index.css` le da a `.type-badge`
 const badgeCol =
   "[&_.type-badge]:inline-block [&_.type-badge]:w-16 sm:[&_.type-badge]:w-20 [&_.type-badge]:flex-none";
 
-// Tarjeta de cada tipo: roja si hay un problema
+/** Clases de la tarjeta de un tipo; roja si el equipo tiene un problema con él. */
 function cardClass(danger: boolean) {
   return `flex flex-col items-center gap-0.5 sm:gap-1 p-1.5 sm:p-2 rounded-lg border text-center ${badgeCol} ${
     danger ? "border-red-300 bg-red-50" : "border-gray-200 bg-white"
   }`;
 }
 
+/** Clases del texto de una tarjeta de tipo. */
 function textClass(danger: boolean) {
   return `text-[11px] sm:text-xs leading-tight font-semibold ${danger ? "text-red-600" : "text-gray-600"}`;
 }
 
-// Solo existe mientras el análisis está abierto: recién ahí pide datos
+/** Contenido del análisis. Se monta solo con el panel abierto, así los datos se piden al abrirlo. */
 function AnalysisBody({
   members,
   game,
@@ -41,7 +43,7 @@ function AnalysisBody({
   const [mode, setMode] = useState<Mode>("defense");
 
   const forms = useTeamForms(members);
-  // La defensa se calcula en un hook compartido con la caja de Pokémon
+  // La defensa viene de `useTeamDefense`, compartido con la caja de Pokémon
   const defenseRows = useTeamDefense(members, game);
 
   const moveNames = [
@@ -55,7 +57,7 @@ function AnalysisBody({
     })),
   });
 
-  // La forma que pelea: la Mega si la tiene, si no la normal
+  // Se analiza la forma Mega si la tiene; si no, la normal
   const pokes = forms.map((f) => f.mega ?? f.base);
   if (pokes.some((p) => !p) || !defenseRows) {
     return <p className="text-xs text-gray-400 mt-4">Loading analysis...</p>;
@@ -65,22 +67,22 @@ function AnalysisBody({
   const types = typesForGen(gen);
   const memberTypes = pokes.map((p) => (p ? typesForGame(p, gen) : []));
 
-  // nombre → cómo era el movimiento en este juego
+  // Nombre del movimiento → sus datos en este juego
   const moveInfo: Record<string, MoveInGame> = {};
   for (const r of moveResults) {
     if (r.data) moveInfo[r.data.name] = moveForGame(r.data, game);
   }
 
-  // ── Defensa: viene calculada del hook
+  // ── Defensa
   const defense = defenseRows;
 
-  // ── Ofensa: con qué tipos ataca cada miembro
+  // ── Ofensa: tipos con los que ataca cada miembro
   const attackTypes = members.map((m, i) => {
     const fromMoves = m.moves
       .map((n) => moveInfo[n])
       .filter((info) => info && info.category !== "status")
       .map((info) => info.type);
-    // Sin movimientos de daño elegidos, cuentan sus propios tipos
+    // Sin movimientos de daño elegidos, se usan sus propios tipos
     return fromMoves.length
       ? { types: [...new Set(fromMoves)], fallback: false }
       : { types: memberTypes[i], fallback: true };
@@ -88,7 +90,7 @@ function AnalysisBody({
 
   const offense = types.map((def) => ({
     type: def,
-    // Cuántos miembros le pegan súper efectivo a este tipo
+    // Miembros que le hacen daño súper efectivo a este tipo
     count: attackTypes.filter((a) =>
       a.types.some((atk) => effectiveness(atk, def, gen) > 1),
     ).length,
@@ -97,7 +99,7 @@ function AnalysisBody({
 
   return (
     <div className="mt-4">
-      {/* Conmutador: mismo estilo que en Type Matchups */}
+      {/* Selector de vista */}
       <div className="flex items-center gap-2 mb-2">
         {(["defense", "offense"] as const).map((m) => (
           <button
@@ -162,6 +164,10 @@ function AnalysisBody({
   );
 }
 
+/**
+ * Panel desplegable "Team Analysis": debilidades y resistencias del equipo
+ * por tipo y cobertura ofensiva según los movimientos de daño elegidos.
+ */
 export function TeamAnalysis({
   members,
   game,
@@ -169,7 +175,6 @@ export function TeamAnalysis({
   members: TeamMember[];
   game: Game;
 }) {
-  // Arranca cerrado
   const [open, setOpen] = useState(false);
 
   return (
