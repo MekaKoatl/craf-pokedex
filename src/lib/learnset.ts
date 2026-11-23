@@ -1,8 +1,10 @@
 import type { PokemonFull } from "../types/pokemon";
 
-// Del juego más nuevo al más viejo. No usamos el id del version-group
-// porque hay grupos con id alto que no son juegos principales
-// (red-green-japan = 28, champions = 32).
+/**
+ * Grupos de versiones de juegos principales, del más nuevo al más viejo.
+ * No se ordena por id porque hay grupos con id alto que no son juegos
+ * principales (red-green-japan = 28, champions = 32).
+ */
 const VERSION_ORDER = [
   "legends-za",
   "scarlet-violet",
@@ -28,16 +30,25 @@ const VERSION_ORDER = [
   "red-blue",
 ];
 
+/** Movimientos que aprende un Pokémon en un juego, agrupados por método. */
 export interface Learnset {
+  /** Grupo de versiones del que se tomaron los datos. */
   version: string;
+  /** Por nivel, ordenados por nivel y nombre. */
   levelUp: { name: string; level: number }[];
+  /** Al evolucionar (nivel 0 en la API). */
   evolution: string[];
+  /** Por MT/MO. */
   machine: string[];
+  /** Como movimiento huevo. */
   egg: string[];
 }
 
+/**
+ * Arma el learnset del juego más reciente en el que aparece el Pokémon.
+ * Devuelve null si no aparece en ningún juego principal.
+ */
 export function buildLearnset(p: PokemonFull): Learnset | null {
-  // Todos los juegos en los que aparece este Pokémon
   const present = new Set(
     p.moves.flatMap((m) =>
       m.version_group_details.map((d) => d.version_group.name),
@@ -56,7 +67,7 @@ export function buildLearnset(p: PokemonFull): Learnset | null {
       if (d.version_group.name !== version) continue;
       const method = d.move_learn_method.name;
       if (method === "level-up") {
-        // Nivel 0 significa "se aprende al evolucionar"
+        // La API usa nivel 0 para "al evolucionar"
         if (d.level_learned_at === 0) evolution.push(m.move.name);
         else levelUp.push({ name: m.move.name, level: d.level_learned_at });
       } else if (method === "machine") {
@@ -69,7 +80,7 @@ export function buildLearnset(p: PokemonFull): Learnset | null {
 
   levelUp.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
 
-  // Set quita repetidos por si la API duplica alguna entrada
+  // Sin repetidos: la API a veces duplica entradas
   const uniqSorted = (arr: string[]) =>
     [...new Set(arr)].sort((a, b) => a.localeCompare(b));
 

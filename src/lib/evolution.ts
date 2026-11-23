@@ -1,5 +1,6 @@
 import type { EvoNode, EvoDetail } from "../types/pokemon";
 
+/** Condición principal de una evolución en texto corto ("Lvl 16", "thunder stone"...), o "" si no hay. */
 export function getEvoCondition(d: EvoDetail | undefined): string {
   if (!d) return "";
   if (d.min_level) return `Lvl ${d.min_level}`;
@@ -12,7 +13,7 @@ export function getEvoCondition(d: EvoDetail | undefined): string {
   return "";
 }
 
-// Los triggers que no son "subir de nivel" vienen con nombres crudos
+/** Texto visible de los métodos de evolución distintos de subir de nivel. */
 const TRIGGER_LABELS: Record<string, string> = {
   trade: "Trade",
   shed: "Empty slot in the party and a spare Poké Ball",
@@ -27,12 +28,12 @@ const TRIGGER_LABELS: Record<string, string> = {
   other: "Special method",
 };
 
+/** Reemplaza guiones por espacios. */
 function pretty(s: string): string {
   return s.replace(/-/g, " ");
 }
 
-// Una vía de evolución puede tener varias condiciones a la vez.
-// Devuelve todas, no solo la primera como getEvoCondition.
+/** Todas las condiciones de una vía de evolución, en texto (a diferencia de `getEvoCondition`, que devuelve solo la principal). */
 export function describeEvolution(d: EvoDetail): string[] {
   const out: string[] = [];
   const trigger = d.trigger?.name ?? "";
@@ -40,7 +41,7 @@ export function describeEvolution(d: EvoDetail): string[] {
   if (d.min_level) out.push(`Reach level ${d.min_level}`);
   else if (trigger === "level-up") out.push("Level up");
 
-  // "use-item" se omite porque el item de abajo ya lo dice
+  // "use-item" se omite: el objeto ya aparece como condición
   if (trigger && trigger !== "level-up" && trigger !== "use-item") {
     out.push(TRIGGER_LABELS[trigger] ?? pretty(trigger));
   }
@@ -77,31 +78,35 @@ export function describeEvolution(d: EvoDetail): string[] {
 }
 
 // ── Cadena por formas ─────────────────────────────────
-// La API dice qué forma evoluciona (base_form) y en cuál termina
-// (evolved_form). Con eso se separan las líneas regionales.
+// La API indica qué forma evoluciona (required_pokemon_form) y en cuál
+// termina (evolved_pokemon_form). Con eso se separan las líneas regionales.
 
+/** Detecta un sufijo regional dentro de un nombre de forma. */
 const REGIONAL_RE = /-(alola|galar|hisui|paldea)(?=-|$)/;
 
-// null = la forma normal de la especie. Solo distinguimos regionales,
-// así "meowth" y null significan lo mismo.
+/**
+ * Clave de forma para comparar líneas evolutivas: el nombre si es una forma
+ * regional, o null para la forma normal ("meowth" y null son equivalentes).
+ */
 export function formKey(name: string | null | undefined): string | null {
   return name && REGIONAL_RE.test(name) ? name : null;
 }
 
+/** Un paso de la cadena evolutiva siguiendo una forma concreta. */
 export interface FormStep {
   species: string;
   form: string | null;
-  details: EvoDetail[]; // cómo se llega a este paso desde `from`
+  /** Vías para llegar a este paso desde `from`. */
+  details: EvoDetail[];
   from: FormStep | null;
 }
 
 const baseOf = (d: EvoDetail) => formKey(d.required_pokemon_form?.name);
 const resultOf = (d: EvoDetail) => formKey(d.evolved_pokemon_form?.name);
-// Una vía vale solo para la forma que pide.
-// Si no pide una forma regional, es de la forma normal.
+// Una vía aplica solo a la forma que requiere (null = forma normal)
 const appliesTo = (d: EvoDetail, form: string | null) => baseOf(d) === form;
 
-// Los nodos desde la raíz hasta la especie buscada
+/** Nodos desde la raíz de la cadena hasta la especie buscada (vacío si no está). */
 function speciesPath(chain: EvoNode, target: string): EvoNode[] {
   if (chain.species.name === target) return [chain];
   for (const child of chain.evolves_to) {
@@ -111,12 +116,16 @@ function speciesPath(chain: EvoNode, target: string): EvoNode[] {
   return [];
 }
 
+/** Nodo de una especie dentro de la cadena, o null. */
 function findNode(chain: EvoNode, name: string): EvoNode | null {
   const p = speciesPath(chain, name);
   return p[p.length - 1] ?? null;
 }
 
-// Del primero de la cadena hasta el actual, siguiendo solo su forma
+/**
+ * Camino evolutivo desde el inicio de la cadena hasta una especie y forma,
+ * siguiendo solo las vías de esa forma (p. ej. la línea de Alola).
+ */
 export function buildFormPath(
   chain: EvoNode,
   species: string,
@@ -126,7 +135,7 @@ export function buildFormPath(
   const out: Omit<FormStep, "from">[] = [];
   let cur = form;
 
-  // Se recorre de atrás para adelante: cada paso dice de qué forma vino
+  // Se recorre desde el final: cada paso indica de qué forma proviene
   for (let i = nodes.length - 1; i >= 0; i--) {
     if (i === 0) {
       out.unshift({ species: nodes[i].species.name, form: cur, details: [] });
@@ -135,11 +144,11 @@ export function buildFormPath(
     const all = nodes[i].evolution_details;
     // 1) Las vías que terminan justo en esta forma
     let ds = all.filter((d) => resultOf(d) === cur);
-    // 2) Si la API no lo dice, las que salen de la misma región
+    // 2) Si la API no lo indica, las que salen de la misma región
     const region = cur?.match(REGIONAL_RE)?.[0];
     if (!ds.length && region)
       ds = all.filter((d) => d.required_pokemon_form?.name.includes(region));
-    // 3) Último recurso: todas
+    // 3) Si tampoco, todas
     if (!ds.length) ds = all;
 
     const parent = ds.length ? baseOf(ds[0]) : null;
@@ -148,16 +157,17 @@ export function buildFormPath(
     cur = parent;
   }
 
-  // Se enlaza cada paso con el anterior
+  // Enlaza cada paso con el anterior
   const steps: FormStep[] = [];
   for (const s of out)
     steps.push({ ...s, from: steps[steps.length - 1] ?? null });
   return steps;
 }
 
-// Los descendientes de una forma, nivel por nivel.
-// Una misma especie puede aparecer dos veces si termina en dos formas
-// (Pikachu → Raichu y Raichu de Alola).
+/**
+ * Descendientes de una forma, agrupados por etapa. Una especie puede
+ * aparecer dos veces si evoluciona en dos formas (Pikachu → Raichu y Alolan Raichu).
+ */
 export function getFormLevels(chain: EvoNode, start: FormStep): FormStep[][] {
   const levels: FormStep[][] = [];
   let current = [start];
@@ -167,7 +177,7 @@ export function getFormLevels(chain: EvoNode, start: FormStep): FormStep[][] {
     for (const parent of current) {
       const node = findNode(chain, parent.species);
       for (const child of node?.evolves_to ?? []) {
-        // Se agrupan las vías por la forma en la que terminan
+        // Agrupa las vías por la forma resultante
         const groups = new Map<string, EvoDetail[]>();
         for (const d of child.evolution_details) {
           if (!appliesTo(d, parent.form)) continue;

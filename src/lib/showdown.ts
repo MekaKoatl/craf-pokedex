@@ -14,22 +14,26 @@ import {
 } from "./teamRules";
 import { prettyName } from "./text";
 
+/** Índice de entradas del dataset por id. */
 const ENTRY_BY_ID = new Map(POKEMON_DATA.map((e) => [e.id, e]));
 
+/** Primera letra en mayúscula. */
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-// Showdown separa las formas con guion: "Raichu-Alola", "Tauros-Paldea-Combat"
+/** Nombre de especie en formato Showdown: "Raichu-Alola", "Tauros-Paldea-Combat". */
 function speciesName(id: number): string {
   const name = ENTRY_BY_ID.get(id)?.name ?? String(id);
   return name
-    .replace(/-(breed|standard)$/, "") // nombres de la API que Showdown no usa
+    .replace(/-(breed|standard)$/, "") // sufijos de la API que Showdown no usa
     .split("-")
     .map(cap)
     .join("-");
 }
 
-// El equipo en el formato de texto de Pokémon Showdown.
-// Solo se escribe lo que está elegido.
+/**
+ * Exporta un equipo al formato de texto de Pokémon Showdown.
+ * Solo incluye los campos definidos y los valores distintos del predeterminado.
+ */
 export function toShowdown(members: TeamMember[]): string {
   return members
     .map((m) => {
@@ -37,16 +41,16 @@ export function toShowdown(members: TeamMember[]): string {
         `${speciesName(m.pokemonId)}${m.item ? ` @ ${itemLabel(m.item)}` : ""}`,
       ];
       if (m.ability) lines.push(`Ability: ${prettyName(m.ability)}`);
-      // Showdown asume nivel 100: solo se escribe si es otro
+      // Showdown asume nivel 100
       const level = m.level ?? DEFAULT_LEVEL;
       if (level !== 100) lines.push(`Level: ${level}`);
-      // "EVs: 252 Atk / 4 Def / 252 Spe" (solo los que no son 0)
+      // "EVs: 252 Atk / 4 Def / 252 Spe" (solo los distintos de 0)
       const evs = (m.evs ?? [])
         .map((v, i) => (v ? `${v} ${STAT_NAMES[i]}` : ""))
         .filter(Boolean);
       if (evs.length) lines.push(`EVs: ${evs.join(" / ")}`);
       if (m.nature) lines.push(`${prettyName(m.nature)} Nature`);
-      // "IVs: 0 Atk" (solo los que no son 31)
+      // "IVs: 0 Atk" (solo los distintos de 31)
       const ivs = (m.ivs ?? [])
         .map((v, i) => (v !== 31 ? `${v} ${STAT_NAMES[i]}` : ""))
         .filter(Boolean);
@@ -54,38 +58,41 @@ export function toShowdown(members: TeamMember[]): string {
       for (const move of m.moves) if (move) lines.push(`- ${prettyName(move)}`);
       return lines.join("\n");
     })
-    .join("\n\n"); // una línea en blanco entre Pokémon
+    .join("\n\n"); // línea en blanco entre Pokémon
 }
 
 // ── Importar ───────────────────────────────
 
-// Nombre de Showdown → nombre de la API:
-// "King's Shield" → "kings-shield", "Mr. Mime" → "mr-mime", "Flabébé" → "flabebe"
+/**
+ * Convierte un nombre de Showdown al formato de la API:
+ * "King's Shield" → "kings-shield", "Mr. Mime" → "mr-mime", "Flabébé" → "flabebe".
+ */
 const toId = (s: string) =>
   s
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // saca los acentos
+    .replace(/[\u0300-\u036f]/g, "") // quita los acentos
     .toLowerCase()
     .replace(/['’.:%]/g, "")
     .trim()
     .replace(/\s+/g, "-");
 
+/** Índice de ids del dataset por nombre de la API. */
 const ID_BY_NAME = new Map(POKEMON_DATA.map((e) => [e.name, e.id]));
 
-// El id de pokemon-data para un nombre, o null si no existe
+/** Id del dataset para un nombre de especie de Showdown, o null si no existe. */
 function findSpecies(name: string): number | null {
   const exact = ID_BY_NAME.get(name);
   if (exact) return exact;
-  // A veces la API le agrega la forma: "mimikyu" → "mimikyu-disguised",
+  // La API a veces agrega la forma al nombre: "mimikyu" → "mimikyu-disguised",
   // "tauros-paldea-combat" → "tauros-paldea-combat-breed".
-  // Si hay varias, gana el id más chico (la forma principal)
+  // Si hay varias coincidencias, se usa el id más bajo (la forma principal)
   const forms = POKEMON_DATA.filter((e) => e.name.startsWith(`${name}-`)).sort(
     (a, b) => a.id - b.id,
   );
   return forms[0]?.id ?? null;
 }
 
-// La Megapiedra de una especie: "charizard" + "x" → "charizardite-x"
+/** Megapiedra de una especie, si existe: "charizard" + "x" → "charizardite-x". */
 function megaStone(species: string, letter?: string): string | null {
   const prefix = species.slice(0, 5);
   return (
@@ -98,7 +105,10 @@ function megaStone(species: string, letter?: string): string | null {
   );
 }
 
-// "252 HP / 4 Atk / 252 Spe" → cambia esos stats sobre una base
+/**
+ * Lee una línea de stats ("252 HP / 4 Atk / 252 Spe") y aplica esos valores
+ * sobre `base`, limitados a `max`.
+ */
 function parseStats(text: string, base: StatTuple, max: number): StatTuple {
   const out = [...base] as StatTuple;
   for (const part of text.split("/")) {
@@ -111,8 +121,12 @@ function parseStats(text: string, base: StatTuple, max: number): StatTuple {
   return out;
 }
 
-// El texto de Showdown → miembros del equipo, más avisos de lo que no se entendió.
-// Acá no se revisa el juego: eso lo hace transferMembers después.
+/**
+ * Importa un equipo desde texto de Pokémon Showdown. No valida contra ningún
+ * juego; eso lo hace `transferMembers` después.
+ *
+ * @returns Los miembros leídos (hasta `TEAM_SIZE`) y un aviso por cada línea o valor no reconocido.
+ */
 export function fromShowdown(text: string): {
   members: TeamMember[];
   notes: string[];
@@ -134,7 +148,7 @@ export function fromShowdown(text: string): {
     .filter((lines) => lines.length > 0);
 
   for (const lines of blocks) {
-    // Primera línea: "Apodo (Especie) (M) @ Objeto". Casi todo es opcional.
+    // Primera línea: "Apodo (Especie) (M) @ Objeto"; casi todo es opcional
     const [left, itemText] = lines[0].split(" @ ");
     const noGender = left.replace(/\s*\((M|F)\)\s*$/, "").trim();
     // Con apodo, la especie va entre paréntesis
@@ -142,7 +156,7 @@ export function fromShowdown(text: string): {
     let species = toId(speciesText);
     let item: string | null = itemText ? toId(itemText) : null;
 
-    // Las Megas se guardan como la especie normal con su Megapiedra
+    // Las Megas se guardan como la especie base con su Megapiedra
     const mega = species.match(/^(.+)-mega(?:-([xyz]))?$/);
     if (mega) {
       species = mega[1];
@@ -170,7 +184,7 @@ export function fromShowdown(text: string): {
       item,
       nature: null,
       moves: [],
-      level: 100, // sin "Level:", Showdown usa 100
+      level: 100, // valor de Showdown si no hay línea "Level:"
       evs: [...EMPTY_EVS] as StatTuple,
       ivs: [...DEFAULT_IVS] as StatTuple,
     };
@@ -191,7 +205,7 @@ export function fromShowdown(text: string): {
         // "- Hidden Power [Fire]" → "hidden-power"
         m.moves.push(toId(line.slice(1).replace(/\[.*\]/, "")));
       }
-      // El resto (Shiny, Tera Type, Happiness...) se ignora
+      // Otras líneas (Shiny, Tera Type, Happiness...) se ignoran
     }
 
     members.push(m);

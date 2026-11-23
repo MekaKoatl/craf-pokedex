@@ -2,10 +2,13 @@ import { REGIONAL_SUFFIX_LIST, REGIONAL_PREFIX_MAP } from "./constants";
 import { POKEMON_DATA } from "../data/pokemon-data";
 import type { PokemonEntry } from "../types/pokemon";
 
+/** Sufijos de género que no forman parte del nombre visible. */
 const GENDER_SUFFIXES = ["-male", "-female"];
 
-// Formas por defecto que la API nombra con sufijo: se muestra solo la especie.
-// (Las de género, como "meowstic-male", ya las resuelve GENDER_SUFFIXES.)
+/**
+ * Formas por defecto que la API nombra con sufijo; se muestran con el nombre
+ * de la especie. Las de género ("meowstic-male") se resuelven con `GENDER_SUFFIXES`.
+ */
 const DEFAULT_FORMS: Record<string, string> = {
   "deoxys-normal": "deoxys",
   "wormadam-plant": "wormadam",
@@ -39,7 +42,7 @@ const DEFAULT_FORMS: Record<string, string> = {
   "dudunsparce-two-segment": "dudunsparce",
 };
 
-// Regionales con un sufijo extra que la regla general no entiende
+/** Formas regionales con un sufijo extra que la regla general no cubre. */
 const SPECIAL_NAMES: Record<string, string> = {
   "darmanitan-galar-standard": "Galarian Darmanitan",
   "tauros-paldea-combat-breed": "Paldean Tauros (Combat Breed)",
@@ -49,15 +52,20 @@ const SPECIAL_NAMES: Record<string, string> = {
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-// "raichu-alola" → "Alolan Raichu" · "meowstic-female" → "Meowstic"
-// "mimikyu-disguised" → "Mimikyu"
+/**
+ * Nombre visible de un Pokémon a partir del nombre de la API.
+ *
+ * @example
+ * getRegionalDisplayName("raichu-alola"); // "Alolan Raichu"
+ * getRegionalDisplayName("meowstic-female"); // "Meowstic"
+ * getRegionalDisplayName("mimikyu-disguised"); // "Mimikyu"
+ */
 export function getRegionalDisplayName(name: string): string {
   if (SPECIAL_NAMES[name]) return SPECIAL_NAMES[name];
 
-  // El género no forma parte del nombre que mostramos
+  // Sin sufijo de género
   const gender = GENDER_SUFFIXES.find((g) => name.endsWith(g));
   const noGender = gender ? name.slice(0, -gender.length) : name;
-  // La forma por defecto se muestra como la especie
   const base = DEFAULT_FORMS[noGender] ?? noGender;
 
   const suffix = REGIONAL_SUFFIX_LIST.find((s) => base.endsWith(s));
@@ -67,15 +75,21 @@ export function getRegionalDisplayName(name: string): string {
   return `${REGIONAL_PREFIX_MAP[suffix]} ${capitalize(baseName)}`;
 }
 
-// Devuelve las entradas regionales del dataset cuyo nombre base coincide
-// Ej: "raichu" → [{ name: "raichu-alola", ... }]
-// Acepta sufijos extra: "darmanitan-galar-standard" también es de "darmanitan"
+/**
+ * Formas regionales del dataset de una especie. Acepta sufijos extra:
+ * "darmanitan-galar-standard" también se considera forma de "darmanitan".
+ *
+ * @example
+ * getRegionalFormsOf("raichu"); // [{ name: "raichu-alola", ... }]
+ */
 export function getRegionalFormsOf(baseName: string): PokemonEntry[] {
   return POKEMON_DATA.filter((e) => {
     if (!e.isRegional) return false;
     const suffix = REGIONAL_SUFFIX_LIST.find(
       (s) => e.name.endsWith(s) || e.name.includes(`${s}-`),
     );
-    return suffix ? e.name.slice(0, e.name.indexOf(suffix)) === baseName : false;
+    return suffix
+      ? e.name.slice(0, e.name.indexOf(suffix)) === baseName
+      : false;
   });
 }

@@ -2,6 +2,7 @@ import { POKEMON_DATA } from "../data/pokemon-data";
 import type { PokemonEntry } from "../types/pokemon";
 import type { FilterState } from "../hooks/useFilters";
 
+/** Región principal de cada generación. */
 const GEN_TO_REGION: Record<number, string> = {
   1: "kanto",
   2: "johto",
@@ -14,27 +15,27 @@ const GEN_TO_REGION: Record<number, string> = {
   9: "paldea",
 };
 
-// Función pura: recibe los filtros, devuelve las entradas del dataset que cumplen
+/**
+ * Devuelve las entradas del dataset que cumplen todos los filtros activos.
+ * Dentro de cada filtro alcanza con que coincida un valor (OR).
+ */
 export function filterPokemonData(filters: FilterState): PokemonEntry[] {
   const { types, regions, gens, evos, forms } = filters;
 
   return POKEMON_DATA.filter((entry) => {
-    // Type: al menos uno de los tipos seleccionados coincide
     if (types.length && !types.some((t) => entry.types.includes(t)))
       return false;
 
-    // Region: al menos una región coincide
     if (regions.length && !regions.some((r) => entry.regions.includes(r)))
       return false;
 
-    // Generation: la generación coincide
     if (gens.length && !gens.some((g) => GEN_TO_REGION[g] === entry.region))
       return false;
 
-    // Evolutions: longitud de cadena evolutiva
+    // Evoluciones: cantidad de etapas de la cadena evolutiva
     if (evos.length && !evos.includes(entry.evoChainLength)) return false;
 
-    // Formas
+    // Formas: "R" (regional) también incluye las entradas marcadas como isRegional
     if (
       forms.length &&
       !forms.some((f) =>

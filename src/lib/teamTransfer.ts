@@ -6,12 +6,23 @@ import { gameFeatures, type Game } from "./games";
 import { abilitiesForGame, itemsForGame, movesForGame } from "./teamRules";
 import { getRegionalDisplayName } from "./regional";
 
+/** Índice de entradas del dataset por id. */
 const ENTRY_BY_ID = new Map(POKEMON_DATA.map((e) => [e.id, e]));
+/** Nombre legible de un Pokémon por id, para los mensajes al usuario. */
 const nameOf = (id: number) =>
   getRegionalDisplayName(ENTRY_BY_ID.get(id)?.name ?? `#${id}`);
 
-// Copia los miembros a otro juego quitando lo que ahí no es válido.
-// getFull trae los datos de un Pokémon (del caché si ya se pidieron).
+/**
+ * Adapta los miembros de un equipo a otro juego. Quita a los Pokémon que
+ * no existen en ese juego y, en el resto, descarta la habilidad, el objeto,
+ * la naturaleza y los movimientos que el juego no admite. Los movimientos
+ * conservan su casillero; los inválidos quedan vacíos.
+ *
+ * @param members Miembros del equipo original.
+ * @param game Juego de destino.
+ * @param getFull Obtiene los datos completos de un Pokémon (desde la caché si ya se pidieron).
+ * @returns Los miembros adaptados y un aviso por cada cambio hecho.
+ */
 export async function transferMembers(
   members: TeamMember[],
   game: Game,
@@ -22,7 +33,7 @@ export async function transferMembers(
   const items = new Set(Object.values(itemsForGame(game)).flat());
 
   const out: TeamMember[] = [];
-  const notes: string[] = []; // lo que se le avisa al usuario
+  const notes: string[] = [];
 
   for (const m of members) {
     const name = nameOf(m.pokemonId);
@@ -39,7 +50,6 @@ export async function transferMembers(
       abilitiesForGame(p, game.gen).some((a) => a.name === m.ability)
         ? m.ability
         : null;
-    // Los movimientos quedan en su posición; los inválidos, vacíos
     const learnable = new Set(movesForGame(p, game.group));
     const moves = m.moves.map((n) => (n && learnable.has(n) ? n : ""));
     const item = features.items && m.item && items.has(m.item) ? m.item : null;
@@ -58,7 +68,7 @@ export async function transferMembers(
         `${name}: removed ${lost.join(", ")} (not valid in ${game.label}).`,
       );
 
-    // ...m copia todo (nivel, EVs, IVs); después se pisa lo revisado
+    // Nivel, EVs e IVs se copian tal cual; el resto se reemplaza por lo validado
     out.push({ ...m, ability, item, nature, moves });
   }
 

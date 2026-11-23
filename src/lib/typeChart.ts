@@ -1,5 +1,7 @@
-// Tabla de tipos actual (Gen VI en adelante).
-// Atacante → { 2: le pega doble, 0.5: le pega la mitad, 0: no le hace nada }
+/**
+ * Tabla de tipos vigente (Gen VI en adelante), como listas por atacante:
+ * a qué tipos hace daño doble (2), la mitad (0.5) o ninguno (0).
+ */
 const CHART_LISTS: Record<
   string,
   { 2?: string[]; 0.5?: string[]; 0?: string[] }
@@ -68,7 +70,7 @@ const CHART_LISTS: Record<
   },
 };
 
-// Las listas pasadas a una tabla: CHART["fire"]["grass"] = 2
+/** La misma tabla indexada por atacante y defensor: `CHART["fire"]["grass"] === 2`. */
 const CHART: Record<string, Record<string, number>> = {};
 for (const [atk, lists] of Object.entries(CHART_LISTS)) {
   CHART[atk] = {};
@@ -79,7 +81,7 @@ for (const [atk, lists] of Object.entries(CHART_LISTS)) {
 
 const ALL_TYPES = Object.keys(CHART_LISTS);
 
-// Los tipos que existen en una generación
+/** Tipos que existen en una generación (Dark y Steel desde la II, Fairy desde la VI). */
 export function typesForGen(gen: number): string[] {
   return ALL_TYPES.filter((t) => {
     if (t === "dark" || t === "steel") return gen >= 2;
@@ -88,22 +90,25 @@ export function typesForGen(gen: number): string[] {
   });
 }
 
-// Cuánto le hace un tipo atacante a un tipo defensor en esa generación
+/**
+ * Multiplicador de un tipo atacante contra un tipo defensor en una generación.
+ * Incluye las diferencias de la Gen I y de las Gen II a V.
+ */
 export function effectiveness(atk: string, def: string, gen: number): number {
-  // Hasta Gen V, Steel resistía Ghost y Dark
+  // Gen II–V: Steel resistía Ghost y Dark
   if (gen < 6 && def === "steel" && (atk === "ghost" || atk === "dark"))
     return 0.5;
-  // Las rarezas de Gen I
+  // Diferencias de la Gen I
   if (gen === 1) {
     if (atk === "bug" && def === "poison") return 2;
     if (atk === "poison" && def === "bug") return 2;
-    if (atk === "ghost" && def === "psychic") return 0; // el error famoso
+    if (atk === "ghost" && def === "psychic") return 0; // error del juego original
     if (atk === "ice" && def === "fire") return 1;
   }
   return CHART[atk]?.[def] ?? 1;
 }
 
-// Contra un Pokémon de uno o dos tipos: se multiplican
+/** Multiplicador contra un Pokémon de uno o dos tipos (producto de ambos). */
 export function defenseMultiplier(
   atk: string,
   defTypes: string[],
@@ -112,9 +117,9 @@ export function defenseMultiplier(
   return defTypes.reduce((m, def) => m * effectiveness(atk, def, gen), 1);
 }
 
-// ── Habilidades que cambian el daño recibido ──────────────
+// ── Habilidades que modifican el daño recibido ──────────────
 
-// Anulan un tipo por completo
+/** Habilidades que anulan por completo el daño de ciertos tipos. */
 const ABILITY_IMMUNE: Record<string, string[]> = {
   levitate: ["ground"],
   "earth-eater": ["ground"],
@@ -129,10 +134,10 @@ const ABILITY_IMMUNE: Record<string, string[]> = {
   "sap-sipper": ["grass"],
 };
 
-// Antes de Gen V solo atraían el ataque, no daban inmunidad
+/** Habilidades que antes de la Gen V solo atraían el ataque, sin dar inmunidad. */
 const IMMUNE_SINCE_GEN5 = new Set(["lightning-rod", "storm-drain"]);
 
-// Reciben la mitad de daño de estos tipos
+/** Habilidades que reducen a la mitad el daño de ciertos tipos. */
 const ABILITY_HALVE: Record<string, string[]> = {
   "thick-fat": ["fire", "ice"],
   heatproof: ["fire"],
@@ -140,7 +145,14 @@ const ABILITY_HALVE: Record<string, string[]> = {
   "purifying-salt": ["ghost"],
 };
 
-// Ajusta un multiplicador según la habilidad del defensor
+/**
+ * Ajusta un multiplicador de daño según la habilidad del defensor.
+ *
+ * @param atk Tipo del ataque.
+ * @param mult Multiplicador por tipos, sin habilidad.
+ * @param ability Habilidad del defensor, o null.
+ * @param gen Generación del juego.
+ */
 export function abilityMultiplier(
   atk: string,
   mult: number,
@@ -148,7 +160,7 @@ export function abilityMultiplier(
   gen: number,
 ): number {
   if (!ability) return mult;
-  // Wonder Guard: solo le afecta lo súper efectivo
+  // Wonder Guard: solo recibe daño súper efectivo
   if (ability === "wonder-guard") return mult > 1 ? mult : 0;
   if (
     ABILITY_IMMUNE[ability]?.includes(atk) &&

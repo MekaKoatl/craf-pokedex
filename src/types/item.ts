@@ -1,5 +1,6 @@
 import type { NamedResource } from "./pokemon";
 
+/** Objeto tal como lo devuelve la PokéAPI (`/item/{id}`), con los campos que usa el sitio. */
 export interface Item {
   id: number;
   name: string;

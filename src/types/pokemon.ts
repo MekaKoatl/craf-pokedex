@@ -1,7 +1,10 @@
-// Las insignias/formas posibles de un Pokémon
+/**
+ * Insignias de una entrada del dataset: Mega (M), Gigamax (G), forma
+ * regional (R), legendario, singular y bebé.
+ */
 export type FormBadge = "M" | "G" | "R" | "Legend" | "Mythic" | "Baby";
 
-//dataset local (pokemon-data)
+/** Entrada del dataset local `src/data/pokemon-data.ts`, generado por scripts. */
 export interface PokemonEntry {
   id: number;
   name: string;
@@ -9,16 +12,19 @@ export interface PokemonEntry {
   region: string;
   regions: string[];
   evoChainLength: number;
-  isFinal: boolean; // no evoluciona más (por forma: Farfetch'd sí, el de Galar no)
+  /** No evoluciona más. Se evalúa por forma: Farfetch'd sí evoluciona, el de Galar no. */
+  isFinal: boolean;
   forms: FormBadge[];
   isRegional?: boolean;
 }
 
+/** Referencia de la PokéAPI: nombre y URL del recurso. */
 export interface NamedResource {
   name: string;
   url: string;
 }
 
+/** Datos básicos de un Pokémon (`/pokemon/{id}`), suficientes para tarjetas y grillas. */
 export interface Pokemon {
   id: number;
   name: string;
@@ -43,6 +49,7 @@ export interface Pokemon {
   };
 }
 
+/** Un movimiento que aprende un Pokémon y en qué juegos y cómo lo aprende. */
 export interface PokemonMove {
   move: NamedResource;
   version_group_details: {
@@ -52,6 +59,7 @@ export interface PokemonMove {
   }[];
 }
 
+/** Datos completos de un Pokémon (`/pokemon/{id}`), usados en Details y el Team Planner. */
 export interface PokemonFull extends Pokemon {
   height: number;
   weight: number;
@@ -60,8 +68,10 @@ export interface PokemonFull extends Pokemon {
   location_area_encounters: string;
   species: NamedResource;
   abilities: { ability: NamedResource; is_hidden: boolean; slot: number }[];
-  // Cómo eran en juegos viejos. Cada entrada vale "hasta esa generación".
-  // ability: null = ese casillero todavía no existía
+  /**
+   * Habilidades en generaciones anteriores. Cada entrada rige hasta esa
+   * generación inclusive; `ability: null` indica que el casillero no existía.
+   */
   past_abilities?: {
     generation: NamedResource;
     abilities: {
@@ -70,8 +80,10 @@ export interface PokemonFull extends Pokemon {
       slot: number;
     }[];
   }[];
-  // Tipos en juegos viejos. Cada entrada vale "hasta esa generación"
-  // (Clefairy era Normal hasta Gen V)
+  /**
+   * Tipos en generaciones anteriores. Cada entrada rige hasta esa generación
+   * inclusive (Clefairy era Normal hasta la Gen V).
+   */
   past_types?: {
     generation: NamedResource;
     types: { slot: number; type: NamedResource }[];
@@ -132,6 +144,7 @@ export interface PokemonFull extends Pokemon {
   };
 }
 
+/** Especie de un Pokémon (`/pokemon-species/{id}`). */
 export interface Species {
   genera: { genus: string; language: NamedResource }[];
   flavor_text_entries: { flavor_text: string; language: NamedResource }[];
@@ -148,6 +161,7 @@ export interface Species {
   varieties: { is_default: boolean; pokemon: NamedResource }[];
 }
 
+/** Condiciones de una vía de evolución, según la PokéAPI. */
 export interface EvoDetail {
   gender: number | null;
   held_item: { name: string; url: string } | null;
@@ -167,18 +181,20 @@ export interface EvoDetail {
   trade_species: { name: string; url: string } | null;
   trigger: { name: string; url: string } | null;
   turn_upside_down: boolean;
-  // Agregados por PokéAPI en 2026: qué forma evoluciona, en cuál termina y dónde
+  // Forma que evoluciona, forma resultante y región (campos agregados por la PokéAPI en 2026)
   required_pokemon_form?: NamedResource | null;
   evolved_pokemon_form?: NamedResource | null;
   region?: NamedResource | null;
 }
 
+/** Nodo de una cadena evolutiva: una especie, cómo se llega a ella y sus evoluciones. */
 export interface EvoNode {
   species: NamedResource;
   evolution_details: EvoDetail[];
   evolves_to: EvoNode[];
 }
 
+/** Cadena evolutiva (`/evolution-chain/{id}`). */
 export interface EvolutionChain {
   chain: EvoNode;
 }

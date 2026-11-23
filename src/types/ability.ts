@@ -1,5 +1,6 @@
 import type { NamedResource } from "./pokemon";
 
+/** Habilidad tal como la devuelve la PokéAPI (`/ability/{id}`), con los campos que usa el sitio. */
 export interface Ability {
   id: number;
   name: string;

@@ -1,5 +1,6 @@
 import type { NamedResource } from "./pokemon";
 
+/** Movimiento tal como lo devuelve la PokéAPI (`/move/{id}`), con los campos que usa el sitio. */
 export interface Move {
   id: number;
   name: string;
@@ -22,7 +23,7 @@ export interface Move {
     language: NamedResource;
     version_group: NamedResource;
   }[];
-  // Algunos movimientos vienen con meta en null
+  // null en algunos movimientos
   meta: {
     ailment: NamedResource;
     ailment_chance: number;
@@ -39,8 +40,11 @@ export interface Move {
   } | null;
   stat_changes: { change: number; stat: NamedResource }[];
   learned_by_pokemon: NamedResource[];
-  // Valores que tenía ANTES de ese version group.
-  // Bite: { type: normal, version_group: gold-silver } = era Normal antes de Gold/Silver
+  /**
+   * Valores que tenía el movimiento antes de cada grupo de versiones.
+   * Ej.: `{ type: normal, version_group: gold-silver }` en Bite significa
+   * que era de tipo Normal antes de Gold/Silver.
+   */
   past_values: {
     accuracy: number | null;
     power: number | null;

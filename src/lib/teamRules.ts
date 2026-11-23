@@ -4,6 +4,7 @@ import { GROUP_ORDER, type Game } from "./games";
 import { HELD_ITEMS } from "../data/held-items";
 import { prettyName } from "./text";
 
+/** Número de cada generación según su nombre en la API. */
 const GEN_NUM: Record<string, number> = {
   "generation-i": 1,
   "generation-ii": 2,
@@ -15,23 +16,29 @@ const GEN_NUM: Record<string, number> = {
   "generation-viii": 8,
   "generation-ix": 9,
 };
+/** Número de generación a partir del nombre de la API ("generation-iv" → 4), o 0. */
 export const genNumber = (name: string) => GEN_NUM[name] ?? 0;
 
+/** Una habilidad elegible y si es oculta. */
 export interface AbilityOption {
   name: string;
   hidden: boolean;
 }
 
-// Las habilidades que tenía el Pokémon en una generación
+/**
+ * Habilidades que tenía un Pokémon en una generación. Parte de las actuales
+ * y aplica los cambios históricos (`past_abilities`) vigentes en esa generación.
+ * Las habilidades ocultas no existen antes de la Gen V.
+ */
 export function abilitiesForGame(p: PokemonFull, gen: number): AbilityOption[] {
-  // Se arranca con las de hoy, una por casillero
+  // Habilidades actuales, una por casillero
   const bySlot = new Map<
     number,
     { ability: NamedResource | null; is_hidden: boolean }
   >(p.abilities.map((a) => [a.slot, a]));
 
-  // Se aplican los cambios que valen para esta generación, de la entrada
-  // más nueva a la más vieja: así la más cercana al juego queda al final
+  // Se aplican las entradas históricas vigentes, de la más nueva a la más
+  // vieja, para que prevalezca la más cercana a la generación pedida
   const past = (p.past_abilities ?? [])
     .filter((e) => genNumber(e.generation.name) >= gen)
     .sort(
@@ -42,15 +49,17 @@ export function abilitiesForGame(p: PokemonFull, gen: number): AbilityOption[] {
   return [...bySlot.entries()]
     .sort((a, b) => a[0] - b[0])
     .flatMap(([, a]) =>
-      // Sin habilidad en ese casillero, o oculta antes de que existieran
+      // Casillero vacío en esa generación, u oculta antes de la Gen V
       !a.ability || (a.is_hidden && gen < 5)
         ? []
         : [{ name: a.ability.name, hidden: a.is_hidden }],
     );
 }
 
-// Los tipos que tenía el Pokémon en una generación.
-// Vale la entrada más cercana que siga vigente en esa generación.
+/**
+ * Tipos que tenía un Pokémon en una generación, según la entrada histórica
+ * (`past_types`) más cercana que siga vigente; si no hay, los actuales.
+ */
 export function typesForGame(p: PokemonFull, gen: number): string[] {
   const past = (p.past_types ?? [])
     .filter((e) => genNumber(e.generation.name) >= gen)
@@ -61,8 +70,10 @@ export function typesForGame(p: PokemonFull, gen: number): string[] {
 }
 
 // ── Naturalezas ───────────────────────────────
+/** Stats que una naturaleza puede modificar. */
 type Stat = "atk" | "def" | "spa" | "spd" | "spe";
 
+/** Abreviatura visible de cada stat. */
 const STAT_LABEL: Record<Stat, string> = {
   atk: "Atk",
   def: "Def",
@@ -71,13 +82,16 @@ const STAT_LABEL: Record<Stat, string> = {
   spe: "Spe",
 };
 
+/** Una naturaleza y el stat que sube y baja (null en las neutras). */
 export interface Nature {
   name: string;
-  up: Stat | null; // el stat que sube un 10%
-  down: Stat | null; // el que baja un 10%
+  /** Stat que sube un 10%. */
+  up: Stat | null;
+  /** Stat que baja un 10%. */
+  down: Stat | null;
 }
 
-// Ordenadas por nombre. Las neutras no cambian nada.
+/** Las 25 naturalezas, ordenadas por nombre. */
 export const NATURES: Nature[] = [
   { name: "adamant", up: "atk", down: "spa" },
   { name: "bashful", up: null, down: null },
@@ -106,7 +120,7 @@ export const NATURES: Nature[] = [
   { name: "timid", up: "spe", down: "atk" },
 ];
 
-// "Adamant (+Atk, −SpA)" o "Hardy (neutral)"
+/** Texto visible de una naturaleza: "Adamant (+Atk, −SpA)" o "Hardy (neutral)". */
 export function natureLabel(n: Nature): string {
   const name = n.name.charAt(0).toUpperCase() + n.name.slice(1);
   return n.up && n.down
@@ -116,7 +130,7 @@ export function natureLabel(n: Nature): string {
 
 // ── Movimientos ───────────────────────────────
 
-// Los que el Pokémon aprende en ese juego, por cualquier método
+/** Movimientos que el Pokémon aprende en un grupo de versiones, por cualquier método, ordenados por nombre. */
 export function movesForGame(p: PokemonFull, group: string): string[] {
   return p.moves
     .filter((m) =>
@@ -126,7 +140,7 @@ export function movesForGame(p: PokemonFull, group: string): string[] {
     .sort((a, b) => a.localeCompare(b));
 }
 
-// Hasta Gen III, físico o especial dependía del tipo y no del movimiento
+/** Tipos físicos hasta la Gen III, cuando la categoría dependía del tipo y no del movimiento. */
 const PHYSICAL_TYPES = new Set([
   "normal",
   "fighting",
@@ -139,18 +153,23 @@ const PHYSICAL_TYPES = new Set([
   "steel",
 ]);
 
+/** Datos de un movimiento tal como eran en un juego. */
 export interface MoveInGame {
   type: string;
-  category: string; // physical, special o status
+  /** physical, special o status. */
+  category: string;
   power: number | null;
   accuracy: number | null;
 }
 
-// Cómo era el movimiento en ese juego
+/**
+ * Tipo, categoría, potencia y precisión de un movimiento en un juego,
+ * aplicando los cambios históricos (`past_values`) posteriores a ese juego.
+ */
 export function moveForGame(m: Move, game: Game): MoveInGame {
   const at = GROUP_ORDER.indexOf(game.group);
 
-  // Los cambios que pasaron después de este juego, del más cercano al más lejano
+  // Cambios posteriores al juego, del más cercano al más lejano
   const later =
     at < 0
       ? []
@@ -163,7 +182,7 @@ export function moveForGame(m: Move, game: Game): MoveInGame {
           .sort((a, b) => a.when - b.when)
           .map((x) => x.pv);
 
-  // Cada dato por separado: el primer cambio que lo menciona gana
+  // Cada dato toma el valor del primer cambio que lo menciona
   const type = later.find((pv) => pv.type)?.type?.name ?? m.type.name;
   const power = later.find((pv) => pv.power !== null)?.power ?? m.power;
   const accuracy =
@@ -182,7 +201,7 @@ export function moveForGame(m: Move, game: Game): MoveInGame {
 
 // ── Objetos ───────────────────────────────
 
-// Los grupos del buscador, en orden. key = categoría de la API
+/** Categorías de objetos equipables en el editor de equipos, en orden. `key` es la categoría de la API. */
 export const ITEM_GROUPS = [
   { key: "choice", label: "Choice items" },
   { key: "held-items", label: "Held items" },
@@ -204,7 +223,7 @@ export const ITEM_GROUPS = [
   { key: "z-crystals", label: "Z-Crystals" },
 ];
 
-// La API dice que existen en juegos posteriores, pero solo sirven en estos
+/** Juegos donde las Megapiedras tienen uso (la API las lista también en juegos posteriores). */
 const MEGA_GROUPS = new Set([
   "x-y",
   "omega-ruby-alpha-sapphire",
@@ -212,20 +231,21 @@ const MEGA_GROUPS = new Set([
   "ultra-sun-ultra-moon",
   "legends-za",
 ]);
+/** Juegos donde los Cristales Z tienen uso. */
 const Z_GROUPS = new Set(["sun-moon", "ultra-sun-ultra-moon"]);
 
-// "firium-z--held" → "Firium Z"
+/** Nombre visible de un objeto: "firium-z--held" → "Firium Z". */
 export const itemLabel = (name: string) =>
   prettyName(name.replace(/--held$/, ""));
 
-// Categoría → objetos disponibles en ese juego, ordenados por nombre
+/** Objetos equipables disponibles en un juego, por categoría y ordenados por nombre. */
 export function itemsForGame(game: Game): Record<string, string[]> {
   const out: Record<string, string[]> = {};
   for (const [name, [cat, gen]] of Object.entries(HELD_ITEMS)) {
     if (gen > game.gen) continue;
     if (cat === "mega-stones" && !MEGA_GROUPS.has(game.group)) continue;
     if (cat === "z-crystals" && !Z_GROUPS.has(game.group)) continue;
-    // Desde X/Y, Exp. Share es un objeto clave y ya no se equipa
+    // Desde X/Y, Exp. Share es un objeto clave y no se equipa
     if (name === "exp-share" && game.gen >= 6) continue;
     (out[cat] ??= []).push(name);
   }
@@ -235,29 +255,35 @@ export function itemsForGame(game: Game): Record<string, string[]> {
 }
 // ── Megas ───────────────────────────────
 
-// Si el objeto es la Megapiedra de esta especie, el nombre de su forma Mega.
-// "charizard" + "charizardite-x" → "charizard-mega-x"
+/**
+ * Nombre de la forma Mega si el objeto es una Megapiedra de la especie; si no, null.
+ *
+ * @example
+ * megaNameFor("charizard", "charizardite-x"); // "charizard-mega-x"
+ */
 export function megaNameFor(
   speciesName: string,
   item: string | null,
 ): string | null {
   if (!item || HELD_ITEMS[item]?.[0] !== "mega-stones") return null;
-  // La piedra tiene que ser de esta especie: "charizardite" empieza con "chari"
+  // La piedra debe corresponder a la especie: "charizardite" empieza con "chari"
   if (!item.startsWith(speciesName.slice(0, 5))) return null;
   const letter = item.match(/-([xyz])$/)?.[1];
   return `${speciesName}-mega${letter ? `-${letter}` : ""}`;
 }
 
-// "charizard-mega-x" → "Mega Charizard X"
+/** Nombre visible de una forma Mega: "charizard-mega-x" → "Mega Charizard X". */
 export function megaLabel(megaName: string): string {
   const [base, rest = ""] = megaName.split("-mega");
   const letter = rest.replace(/^-/, "").toUpperCase();
   return `Mega ${prettyName(base)}${letter ? ` ${letter}` : ""}`;
 }
 
-// Las Megapiedras de una especie que existen en ese juego.
-// Usar solo con especies que tienen Mega (forms "M" en pokemon-data):
-// por las 5 letras, Pidgey también "coincidiría" con Pidgeotite.
+/**
+ * Megapiedras de una especie disponibles en un juego.
+ * Usar solo con especies que tienen Mega (forma "M" en pokemon-data): la
+ * coincidencia es por las primeras 5 letras, y Pidgey coincidiría con Pidgeotite.
+ */
 export function megaStonesFor(speciesName: string, game: Game): string[] {
   if (!MEGA_GROUPS.has(game.group)) return [];
   const prefix = speciesName.slice(0, 5);
@@ -270,7 +296,7 @@ export function megaStonesFor(speciesName: string, game: Game): string[] {
     .sort();
 }
 
-// "charizardite-x" → "Mega X" · "venusaurite" → "Mega"
+/** Etiqueta corta de una Megapiedra: "charizardite-x" → "Mega X", "venusaurite" → "Mega". */
 export function megaStoneLabel(stone: string): string {
   const letter = stone.match(/-([xyz])$/)?.[1];
   return letter ? `Mega ${letter.toUpperCase()}` : "Mega";
@@ -278,10 +304,12 @@ export function megaStoneLabel(stone: string): string {
 
 // ── Stats ───────────────────────────────
 
+/** Los seis stats en orden: HP, Atk, Def, SpA, SpD, Spe. */
 export type StatTuple = [number, number, number, number, number, number];
 
-// Mismo orden en todos lados: HP, Atk, Def, SpA, SpD, Spe
+// Orden de stats usado en todo el proyecto: HP, Atk, Def, SpA, SpD, Spe
 const STAT_KEYS = ["hp", "atk", "def", "spa", "spd", "spe"];
+/** Abreviaturas visibles de los stats, en el orden de `StatTuple`. */
 export const STAT_NAMES = ["HP", "Atk", "Def", "SpA", "SpD", "Spe"];
 const API_STATS = [
   "hp",
@@ -292,21 +320,24 @@ const API_STATS = [
   "speed",
 ];
 
+/** Nivel predeterminado de un miembro nuevo. */
 export const DEFAULT_LEVEL = 50;
+/** Valores máximos de IV, EV por stat y EV totales. */
 export const MAX_IV = 31;
 export const MAX_EV = 252;
 export const MAX_EV_TOTAL = 510;
+/** IVs y EVs predeterminados de un miembro nuevo. */
 export const DEFAULT_IVS: StatTuple = [31, 31, 31, 31, 31, 31];
 export const EMPTY_EVS: StatTuple = [0, 0, 0, 0, 0, 0];
 
-// Los 6 stats base de la API, en nuestro orden
+/** Stats base de un Pokémon, en el orden de `StatTuple`. */
 export function baseStats(p: PokemonFull): StatTuple {
   return API_STATS.map(
     (n) => p.stats.find((s) => s.stat.name === n)?.base_stat ?? 0,
   ) as StatTuple;
 }
 
-// 1.1 si la naturaleza sube ese stat, 0.9 si lo baja. HP nunca cambia.
+/** Multiplicador de una naturaleza para el stat `i`: 1.1 si sube, 0.9 si baja, 1 si no cambia (HP siempre 1). */
 export function natureMultiplier(nature: string | null, i: number): number {
   const n = NATURES.find((x) => x.name === nature);
   if (!n || i === 0) return 1;
@@ -315,7 +346,7 @@ export function natureMultiplier(nature: string | null, i: number): number {
   return 1;
 }
 
-// Las fórmulas de los juegos (Gen III en adelante)
+/** Stats finales según las fórmulas de los juegos (Gen III en adelante). */
 export function calcStats(
   base: StatTuple,
   ivs: StatTuple,
@@ -327,13 +358,13 @@ export function calcStats(
     const core = Math.floor(
       ((2 * b + ivs[i] + Math.floor(evs[i] / 4)) * level) / 100,
     );
-    // Shedinja (HP base 1) siempre tiene 1 de HP
+    // Shedinja (HP base 1) tiene siempre 1 HP
     if (i === 0) return b === 1 ? 1 : core + level + 10;
     return Math.floor((core + 5) * natureMultiplier(nature, i));
   }) as StatTuple;
 }
 
-// Repartos de EVs comunes para los botones rápidos
+/** Repartos de EVs habituales, para los botones rápidos del editor. */
 export const EV_PRESETS: { label: string; evs: StatTuple }[] = [
   { label: "252 Atk / 252 Spe / 4 HP", evs: [4, 252, 0, 0, 0, 252] },
   { label: "252 SpA / 252 Spe / 4 HP", evs: [4, 0, 0, 252, 0, 252] },

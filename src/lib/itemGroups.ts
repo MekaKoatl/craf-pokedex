@@ -1,10 +1,14 @@
-// Las 54 categorías de la API agrupadas en los buckets que mostramos
+/** Grupo de categorías de objetos que se muestra en el filtro de Items. */
 export interface ItemGroup {
   key: string;
   label: string;
   categories: string[];
 }
 
+/**
+ * Las 54 categorías de objetos de la API, agrupadas en los grupos del filtro.
+ * El primero ("all") no filtra.
+ */
 export const ITEM_GROUPS: ItemGroup[] = [
   { key: "all", label: "– All –", categories: [] },
   {

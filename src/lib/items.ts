@@ -2,6 +2,7 @@ import type { Item } from "../types/item";
 
 export { prettyName } from "./text";
 
+/** Descripción corta del efecto, en inglés. */
 export function itemShortEffect(item: Item): string {
   return (
     item.effect_entries.find((e) => e.language.name === "en")?.short_effect ??
@@ -9,11 +10,13 @@ export function itemShortEffect(item: Item): string {
   );
 }
 
+/**
+ * Descripción completa del efecto, en inglés. Une los saltos de línea
+ * simples que deja la API y conserva los dobles como separación de párrafos.
+ */
 export function itemEffect(item: Item): string {
   const raw =
     item.effect_entries.find((e) => e.language.name === "en")?.effect ?? "";
-  // La API mete saltos de línea en mitad de las frases; conservamos
-  // solo los dobles, que sí separan párrafos de verdad
   return raw
     .replace(/\n:\s*/g, ": ")
     .split(/\n{2,}/)
@@ -22,7 +25,7 @@ export function itemEffect(item: Item): string {
     .trim();
 }
 
-// El más reciente en inglés
+/** Texto de los juegos más reciente, en inglés, en una sola línea. */
 export function itemFlavor(item: Item): string {
   const entries = item.flavor_text_entries.filter(
     (e) => e.language.name === "en",
@@ -30,7 +33,7 @@ export function itemFlavor(item: Item): string {
   return entries[entries.length - 1]?.text.replace(/\f|\n/g, " ") ?? "";
 }
 
-// En qué generación apareció, según el primer game_index
+/** Generación en la que apareció el objeto, según su primer `game_index`. */
 export function itemGeneration(item: Item): string {
   return item.game_indices[0]?.generation.name ?? "";
 }
@@ -47,6 +50,7 @@ const GEN_ROMAN: Record<string, string> = {
   "generation-ix": "Gen IX",
 };
 
+/** Etiqueta corta de una generación de la API: "generation-iv" → "Gen IV". */
 export function genLabel(generationName: string): string {
   return GEN_ROMAN[generationName] ?? "";
 }

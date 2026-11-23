@@ -1,9 +1,10 @@
 import { POKEMON_DATA } from "../data/pokemon-data";
 import type { FilterState } from "../hooks/useFilters";
 
+/** Índice de entradas del dataset por id. */
 const ENTRY_BY_ID = new Map(POKEMON_DATA.map((e) => [e.id, e]));
 
-// Región de origen → generación (las formas de Hisui son de Gen VIII)
+/** Generación de cada región de origen (Hisui pertenece a la Gen VIII). */
 const REGION_GEN: Record<string, number> = {
   kanto: 1,
   johto: 2,
@@ -17,8 +18,12 @@ const REGION_GEN: Record<string, number> = {
   paldea: 9,
 };
 
-// ¿Este Pokémon pasa los filtros de tipo, región y generación?
-// Dentro de un mismo filtro alcanza con que coincida uno (OR).
+/**
+ * Indica si un Pokémon cumple los filtros de tipo, región y generación.
+ * Entre filtros distintos se exigen todos (AND); dentro de un mismo
+ * filtro alcanza con que coincida un valor (OR). Un id fuera del dataset
+ * solo pasa si no hay filtros activos.
+ */
 export function matchesFilters(id: number, f: FilterState): boolean {
   const e = ENTRY_BY_ID.get(id);
   if (!e) return f.types.length + f.regions.length + f.gens.length === 0;

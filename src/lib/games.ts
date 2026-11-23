@@ -1,39 +1,46 @@
 import { GAME_POKEMON } from "../data/pokemon-games";
 import { artworkUrl, iconOrSprite, pokemonSpriteUrl } from "./sprites";
 
+/** Una versión de juego principal. */
 export interface Game {
-  id: string; // la versión: "omega-ruby"
-  label: string; // lo que ve el usuario: "Omega Ruby"
-  group: string; // el grupo de la API: "omega-ruby-alpha-sapphire"
+  /** Versión, p. ej. "omega-ruby". */
+  id: string;
+  /** Nombre visible, p. ej. "Omega Ruby". */
+  label: string;
+  /** Grupo de versiones de la API, p. ej. "omega-ruby-alpha-sapphire". */
+  group: string;
   gen: number;
 }
 
-// Lo que existe en cada juego. Lo que no exista, no se muestra en el equipo.
+/** Mecánicas disponibles en un juego. Las que no existen se ocultan en el editor de equipos. */
 export interface GameFeatures {
   abilities: boolean;
   items: boolean;
   natures: boolean;
-  fairy: boolean; // el tipo Hada existe desde Gen VI
+  /** El tipo Fairy existe (Gen VI en adelante). */
+  fairy: boolean;
 }
 
 const NONE = { abilities: false, items: false, natures: false };
 const ALL = { abilities: true, items: true, natures: true };
 
-// Solo los que se salen de lo normal; el resto tiene todo
+/** Grupos con mecánicas reducidas. Los que no figuran tienen todas. */
 const GROUP_FEATURES: Record<string, typeof ALL> = {
   "red-blue": NONE,
   yellow: NONE,
   "gold-silver": { ...NONE, items: true },
   crystal: { ...NONE, items: true },
-  // Sin habilidades ni objetos equipados
+  // Sin habilidades ni objetos equipables
   "lets-go-pikachu-lets-go-eevee": { ...NONE, natures: true },
   "legends-arceus": { ...NONE, natures: true },
 };
 
+/** Mecánicas disponibles en un juego. */
 export function gameFeatures(game: Game): GameFeatures {
   return { ...(GROUP_FEATURES[game.group] ?? ALL), fairy: game.gen >= 6 };
 }
 
+/** Todos los juegos principales, en orden cronológico. */
 const ALL_GAMES: Game[] = [
   { id: "red", label: "Red", group: "red-blue", gen: 1 },
   { id: "blue", label: "Blue", group: "red-blue", gen: 1 },
@@ -130,32 +137,37 @@ const ALL_GAMES: Game[] = [
   { id: "legends-za", label: "Legends: Z-A", group: "legends-za", gen: 9 },
 ];
 
-// Los grupos de la API en orden cronológico, sin repetir
+/** Grupos de versiones de la API en orden cronológico, sin repetidos. */
 export const GROUP_ORDER = [...new Set(ALL_GAMES.map((g) => g.group))];
 
-// Solo los juegos que tienen datos de Pokémon
+/** Juegos con datos de Pokémon disponibles (los que se pueden elegir en el Team Planner). */
 export const GAMES = ALL_GAMES.filter(
   (g) => (GAME_POKEMON[g.group] ?? []).length > 0,
 );
 
+/** Índice de juegos por id. */
 export const GAME_BY_ID = new Map(GAMES.map((g) => [g.id, g]));
 
-// Para agrupar el selector por generación
+/** Generaciones con al menos un juego, para agrupar el selector. */
 export const GENERATIONS = [...new Set(GAMES.map((g) => g.gen))];
 
 const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+/** Etiqueta de una generación: 4 → "Gen IV". */
 export const genLabel = (gen: number) => `Gen ${ROMAN[gen] ?? gen}`;
 
 // ── Colores de cada juego (para las etiquetas) ─────────────────
 
-// bg: fondo, fg: texto. border solo hace falta si el fondo es casi blanco
+/** Colores de la etiqueta de un juego. */
 export interface GameColor {
+  /** Fondo. */
   bg: string;
+  /** Texto. */
   fg: string;
+  /** Borde, solo para fondos casi blancos. */
   border?: string;
 }
 
-// El color de la portada de cada versión
+/** Color de cada versión, basado en su portada. */
 const GAME_COLORS: Record<string, GameColor> = {
   red: { bg: "#e3350d", fg: "#ffffff" },
   blue: { bg: "#2e6fd8", fg: "#ffffff" },
@@ -197,14 +209,15 @@ const GAME_COLORS: Record<string, GameColor> = {
   "legends-za": { bg: "#1e9e6a", fg: "#ffffff" },
 };
 
-// Por si algún día se agrega un juego sin color
+/** Color para un juego sin entrada en `GAME_COLORS`. */
 const DEFAULT_COLOR: GameColor = { bg: "#e5e7eb", fg: "#374151" };
 
+/** Colores de la etiqueta de un juego. */
 export const gameColor = (game: Game) => GAME_COLORS[game.id] ?? DEFAULT_COLOR;
 
 // ── Imágenes del Team Planner ─────────────────
 
-// Juegos de Switch: ya no tienen íconos de PC pixel, se usa arte oficial
+/** Grupos de Switch: no tienen íconos de PC pixelados, así que se usa el arte oficial. */
 const ARTWORK_GROUPS = new Set([
   "lets-go-pikachu-lets-go-eevee",
   "sword-shield",
@@ -214,16 +227,17 @@ const ARTWORK_GROUPS = new Set([
   "legends-za",
 ]);
 
+/** Indica si el juego usa arte oficial en lugar de sprites pixelados. */
 export const usesArtwork = (game: Game) => ARTWORK_GROUPS.has(game.group);
 
-// Imagen chica (caja, tarjetas): ícono de PC o arte
+/** Imagen chica (caja, tarjetas): ícono de PC o arte oficial, según el juego. */
 export const teamIconUrl = (id: number, game?: Game) =>
   game && usesArtwork(game) ? artworkUrl(id) : iconOrSprite(id);
 
-// Imagen grande (casilleros, panel): sprite pixel o arte
+/** Imagen grande (casilleros, panel): sprite pixelado o arte oficial, según el juego. */
 export const teamSpriteUrl = (id: number, game: Game) =>
   usesArtwork(game) ? artworkUrl(id) : pokemonSpriteUrl(id);
 
-// El estilo "pixelated" solo queda bien en sprites pixel
+/** Estilo `image-rendering: pixelated` para sprites pixelados; ninguno para arte. */
 export const spriteStyle = (pixel: boolean) =>
   pixel ? { imageRendering: "pixelated" as const } : undefined;
