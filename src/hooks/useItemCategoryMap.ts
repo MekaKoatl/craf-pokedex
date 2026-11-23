@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getItemsInGroup } from "../lib/api";
 import { ITEM_GROUPS } from "../lib/itemGroups";
 
+/**
+ * Mapa objeto → grupo de categorías (el texto del filtro), para ordenar por categoría.
+ * Hace una petición por categoría, así que solo se pide cuando `enabled` es true.
+ */
 export function useItemCategoryMap(enabled: boolean) {
   return useQuery({
     queryKey: ["item-category-map"],

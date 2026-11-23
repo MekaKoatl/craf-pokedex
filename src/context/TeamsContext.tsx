@@ -1,48 +1,67 @@
 import { createContext, useState, useEffect, type ReactNode } from "react";
 
+/** Clave de `localStorage` donde se guardan los equipos. */
 const STORAGE_KEY = "craf-teams";
 
+/** Cantidad máxima de equipos. */
 export const MAX_TEAMS = 30;
+/** Cantidad máxima de miembros por equipo. */
 export const TEAM_SIZE = 6;
 
+/** Un Pokémon dentro de un equipo, con su configuración. */
 export interface TeamMember {
   pokemonId: number;
   ability: string | null;
   item: string | null;
   nature: string | null;
-  moves: string[]; // hasta 4
-  // Opcionales: los equipos guardados antes no los tienen
-  level?: number; // sin valor = 50
-  evs?: [number, number, number, number, number, number]; // HP, Atk, Def, SpA, SpD, Spe
+  /** Hasta 4 movimientos; un string vacío es un casillero libre. */
+  moves: string[];
+  // Opcionales para mantener compatibilidad con equipos guardados antes de existir
+  /** Nivel; sin valor se usa `DEFAULT_LEVEL` (50). */
+  level?: number;
+  /** EVs en el orden HP, Atk, Def, SpA, SpD, Spe. */
+  evs?: [number, number, number, number, number, number];
+  /** IVs en el mismo orden que los EVs. */
   ivs?: [number, number, number, number, number, number];
 }
 
+/** Equipo creado por el usuario para un juego. */
 export interface Team {
   id: string;
   name: string;
-  game: string; // id del juego: "scarlet", "omega-ruby"...
-  members: TeamMember[]; // hasta TEAM_SIZE
+  /** Id del juego, p. ej. "scarlet" u "omega-ruby". */
+  game: string;
+  /** Hasta `TEAM_SIZE` miembros. */
+  members: TeamMember[];
 }
 
-// Lo que el context expone a la app
+/** Valor que expone el contexto de equipos. */
 interface TeamsContextValue {
   teams: Team[];
-  // null = el nombre sirve. Si no, el motivo para mostrarle al usuario.
-  // ignoreId: al renombrar, el propio equipo no cuenta como repetido
+  /**
+   * Valida un nombre de equipo. Devuelve null si es válido o el mensaje de error.
+   * `ignoreId` excluye un equipo de la comparación (al renombrarlo).
+   */
   teamNameError: (name: string, ignoreId?: string) => string | null;
-  // members: para duplicar un equipo; si no se pasa, arranca vacío
+  /**
+   * Crea un equipo, vacío o con `members` (al duplicar). Devuelve su id,
+   * o null si el nombre no es válido.
+   */
   createTeam: (
     name: string,
     game: string,
     members?: TeamMember[],
-  ) => string | null; // id nuevo, o null // id nuevo, o null
+  ) => string | null;
+  /** Renombra un equipo. Devuelve false si el nombre no es válido. */
   renameTeam: (teamId: string, name: string) => boolean;
   deleteTeam: (teamId: string) => void;
+  /** Agrega un miembro con configuración vacía; no hace nada si el equipo está lleno. */
   addMember: (teamId: string, pokemonId: number) => void;
+  /** Quita el miembro de la posición `index` (por posición: un Pokémon puede repetirse). */
   removeMember: (teamId: string, index: number) => void;
-  // Mueve un miembro de una posición a otra (to más allá del final = al final)
+  /** Mueve un miembro de `from` a `to`; si `to` supera el final, va al final. */
   moveMember: (teamId: string, from: number, to: number) => void;
-  // Cambia solo los campos que le pases: { ability: "blaze" }
+  /** Actualiza solo los campos indicados de un miembro, p. ej. `{ ability: "blaze" }`. */
   updateMember: (
     teamId: string,
     index: number,
@@ -50,9 +69,10 @@ interface TeamsContextValue {
   ) => void;
 }
 
+/** Contexto de equipos. Es null fuera de `TeamsProvider`; usar `useTeams`. */
 export const TeamsContext = createContext<TeamsContextValue | null>(null);
 
-// Lee localStorage una vez al arrancar
+/** Equipos guardados, o [] si no hay o el JSON es inválido. */
 function readInitial(): Team[] {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -62,17 +82,17 @@ function readInitial(): Team[] {
   }
 }
 
+/** Provee los equipos a la app y los persiste en `localStorage` en cada cambio. */
 export function TeamsProvider({ children }: { children: ReactNode }) {
   const [teams, setTeams] = useState<Team[]>(readInitial);
 
-  // Cada vez que cambian, se guardan en localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(teams));
   }, [teams]);
 
   function teamNameError(name: string, ignoreId?: string) {
     const clean = name.trim();
-    // El límite solo importa al crear, no al renombrar
+    // El límite aplica solo al crear
     if (!ignoreId && teams.length >= MAX_TEAMS)
       return `You can have up to ${MAX_TEAMS} teams.`;
     if (!clean) return "Write a name for the team.";
@@ -105,14 +125,13 @@ export function TeamsProvider({ children }: { children: ReactNode }) {
     setTeams((prev) => prev.filter((t) => t.id !== teamId));
   }
 
-  // Cambia un solo equipo y deja los demás como estaban
+  /** Aplica `change` a un equipo y deja los demás igual. */
   function updateTeam(teamId: string, change: (t: Team) => Team) {
     setTeams((prev) => prev.map((t) => (t.id === teamId ? change(t) : t)));
   }
 
   function addMember(teamId: string, pokemonId: number) {
     updateTeam(teamId, (t) =>
-      // Si ya está lleno, no se toca
       t.members.length >= TEAM_SIZE
         ? t
         : {
@@ -125,7 +144,6 @@ export function TeamsProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  // Por posición y no por id: el mismo Pokémon puede estar dos veces
   function removeMember(teamId: string, index: number) {
     updateTeam(teamId, (t) => ({
       ...t,
@@ -136,9 +154,7 @@ export function TeamsProvider({ children }: { children: ReactNode }) {
   function moveMember(teamId: string, from: number, to: number) {
     updateTeam(teamId, (t) => {
       const members = [...t.members];
-      // splice saca 1 elemento en "from" y lo devuelve en un array
       const [moved] = members.splice(from, 1);
-      // y acá lo inserta en "to" sin borrar nada (el 0)
       members.splice(Math.min(to, members.length), 0, moved);
       return { ...t, members };
     });

@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getMovesInDamageClass } from "../lib/api";
 import { MOVE_CATEGORIES } from "../lib/moves";
 
+/**
+ * Mapa movimiento → categoría de daño (physical, special o status), para ordenar.
+ * Solo se pide cuando `enabled` es true.
+ */
 export function useMoveCategoryMap(enabled: boolean) {
   return useQuery({
     queryKey: ["move-category-map"],

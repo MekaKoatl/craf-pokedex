@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../lib/constants";
 
+/**
+ * Mapa habilidad → generación en la que apareció (III a IX; las habilidades
+ * no existen antes de la Gen III), para ordenar. Solo se pide cuando `enabled` es true.
+ */
 export function useAbilityGenMap(enabled: boolean) {
   return useQuery({
     queryKey: ["ability-gen-map"],

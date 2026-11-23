@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { normalize } from "../lib/text";
 
+/** Dirección de orden. */
 export type SortDir = "asc" | "desc";
 
-// Estado compartido de las listas de Abilities, Items y Moves:
-// búsqueda, letra, orden por columna y fila abierta.
-// K son las columnas que se pueden ordenar, p. ej. "name" | "gen".
+/**
+ * Estado de las listas de Abilities, Items y Moves: búsqueda, letra inicial,
+ * orden por columna y fila abierta.
+ *
+ * @typeParam K Columnas ordenables, p. ej. `"name" | "gen"`.
+ * @param initialOpen Fila abierta al montar (p. ej. la habilidad que llega desde Details).
+ */
 export function useListControls<K extends string>(
   initialOpen: string | null = null,
 ) {
@@ -16,7 +21,7 @@ export function useListControls<K extends string>(
   const [open, setOpen] = useState<string | null>(initialOpen);
   const [resetKey, setResetKey] = useState(0);
 
-  // 1er click asc, 2do desc, 3ro vuelve al orden original
+  /** Rota el orden de una columna: ascendente → descendente → orden original. */
   function toggleSort(key: K) {
     if (sortKey !== key) {
       setSortKey(key);
@@ -30,12 +35,13 @@ export function useListControls<K extends string>(
     setOpen(null);
   }
 
+  /** Flecha del encabezado: ⇅ sin orden, ▲ ascendente, ▼ descendente. */
   function arrow(key: K) {
     if (sortKey !== key) return "⇅";
     return sortDir === "asc" ? "▲" : "▼";
   }
 
-  // El select de celular manda "columna:dirección", p. ej. "name:desc"
+  /** Aplica un orden desde el selector de celular, con formato "columna:dirección" (p. ej. "name:desc"). */
   function pickSort(value: string) {
     const [k, d] = value.split(":");
     setSortKey(k as K | "default");
@@ -43,22 +49,25 @@ export function useListControls<K extends string>(
     setOpen(null);
   }
 
+  /** Filtra por letra inicial; elegir la misma letra (o "All") quita el filtro. */
   function pickLetter(L: string | null) {
     setLetter(letter === L ? null : L);
     setOpen(null);
   }
 
+  /** Abre la fila indicada o la cierra si ya estaba abierta. */
   function toggleOpen(name: string) {
     setOpen(open === name ? null : name);
   }
 
+  /** Vuelve todo al estado inicial. */
   function reset() {
     setSearch("");
     setLetter(null);
     setSortKey("default");
     setSortDir("asc");
     setOpen(null);
-    setResetKey((k) => k + 1); // fuerza a SearchBar a reiniciarse
+    setResetKey((k) => k + 1); // usado como `key` de SearchBar para vaciarla
   }
 
   return {
@@ -79,7 +88,11 @@ export function useListControls<K extends string>(
   };
 }
 
-// Filtra por búsqueda y letra; si hay comparador, ordena con él
+/**
+ * Filtra nombres por texto normalizado y letra inicial; si se pasa `compare`,
+ * los ordena con él (invertido si `dir` es "desc"). Sin comparador conserva
+ * el orden original.
+ */
 export function filterAndSort(
   names: string[],
   q: string,
@@ -97,11 +110,14 @@ export function filterAndSort(
   return out;
 }
 
-// Orden por un dato de otro mapa (tipo, categoría...); empate por nombre.
-// "~" va después de cualquier letra: los que no tienen dato quedan al final.
+/**
+ * Comparador por un valor asociado (tipo, categoría...), con desempate por nombre.
+ * Los nombres sin valor en `map` quedan al final.
+ */
 export function byMap(map: Record<string, string>) {
   return (a: string, b: string) =>
     (map[a] ?? "~").localeCompare(map[b] ?? "~") || a.localeCompare(b);
 }
 
+/** Comparador alfabético. */
 export const byName = (a: string, b: string) => a.localeCompare(b);

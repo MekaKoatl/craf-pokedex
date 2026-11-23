@@ -8,14 +8,19 @@ import {
 import type { Game } from "../lib/games";
 import type { TeamMember } from "../context/TeamsContext";
 
+/** Resumen defensivo del equipo contra un tipo atacante. */
 export interface DefenseRow {
-  type: string; // el tipo atacante
-  weak: number; // cuántos miembros reciben más daño
-  resist: number; // cuántos reciben menos (o nada)
-  total: number; // la suma de puntos: negativo = el equipo sufre
+  /** Tipo atacante. */
+  type: string;
+  /** Miembros que reciben daño aumentado. */
+  weak: number;
+  /** Miembros que reciben daño reducido o nulo. */
+  resist: number;
+  /** Suma de puntajes de `defenseScore`; negativo indica debilidad del equipo. */
+  total: number;
 }
 
-// Cuánto suma o resta cada multiplicador al total de defensa
+/** Puntaje de un multiplicador: ×4 → −2, ×2 → −1, ×½ → +1, ×¼ o inmune → +2, neutro → 0. */
 function defenseScore(v: number): number {
   if (v >= 4) return -2;
   if (v > 1) return -1;
@@ -24,29 +29,32 @@ function defenseScore(v: number): number {
   return 0;
 }
 
-// La defensa del equipo contra cada tipo del juego.
-// La usan el Team Analysis y el filtro "Covers weaknesses" de la caja.
-// null mientras cargan los datos de los miembros.
+/**
+ * Defensa del equipo contra cada tipo del juego, considerando tipos y
+ * habilidad de cada miembro (o de su forma Mega). La usan Team Analysis y
+ * el filtro "Covers weaknesses" de la caja.
+ *
+ * @returns Una fila por tipo, o null mientras cargan los datos de los miembros.
+ */
 export function useTeamDefense(
   members: TeamMember[],
   game: Game,
 ): DefenseRow[] | null {
   const forms = useTeamForms(members);
 
-  // La forma que pelea: la Mega si la tiene, si no la normal
+  // Se analiza la forma Mega si la tiene; si no, la normal
   const pokes = forms.map((f) => f.mega ?? f.base);
   if (pokes.some((p) => !p)) return null;
 
-  // La Mega tiene una sola habilidad fija; si no, la elegida
+  // La Mega tiene una única habilidad fija; si no, se usa la elegida
   const abilities = forms.map((f, i) =>
     f.mega ? (f.mega.abilities[0]?.ability.name ?? null) : members[i].ability,
   );
   const gen = game.gen;
   const memberTypes = pokes.map((p) => (p ? typesForGame(p, gen) : []));
 
-  // ×2 resta 1, ×4 resta 2; ×½ suma 1, ×¼ e inmunidad suman 2
   return typesForGen(gen).map((atk) => {
-    // Tipos primero, después la habilidad elegida (si hay)
+    // Multiplicador por tipos, ajustado por la habilidad
     const mults = memberTypes.map((ts, i) =>
       abilityMultiplier(
         atk,

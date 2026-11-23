@@ -1,13 +1,19 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchInBatches } from "../lib/api";
 
+/** Elementos por página. */
 const PAGE_SIZE = 30;
 
-// Recibe la lista completa de nombres ya filtrada y la va sirviendo de a 30.
-// - kind: nombre para la caché ("item", "move"...)
-// - cacheKey: identifica esa lista sin tener que hashear el array entero
-// - fetchOne: pide un elemento; devuelve null si no existe
-// - keep: decide cuáles se muestran (por defecto, todos)
+/**
+ * Pagina una lista de nombres ya filtrada y ordenada: pide los datos de cada
+ * página (de a `PAGE_SIZE`) a medida que se cargan más con `fetchNextPage`.
+ *
+ * @param kind Prefijo de la clave de caché, p. ej. "item" o "move".
+ * @param names Nombres a mostrar, en orden.
+ * @param cacheKey Identifica la combinación de filtros y orden que produjo `names`.
+ * @param fetchOne Pide un elemento por nombre; devuelve null si no existe.
+ * @param keep Decide qué elementos se muestran (por defecto, todos).
+ */
 export function usePagedList<T>(
   kind: string,
   names: string[],
