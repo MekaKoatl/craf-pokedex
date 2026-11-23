@@ -149,6 +149,7 @@ export function TeamsProvider({ children }: { children: ReactNode }) {
         removeMember,
         moveMember,
         updateMember,
+        replaceTeams: setTeams,
       }}
     >
       {children}

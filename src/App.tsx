@@ -30,6 +30,7 @@ const Items = lazy(() =>
 const Moves = lazy(() =>
   import("./pages/Moves").then((m) => ({ default: m.Moves })),
 );
+
 const Lists = lazy(() =>
   import("./pages/Lists").then((m) => ({ default: m.Lists })),
 );
@@ -41,6 +42,9 @@ const TeamPlanner = lazy(() =>
 );
 const TeamEditor = lazy(() =>
   import("./pages/TeamEditor").then((m) => ({ default: m.TeamEditor })),
+);
+const Backup = lazy(() =>
+  import("./pages/Backup").then((m) => ({ default: m.Backup })),
 );
 const NotFound = lazy(() =>
   import("./pages/NotFound").then((m) => ({ default: m.NotFound })),
@@ -81,6 +85,7 @@ function App() {
             <Route path="/team-planner/:teamId" element={<TeamEditor />} />
             <Route path="/items" element={<Items />} />
             <Route path="/moves" element={<Moves />} />
+            <Route path="/backup" element={<Backup />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/feedback" element={<Feedback />} />

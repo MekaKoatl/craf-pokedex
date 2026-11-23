@@ -12,6 +12,8 @@ export interface FavoritesContextValue {
   isFavorite: (id: number) => boolean;
   toggleFavorite: (id: number) => void;
   clearFavorites: () => void;
+  /** Reemplaza todos los favoritos (al importar un backup). */
+  replaceFavorites: (ids: number[]) => void;
 }
 
 /** Contexto de favoritos. Es null fuera de `FavoritesProvider`; usar `useFavorites`. */
@@ -35,6 +37,8 @@ export interface ListsContextValue {
   isInList: (listId: string, pokemonId: number) => boolean;
   /** Agrega el Pokémon a la lista o lo quita si ya estaba. */
   toggleInList: (listId: string, pokemonId: number) => void;
+  /** Reemplaza todas las listas (al importar un backup). */
+  replaceLists: (lists: PokemonList[]) => void;
 }
 
 /** Contexto de listas. Es null fuera de `ListsProvider`; usar `useLists`. */
@@ -72,6 +76,8 @@ export interface TeamsContextValue {
     index: number,
     changes: Partial<TeamMember>,
   ) => void;
+  /** Reemplaza todos los equipos (al importar un backup). */
+  replaceTeams: (teams: Team[]) => void;
 }
 
 /** Contexto de equipos. Es null fuera de `TeamsProvider`; usar `useTeams`. */

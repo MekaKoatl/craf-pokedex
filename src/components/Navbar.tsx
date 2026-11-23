@@ -30,6 +30,7 @@ const sections: { label: string; links: NavItem[] }[] = [
       { to: "/favorites", label: "Favorites" },
       { to: "/lists", label: "Lists" },
       { to: "/team-planner", label: "Team Planner" },
+      { to: "/backup", label: "Backup" },
     ],
   },
 ];

@@ -92,6 +92,7 @@ export function ListsProvider({ children }: { children: ReactNode }) {
         deleteList,
         isInList,
         toggleInList,
+        replaceLists: setLists,
       }}
     >
       {children}
