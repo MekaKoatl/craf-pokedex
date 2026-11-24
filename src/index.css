@@ -875,6 +875,7 @@
   max-height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
+  translate: 0 -10px; /* el Pokémon está apoyado abajo en el lienzo de pokesprite */
 }
 
 /* Tarjeta flotante */

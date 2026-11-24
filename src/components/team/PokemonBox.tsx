@@ -3,13 +3,7 @@ import { POKEMON_DATA } from "../../data/pokemon-data";
 import { GAME_POKEMON } from "../../data/pokemon-games";
 import { REGIONAL_DEX } from "../../data/regional-dex";
 import { POKEMON_STATS } from "../../data/pokemon-stats";
-import {
-  genLabel,
-  spriteStyle,
-  teamIconUrl,
-  usesArtwork,
-  type Game,
-} from "../../lib/games";
+import { genLabel, type Game } from "../../lib/games";
 import { defenseMultiplier, typesForGen } from "../../lib/typeChart";
 import { getRegionalDisplayName } from "../../lib/regional";
 import { compareDex, dexNumber } from "../../lib/dexOrder";
@@ -18,6 +12,7 @@ import { ClearButton } from "../ClearButton";
 import { TypeBadge } from "../badges/TypeBadge";
 import { useTeamDefense } from "../../hooks/useTeamDefense";
 import type { TeamMember } from "../../context/TeamsContext";
+import { PokemonIcon } from "../PokemonIcon";
 
 /** Generación de cada región de origen (Hisui pertenece a la Gen VIII). */
 const REGION_GEN: Record<string, number> = {
@@ -150,7 +145,6 @@ export function PokemonBox({
   const dexOrder = new Map(
     (REGIONAL_DEX[game.group] ?? []).map((id, i) => [id, i]),
   );
-  const art = usesArtwork(game);
   const inTeam = new Set(members.map((m) => m.pokemonId));
   const q = search.trim().toLowerCase();
 
@@ -346,13 +340,7 @@ export function PokemonBox({
                 title={`#${dexNumber(e.id)} ${getRegionalDisplayName(e.name)}`}
                 className="relative flex items-center justify-center w-16 h-16 rounded-lg bg-white border border-gray-200 hover:border-red-300 transition cursor-pointer disabled:cursor-not-allowed disabled:hover:border-gray-200"
               >
-                <img
-                  src={teamIconUrl(e.id, game)}
-                  alt={e.name}
-                  loading="lazy"
-                  className={`${art ? "w-11 h-11" : "w-12 h-12"} object-contain`}
-                  style={spriteStyle(!art)}
-                />
+                <PokemonIcon id={e.id} size={48} />
                 {/* Con orden por stat, su valor abajo a la derecha */}
                 {sortKey !== "dex" && (
                   <span className="absolute bottom-0.5 right-1 text-[10px] font-bold text-gray-500 tabular-nums">

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchPokemonById } from "../lib/api";
-import { MAX_ICON_ID } from "../lib/constants";
+import { idsWithBoxIcon } from "../lib/sprites";
 import type { Pokemon } from "../types/pokemon";
 
 /** Cantidad de Pokémon en la tira de íconos de Home. */
@@ -14,10 +14,10 @@ export function useTickerPokemon() {
   return useQuery({
     queryKey: ["ticker-pool"],
     queryFn: async () => {
-      // Todos los ids hasta MAX_ICON_ID tienen ícono de PC
+      const withIcon = idsWithBoxIcon();
       const ids = new Set<number>();
       while (ids.size < TICKER_SIZE) {
-        ids.add(Math.floor(Math.random() * MAX_ICON_ID) + 1);
+        ids.add(withIcon[Math.floor(Math.random() * withIcon.length)]);
       }
 
       const results = await Promise.all([...ids].map(fetchPokemonById));

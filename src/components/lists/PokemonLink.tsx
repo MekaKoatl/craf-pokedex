@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { SpriteImg } from "../SpriteImg";
-import { iconOrSprite } from "../../lib/sprites";
 import { getRegionalDisplayName } from "../../lib/regional";
+import { PokemonIcon } from "../PokemonIcon";
 
 /**
  * Ícono y nombre de un Pokémon con link a su página.
@@ -15,12 +14,7 @@ export function PokemonLink({ id, name }: { id: number; name: string }) {
       to={`/details/${id}`}
       className="flex flex-col items-center gap-0.5 p-1 rounded hover:bg-white transition"
     >
-      <SpriteImg
-        src={iconOrSprite(id)}
-        alt=""
-        className="w-12 h-12 object-contain"
-        style={{ imageRendering: "pixelated" }}
-      />
+      <PokemonIcon id={id} size={48} />
       <span className="text-[0.6rem] text-gray-500 text-center leading-tight">
         {getRegionalDisplayName(name)}
       </span>

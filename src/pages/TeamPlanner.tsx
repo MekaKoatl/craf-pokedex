@@ -2,15 +2,7 @@ import { useState, type FormEvent } from "react";
 import { GameSelect } from "../components/team/GameSelect";
 import { useTeams } from "../hooks/useTeams";
 import { MAX_TEAMS, TEAM_SIZE, type Team } from "../context/TeamsContext";
-import {
-  GAMES,
-  GAME_BY_ID,
-  genLabel,
-  spriteStyle,
-  teamIconUrl,
-  usesArtwork,
-} from "../lib/games";
-import { SpriteImg } from "../components/SpriteImg";
+import { GAMES, GAME_BY_ID, genLabel } from "../lib/games";
 import { GameTag } from "../components/team/GameTag";
 import { ImportPanel } from "../components/team/ImportPanel";
 import {
@@ -21,6 +13,7 @@ import {
 import { useSelection } from "../hooks/useSelection";
 import { CollectionToolbar } from "../components/collection/CollectionToolbar";
 import { SelectableCard } from "../components/collection/SelectableCard";
+import { PokemonIcon } from "../components/PokemonIcon";
 
 /** Órdenes de la página: los comunes más "por juego". */
 type SortKey = CollectionSort | "game";
@@ -39,7 +32,6 @@ const gameOrder = (id: string) => {
 /** Contenido de la tarjeta de un equipo: nombre, juego y los 6 casilleros. */
 function CardBody({ team }: { team: Team }) {
   const g = GAME_BY_ID.get(team.game);
-  const art = !!g && usesArtwork(g);
   return (
     <>
       <h3 className="font-bold text-gray-900 truncate pr-6">{team.name}</h3>
@@ -58,13 +50,7 @@ function CardBody({ team }: { team: Team }) {
         {Array.from({ length: TEAM_SIZE }, (_, i) => {
           const m = team.members[i];
           return m ? (
-            <SpriteImg
-              key={i}
-              src={teamIconUrl(m.pokemonId, g)}
-              alt=""
-              className={`${art ? "w-9 h-9" : "w-10 h-10"} object-contain`}
-              style={spriteStyle(!art)}
-            />
+            <PokemonIcon key={i} id={m.pokemonId} />
           ) : (
             <span
               key={i}

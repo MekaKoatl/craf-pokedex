@@ -3,15 +3,14 @@ import { Link } from "react-router-dom";
 import { POKEMON_DATA } from "../data/pokemon-data";
 import { POKEMON_STATS } from "../data/pokemon-stats";
 import { filterPokemonData } from "../lib/filterPokemon";
-import { iconOrSprite } from "../lib/sprites";
 import { getRegionalDisplayName } from "../lib/regional";
 import { normalize } from "../lib/text";
 import { useFilters } from "../hooks/useFilters";
 import { FilterBar } from "../components/filters/FilterBar";
 import { SearchBar } from "../components/SearchBar";
-import { SpriteImg } from "../components/SpriteImg";
 import { TypeBadge } from "../components/badges/TypeBadge";
 import { LoadMoreButton } from "../components/LoadMoreButton";
+import { PokemonIcon } from "../components/PokemonIcon";
 
 /** Filas visibles por página. */
 const PAGE = 50;
@@ -197,13 +196,7 @@ export function DexStats() {
                     <td className="py-1.5 pl-3 pr-2 sm:pr-5 whitespace-nowrap">
                       {" "}
                       <div className="flex items-center gap-2 [&_img]:shrink-0">
-                        <SpriteImg
-                          src={iconOrSprite(r.id)}
-                          alt=""
-                          loading="lazy"
-                          className="w-10 h-10 object-contain"
-                          style={{ imageRendering: "pixelated" }}
-                        />
+                        <PokemonIcon id={r.id} />
                         <span className="hidden sm:inline shrink-0 text-gray-500 tabular-nums">
                           {" "}
                           {String(r.dex).padStart(4, "0")}

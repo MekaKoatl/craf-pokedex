@@ -1,5 +1,5 @@
 import { GAME_POKEMON } from "../data/pokemon-games";
-import { artworkUrl, iconOrSprite, pokemonSpriteUrl } from "./sprites";
+import { artworkUrl, pokemonSpriteUrl } from "./sprites";
 
 /** Una versión de juego principal. */
 export interface Game {
@@ -229,10 +229,6 @@ const ARTWORK_GROUPS = new Set([
 
 /** Indica si el juego usa arte oficial en lugar de sprites pixelados. */
 export const usesArtwork = (game: Game) => ARTWORK_GROUPS.has(game.group);
-
-/** Imagen chica (caja, tarjetas): ícono de PC o arte oficial, según el juego. */
-export const teamIconUrl = (id: number, game?: Game) =>
-  game && usesArtwork(game) ? artworkUrl(id) : iconOrSprite(id);
 
 /** Imagen grande (casilleros, panel): sprite pixelado o arte oficial, según el juego. */
 export const teamSpriteUrl = (id: number, game: Game) =>

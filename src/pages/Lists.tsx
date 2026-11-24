@@ -1,8 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useLists } from "../hooks/useLists";
 import { MAX_LISTS, type PokemonList } from "../context/ListsContext";
-import { artworkUrl, boxIconUrl, hasBoxIcon } from "../lib/sprites";
-import { SpriteImg } from "../components/SpriteImg";
+import { PokemonIcon } from "../components/PokemonIcon";
 import { compareDex } from "../lib/dexOrder";
 import {
   COLLECTION_SORT_LABELS,
@@ -20,9 +19,6 @@ const PREVIEW = 6;
 function CardBody({ list }: { list: PokemonList }) {
   const preview = [...list.pokemon].sort(compareDex).slice(0, PREVIEW);
   const extra = list.pokemon.length - preview.length;
-  // Si algún Pokémon no tiene ícono de PC (Gen VIII en adelante o formas
-  // de Galar, Hisui y Paldea), la vista previa usa arte oficial para todos
-  const art = list.pokemon.some((id) => !hasBoxIcon(id));
 
   return (
     <>
@@ -35,16 +31,7 @@ function CardBody({ list }: { list: PokemonList }) {
         {preview.length === 0 ? (
           <span className="text-xs text-gray-300 italic">Empty</span>
         ) : (
-          preview.map((id) => (
-            <SpriteImg
-              key={id}
-              src={art ? artworkUrl(id) : boxIconUrl(id)}
-              alt=""
-              className={`${art ? "w-9 h-9" : "w-10 h-10"} object-contain`}
-              // Pixelado solo para íconos de PC
-              style={art ? undefined : { imageRendering: "pixelated" }}
-            />
-          ))
+          preview.map((id) => <PokemonIcon key={id} id={id} />)
         )}
         {extra > 0 && (
           <span className="text-xs font-semibold text-gray-400 ml-1">

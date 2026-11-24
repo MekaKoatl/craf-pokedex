@@ -1,8 +1,11 @@
-import { MAX_ICON_ID } from "./constants";
+import { FORM_ICONS, SPECIES_ICONS } from "../data/box-icons";
 
-/** Carpeta de íconos de PC (Gen VII) en jsDelivr. */
+/**
+ * Carpeta de íconos de PC de pokesprite (estilo Gen VIII) en jsDelivr, en una
+ * versión fija. Debe coincidir con `POKESPRITE_COMMIT` de `scripts/fetch-box-icons.mjs`.
+ */
 const ICON_BASE =
-  "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/versions/generation-vii/icons";
+  "https://cdn.jsdelivr.net/gh/msikma/pokesprite@c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular";
 
 /**
  * Cambia una URL de sprite de raw.githubusercontent.com (la que devuelve la API)
@@ -17,24 +20,44 @@ export function cdnSprite(url: string | null | undefined): string {
   );
 }
 
-/**
- * Formas de Alola con ícono de PC (son de la Gen VII). Las de Galar,
- * Hisui y Paldea no tienen y usan el sprite normal.
- */
-const ALOLAN_ICON_IDS = new Set([
-  10091,
-  10092,
-  ...Array.from({ length: 16 }, (_, i) => 10100 + i), // 10100 a 10115
-]);
+/** Ícono de cada especie (1 a 905) como "archivo:xxyywwhh"; índice 0 = #1. */
+const SPECIES = SPECIES_ICONS.split(",");
 
-/** Indica si existe ícono de PC para el id: todos hasta `MAX_ICON_ID` más las formas de Alola. */
-export function hasBoxIcon(id: number): boolean {
-  return (id >= 1 && id <= MAX_ICON_ID) || ALOLAN_ICON_IDS.has(id);
+/** Entrada "archivo:xxyywwhh" del ícono de un id, o undefined si no tiene. */
+function iconEntry(id: number): string | undefined {
+  return id <= SPECIES.length ? SPECIES[id - 1] || undefined : FORM_ICONS[id];
 }
 
-/** URL del ícono de PC. Verificar antes con `hasBoxIcon`. */
+/**
+ * Indica si existe ícono de PC para el id: hasta el #905 y las formas de
+ * Alola, Galar e Hisui (ver `src/data/box-icons.ts`).
+ */
+export function hasBoxIcon(id: number): boolean {
+  return iconEntry(id) !== undefined;
+}
+
+/** Ids de todos los Pokémon con ícono de PC. */
+export function idsWithBoxIcon(): number[] {
+  return [
+    ...SPECIES.flatMap((entry, i) => (entry ? [i + 1] : [])),
+    ...Object.keys(FORM_ICONS).map(Number),
+  ];
+}
+
+/** URL del ícono de PC (lienzo de 68×56). Verificar antes con `hasBoxIcon`. */
 export function boxIconUrl(id: number): string {
-  return `${ICON_BASE}/${id}.png`;
+  return `${ICON_BASE}/${iconEntry(id)?.split(":")[0]}.png`;
+}
+
+/** Rectángulo que ocupa el Pokémon dentro del lienzo del ícono, en px. */
+export type IconBounds = { x: number; y: number; w: number; h: number };
+
+/** Rectángulo del Pokémon dentro de su ícono de PC, o undefined si no tiene. */
+export function boxIconBounds(id: number): IconBounds | undefined {
+  const box = iconEntry(id)?.split(":")[1];
+  if (!box) return undefined;
+  const [x, y, w, h] = [0, 2, 4, 6].map((i) => Number(box.slice(i, i + 2)));
+  return { x, y, w, h };
 }
 
 /** Unown animado que se muestra mientras carga un sprite. */
@@ -48,11 +71,6 @@ const POKEMON_BASE =
 /** URL del sprite frontal por defecto. */
 export function pokemonSpriteUrl(id: number): string {
   return `${POKEMON_BASE}/${id}.png`;
-}
-
-/** Ícono de PC si existe; si no, el sprite normal. */
-export function iconOrSprite(id: number): string {
-  return hasBoxIcon(id) ? boxIconUrl(id) : pokemonSpriteUrl(id);
 }
 
 /** Arte oficial (Ken Sugimori). Existe para todas las especies y formas. */

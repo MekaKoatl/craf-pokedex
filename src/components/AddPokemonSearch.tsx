@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { POKEMON_DATA } from "../data/pokemon-data";
 import { getRegionalDisplayName } from "../lib/regional";
-import { iconOrSprite } from "../lib/sprites";
 import { compareDex, dexNumber } from "../lib/dexOrder";
-import { SpriteImg } from "./SpriteImg";
+import { PokemonIcon } from "./PokemonIcon";
 import { ClearButton } from "./ClearButton";
 
 /** Cantidad máxima de resultados visibles. */
@@ -69,12 +68,7 @@ export function AddPokemonSearch({
                     onClick={() => onToggle(e.id)}
                     className="w-full flex items-center gap-3 px-3 py-1 text-left hover:bg-gray-50 transition cursor-pointer"
                   >
-                    <SpriteImg
-                      src={iconOrSprite(e.id)}
-                      alt=""
-                      className="w-10 h-10 object-contain"
-                      style={{ imageRendering: "pixelated" }}
-                    />
+                    <PokemonIcon id={e.id} />
                     <span className="w-12 text-xs text-gray-400">
                       #{dexNumber(e.id)}
                     </span>
