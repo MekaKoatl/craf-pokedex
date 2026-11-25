@@ -30,10 +30,10 @@ export function Footer() {
           Fan-made project. Not affiliated with Nintendo, Game Freak or The
           Pokémon Company.
         </p>
-        {/* Link al texto completo */}{" "}
+        {/* Link al texto completo */}
         <Link
           to="/disclaimer"
-          className="sm:hidden min-h-[45px] flex items-center text-xs text-white/70 underline"
+          className="min-h-[45px] sm:min-h-0 flex items-center text-xs text-white/70 underline"
         >
           More in Disclaimer & Thanks
         </Link>

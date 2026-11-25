@@ -107,7 +107,6 @@ The most important files in `src/lib`:
 | `api.ts`          | Every PokéAPI request. `getPokemonFull` throws `NotFoundError` on a 404                                            |
 | `sprites.ts`      | Image URLs: `cdnSprite`, pokesprite icons and their measurements, sprites, official artwork, Dream World, item art |
 | `regional.ts`     | Display names ("Alolan Raichu") and regional forms                                                                 |
-| `regional.ts`     | Display names ("Alolan Raichu") and regional forms                                                                 |
 | `evolution.ts`    | Walking the evolution chain and building the requirements                                                          |
 | `dexOrder.ts`     | Pokédex number (regional forms use their species') and ordering                                                    |
 | `games.ts`        | Game list, what each game has, tag colors and which image to use                                                   |
