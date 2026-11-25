@@ -29,7 +29,8 @@
   background-color: #f9fafb;
   border: 2px solid #e5e7eb;
   border-radius: 0.75rem;
-  padding: 1rem 0.5rem;
+  /* Arriba queda lugar para las insignias y, en celular, el + */
+  padding: 1.9rem 0.5rem 1rem;
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -53,6 +54,14 @@
   height: 96px;
   margin-top: 0.25rem;
 }
+
+/* Número de Pokédex, encima del nombre */
+.dex-card-dexnum {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
 .dex-card-sprite img {
   position: absolute;
   inset: 0;
@@ -1528,6 +1537,87 @@
   }
 }
 
+/* ── MOVIMIENTOS APRENDIDOS (Details) ─────────────────────────── */
+/* Mismo estilo que la lista de Moves, sin abrir filas.
+   Lv · Nombre · Tipo · Categoría · Power · Acc */
+.learn-table .learn-row {
+  grid-template-columns: 56px minmax(0, 1fr) 110px 130px 64px 70px;
+}
+.learn-table .learn-row.no-lv {
+  grid-template-columns: minmax(0, 1fr) 110px 130px 64px 70px;
+}
+/* Títulos centrados, salvo el del nombre */
+.learn-table .move-head-cell {
+  justify-content: center;
+  padding: 0.4rem 0.25rem;
+}
+.learn-table .move-head-cell.learn-head-name {
+  justify-content: flex-start;
+  padding-left: 0.9rem;
+}
+/* Nivel y categoría: tramos grises dentro de la píldora */
+.learn-table .move-row .learn-lv,
+.learn-table .move-row .move-cell-cat {
+  background: #e5e7eb;
+}
+.learn-lv {
+  font-weight: 700;
+  color: #4b5563;
+}
+/* Las filas no se abren */
+.learn-table .move-row {
+  cursor: default;
+}
+@media (hover: hover) {
+  .learn-table .move-row:hover {
+    border-color: #e5e7eb;
+  }
+}
+
+/* Celular: categoría solo con ícono, para que entren Power y Acc */
+@media (max-width: 639px) {
+  .learn-table .learn-row {
+    grid-template-columns: 30px minmax(0, 1fr) 66px 30px 34px 42px;
+  }
+  .learn-table .learn-row.no-lv {
+    grid-template-columns: minmax(0, 1fr) 66px 30px 34px 42px;
+  }
+  /* A diferencia de Moves, en celular se ven los títulos y los números */
+  .learn-table .move-head {
+    display: grid;
+  }
+  .learn-table .move-cell-num {
+    display: flex;
+    padding: 0.3rem 0.1rem;
+    font-size: 0.72rem;
+  }
+  .learn-table .move-head-cell {
+    padding: 0.3rem 0.1rem;
+    font-size: 10px;
+  }
+  .learn-table .move-head-cell.learn-head-name,
+  .learn-table .move-cell-name {
+    padding-left: 0.7rem;
+  }
+  /* Sin tramos grises */
+  .learn-table .move-row .learn-lv,
+  .learn-table .move-row .move-cell-cat {
+    background: none;
+  }
+  .learn-table .move-cell-cat {
+    padding: 0.2rem 0;
+  }
+  .learn-table .move-cell-cat .move-cat {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    gap: 0;
+    font-size: 0;
+    border-radius: 999px;
+    box-shadow: none;
+  }
+}
+
 /* ── ADD TO LIST BUTTON ─────────────────────────── */
 .add-btn {
   position: absolute;
@@ -1568,7 +1658,7 @@
 /* ── DEX CARD EN CELULAR ─────────────────────────── */
 @media (max-width: 639px) {
   .dex-card {
-    padding: 0.85rem 0.25rem;
+    padding: 2.6rem 0.25rem 0.85rem;
   }
   /* El + pasa arriba a la izquierda y crece */
   .dex-card .add-btn {

@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getMove, fetchInBatches } from "../../lib/api";
 import { buildLearnset } from "../../lib/learnset";
 import { prettyName } from "../../lib/text";
-import { TypeBadge } from "../badges/TypeBadge";
 import { CategoryBadge } from "../badges/CategoryBadge";
 import { LoadingSpinner } from "../LoadingSpinner";
 import type { PokemonFull } from "../../types/pokemon";
@@ -12,7 +11,10 @@ import type { Move } from "../../types/move";
 /** Movimiento de una tabla; `level` solo en la de nivel. */
 type Row = { name: string; level?: number };
 
-/** Tarjeta desplegable con la tabla de movimientos de un método de aprendizaje. */
+/**
+ * Tarjeta desplegable con la lista de movimientos de un método de aprendizaje,
+ * con el estilo de la página Moves (clases `move-*` y `learn-*` de `index.css`).
+ */
 function MoveTable({
   title,
   rows,
@@ -27,6 +29,9 @@ function MoveTable({
   empty: string;
 }) {
   const [open, setOpen] = useState(true);
+
+  // Columnas de la grilla: con o sin la de nivel
+  const rowClass = showLevel ? "learn-row" : "learn-row no-lv";
 
   return (
     <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-5">
@@ -48,69 +53,61 @@ function MoveTable({
           {rows.length === 0 ? (
             <p className="text-sm text-gray-400 italic">{empty}</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="text-left text-gray-400 uppercase tracking-wide border-b border-gray-200">
+            <div className="move-table learn-table">
+              <div className={`move-head ${rowClass}`}>
+                {showLevel && (
+                  <span className="move-head-cell is-static">Lv.</span>
+                )}
+                <span className="move-head-cell is-static learn-head-name">
+                  Move
+                </span>
+                <span className="move-head-cell is-static">Type</span>
+                <span className="move-head-cell is-static">Cat.</span>
+                <span className="move-head-cell is-static">Pow.</span>
+                <span className="move-head-cell is-static">Acc.</span>
+              </div>
+              {rows.map((r, i) => {
+                const m = moves[r.name];
+                // Sin datos del movimiento, las celdas quedan sin color
+                const type = m ? ` type-${m.type.name}` : "";
+                return (
+                  // La key incluye el índice: un movimiento puede aparecer
+                  // dos veces por nivel con niveles distintos
+                  <div
+                    key={`${r.name}-${i}`}
+                    className={`move-row ${rowClass}`}
+                  >
                     {showLevel && (
-                      <th className="py-2 pr-1 sm:pr-2 text-right">Lv.</th>
+                      <span className="move-cell move-cell-num learn-lv">
+                        {r.level}
+                      </span>
                     )}
-                    <th className="py-2 px-1 sm:px-2">Move</th>
-                    <th className="py-2 px-1 sm:px-2">Type</th>
-                    {/* En celular la categoría va dentro de la columna Type */}
-                    <th className="hidden sm:table-cell py-2 px-2">Cat.</th>
-                    <th className="py-2 px-1 sm:px-2 text-right">
-                      <span className="sm:hidden">Pow.</span>
-                      <span className="hidden sm:inline">Power</span>
-                    </th>
-                    <th className="py-2 pl-1 sm:pl-2 text-right">Acc.</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((r, i) => {
-                    const m = moves[r.name];
-                    // Se usa en dos lugares (escritorio y celular)
-                    const cat = m ? (
-                      <CategoryBadge category={m.damage_class.name} />
-                    ) : (
-                      "—"
-                    );
-                    return (
-                      // La key incluye el índice: un movimiento puede aparecer
-                      // dos veces por nivel con niveles distintos
-                      <tr
-                        key={`${r.name}-${i}`}
-                        className="border-b border-gray-100"
-                      >
-                        {showLevel && (
-                          <td className="py-1.5 pr-1 sm:pr-2 text-right text-gray-500">
-                            {r.level}
-                          </td>
-                        )}
-                        <td className="py-1.5 px-1 sm:px-2 font-semibold text-gray-800 sm:whitespace-nowrap">
-                          {prettyName(r.name)}
-                        </td>
-                        <td className="py-1.5 px-1 sm:px-2 [&_.type-badge]:inline-block [&_.type-badge]:max-w-none [&_.type-badge]:w-16 sm:[&_.type-badge]:w-20 [&_.type-badge]:text-center [&_.move-cat]:w-16 [&_.move-cat]:px-0">
-                          {" "}
-                          {m ? <TypeBadge type={m.type.name} /> : "—"}
-                          {/* Celular: categoría debajo del tipo */}
-                          <span className="sm:hidden block mt-1">{cat}</span>
-                        </td>
-                        <td className="hidden sm:table-cell py-1.5 px-2 [&_.move-cat]:w-24">
-                          {" "}
-                          {cat}
-                        </td>
-                        <td className="py-1.5 px-1 sm:px-2 text-right text-gray-700">
-                          {m?.power ?? "—"}
-                        </td>
-                        <td className="py-1.5 pl-1 sm:pl-2 text-right text-gray-700">
-                          {m && m.accuracy !== null ? `${m.accuracy}%` : "—"}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                    <span className={`move-cell move-cell-name${type}`}>
+                      {prettyName(r.name)}
+                    </span>
+                    <span className={`move-cell move-cell-type${type}`}>
+                      {m ? prettyName(m.type.name) : "—"}
+                    </span>
+                    {/* En celular solo el ícono; el nombre, al pasar el mouse */}
+                    <span
+                      className="move-cell move-cell-cat"
+                      title={m ? prettyName(m.damage_class.name) : undefined}
+                    >
+                      {m ? (
+                        <CategoryBadge category={m.damage_class.name} />
+                      ) : (
+                        "—"
+                      )}
+                    </span>
+                    <span className="move-cell move-cell-num">
+                      {m?.power ?? "—"}
+                    </span>
+                    <span className="move-cell move-cell-num">
+                      {m && m.accuracy !== null ? `${m.accuracy}%` : "—"}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -181,7 +178,7 @@ export function LearnedMovesPanel({ pokemon }: { pokemon: PokemonFull }) {
           {!ready ? (
             <LoadingSpinner text="Loading moves..." />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-4">
                 <MoveTable
                   title="Moves learnt by level up"

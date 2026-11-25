@@ -118,7 +118,7 @@ export function FilterBar({
             {...panelProps("evo")}
           />
           <FilterPanel
-            label="Forms"
+            label="Forms & Categories"
             options={FORMS}
             activeValues={filters.forms}
             onToggle={(v) => toggle("forms", v as string)}

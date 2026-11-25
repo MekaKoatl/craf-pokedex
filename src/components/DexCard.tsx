@@ -61,7 +61,6 @@ export function DexCard({
           ))}
         </div>
       )}
-      <span className="dex-card-dexnum">#{pokemon.id}</span>
       <div className="dex-card-sprite">
         {showArt ? (
           // Celular: Dream World, o arte oficial si no existe
@@ -90,6 +89,7 @@ export function DexCard({
           </>
         )}
       </div>
+      <span className="dex-card-dexnum">#{pokemon.id}</span>
       <span className="dex-card-name">{displayName}</span>
       <hr />
       <div className="dex-card-types">
