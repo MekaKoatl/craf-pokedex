@@ -95,7 +95,7 @@ src/
     lists/                Pieces shared by the three tables: LetterStrip, RowParts, PokemonLink
     collection/           Pieces shared by Lists and Team Planner: toolbar, selectable card, rename form
     team/                 Everything in the Team Planner
-        (loose)               DexCard, Navbar, Footer, SearchBar, SpriteImg, PokemonIcon,
+    (loose)               DexCard, Navbar, Footer, SearchBar, SpriteImg, PokemonIcon,
                           AddToListButton, LoadMoreButton, NotFoundMessage...
   pages/                  One per route
 ```
@@ -106,6 +106,7 @@ The most important files in `src/lib`:
 | ----------------- | ------------------------------------------------------------------------------------------------------------------ | --- | ------------- | -------------------------------------------------- |
 | `api.ts`          | Every PokéAPI request. `getPokemonFull` throws `NotFoundError` on a 404                                            |
 | `sprites.ts`      | Image URLs: `cdnSprite`, pokesprite icons and their measurements, sprites, official artwork, Dream World, item art |     | `regional.ts` | Display names ("Alolan Raichu") and regional forms |
+| `regional.ts`     | Display names ("Alolan Raichu") and regional forms                                                                 |
 | `evolution.ts`    | Walking the evolution chain and building the requirements                                                          |
 | `dexOrder.ts`     | Pokédex number (regional forms use their species') and ordering                                                    |
 | `games.ts`        | Game list, what each game has, tag colors and which image to use                                                   |
@@ -113,7 +114,9 @@ The most important files in `src/lib`:
 | `typeChart.ts`    | Type chart by generation and abilities that change damage                                                          |
 | `teamTransfer.ts` | Moving members to another game, dropping what isn't valid there (Duplicate and Import)                             |
 | `showdown.ts`     | Export and import of the Pokémon Showdown text format                                                              |
-| `backup.ts`       | Export and import favorites, lists and teams (Backup page)                                                         |     | `daily.ts`    | Pokémon of the day                                 |
+| `backup.ts`       | Export and import favorites, lists and teams (Backup page)                                                         |
+| `collections.ts`  | Sort options shared by lists and teams                                                                             |
+| `daily.ts`        | Pokémon of the day                                                                                                 |
 
 Shared hooks worth knowing:
 
@@ -138,6 +141,7 @@ There are two sources:
 | `pokemon-stats.ts` | The 6 base stats of each entry                                                                                 | `fetch-stats.mjs`        |
 | `pokemon-games.ts` | Which Pokémon are in each game group                                                                           | `fetch-games.mjs`        |
 | `regional-dex.ts`  | Each game's regional Pokédex, in order                                                                         | `fetch-regional-dex.mjs` |
+| `held-items.ts`    | Holdable items, their category and the generation they appeared in                                             | `fetch-items.mjs`        |
 | `box-icons.ts`     | Each Pokémon's pokesprite icon and where it's drawn; measurements of the Gen IX sprites                        | `fetch-box-icons.mjs`    |
 
 ## Data scripts

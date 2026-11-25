@@ -95,7 +95,7 @@ src/
     lists/                Piezas comunes a las tres tablas: LetterStrip, RowParts, PokemonLink
     collection/           Piezas comunes a Lists y Team Planner: barra, tarjeta seleccionable, renombrar
     team/                 Todo lo del Team Planner
-     (sueltos)             DexCard, Navbar, Footer, SearchBar, SpriteImg, PokemonIcon,
+    (sueltos)             DexCard, Navbar, Footer, SearchBar, SpriteImg, PokemonIcon,
                           AddToListButton, LoadMoreButton, NotFoundMessage...
   pages/                  Una por ruta
 ```
@@ -103,9 +103,10 @@ src/
 Los archivos más importantes de `src/lib`:
 
 | Archivo           | Qué tiene                                                                                                              |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------- | ------------------------------------------------------ | --------------- |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `api.ts`          | Todos los pedidos a la PokéAPI. `getPokemonFull` lanza `NotFoundError` ante un 404                                     |
-| `sprites.ts`      | URLs de imágenes: `cdnSprite`, íconos de pokesprite y sus medidas, sprites, arte oficial, Dream World, arte de objetos |                       | `regional.ts` | Nombres visibles ("Alolan Raichu") y formas regionales |
+| `sprites.ts`      | URLs de imágenes: `cdnSprite`, íconos de pokesprite y sus medidas, sprites, arte oficial, Dream World, arte de objetos |
+| `regional.ts`     | Nombres visibles ("Alolan Raichu") y formas regionales                                                                 |
 | `evolution.ts`    | Recorrido de la cadena evolutiva y armado de los requisitos                                                            |
 | `dexOrder.ts`     | Número de Pokédex (las formas regionales usan el de su especie) y orden                                                |
 | `games.ts`        | Lista de juegos, qué tiene cada uno, colores de las etiquetas y qué imagen usar                                        |
@@ -113,7 +114,9 @@ Los archivos más importantes de `src/lib`:
 | `typeChart.ts`    | Tabla de tipos por generación y habilidades que cambian el daño                                                        |
 | `teamTransfer.ts` | Pasar miembros a otro juego quitando lo que ahí no es válido (Duplicate e Import)                                      |
 | `showdown.ts`     | Exportar e importar el formato de texto de Pokémon Showdown                                                            |
-| `box-icons.ts`    | Ícono de pokesprite de cada Pokémon y dónde está dibujado; medidas de los sprites de la Gen IX                         | `fetch-box-icons.mjs` |               | `daily.ts`                                             | Pokémon del día |
+| `backup.ts`       | Exportar e importar favoritos, listas y equipos (página Backup)                                                        |
+| `collections.ts`  | Órdenes comunes a listas y equipos                                                                                     |
+| `daily.ts`        | Pokémon del día                                                                                                        |
 
 Hooks compartidos que conviene conocer:
 
@@ -138,6 +141,7 @@ Hay dos fuentes:
 | `pokemon-stats.ts` | Los 6 stats base de cada entrada                                                                                    | `fetch-stats.mjs`        |
 | `pokemon-games.ts` | Qué Pokémon hay en cada grupo de juegos                                                                             | `fetch-games.mjs`        |
 | `regional-dex.ts`  | La Pokédex regional de cada juego, en orden                                                                         | `fetch-regional-dex.mjs` |
+| `held-items.ts`    | Objetos equipables, su categoría y la generación en que aparecieron                                                 | `fetch-items.mjs`        |
 | `box-icons.ts`     | Ícono de pokesprite de cada Pokémon y dónde está dibujado; medidas de los sprites de la Gen IX                      | `fetch-box-icons.mjs`    |
 
 ## Scripts de datos
@@ -195,6 +199,8 @@ Si cambia la forma de los datos guardados, los datos viejos tienen que seguir fu
 
 - **jsDelivr, no GitHub.** Los sprites de `raw.githubusercontent.com` devolvían 429 (demasiados pedidos). `cdnSprite()` cambia esas URLs por las de jsDelivr. Si una imagen de jsDelivr falla, `SpriteImg` la vuelve a pedir una vez a GitHub antes de llamar a su `onError`.
 - **Íconos de Pokémon (`PokemonIcon`):** usan los íconos de PC de [pokesprite](https://github.com/msikma/pokesprite) (estilo Gen VIII, en una versión fija de jsDelivr), que cubren hasta el #905 y las formas de Alola, Galar e Hisui. Para la Gen IX y las formas de Paldea se usa el sprite de PokeAPI (pixel art hecho por la comunidad). `fetch-box-icons` mide dónde está dibujado cada Pokémon, y `PokemonIcon` lo centra y lo escala con una curva suave: los grandes se ven más grandes, sin saltos bruscos (`CURVE` en `PokemonIcon.tsx`).- **Juegos de Switch** (`ARTWORK_GROUPS` en `games.ts`): los casilleros del editor de equipos y el panel del miembro usan arte oficial en lugar de sprites pixelados. Las tarjetas y la caja usan `PokemonIcon` en todos los juegos.- **Tarjetas en celular:** usan el dibujo de Dream World (SVG). Si no existe para ese Pokémon, `onError` pasa al arte oficial. Las tarjetas de Regional Forms dentro de Details quedan pixeladas (`<DexCard pixel />`).
+- **Juegos de Switch** (`ARTWORK_GROUPS` en `games.ts`): los casilleros del editor de equipos y el panel del miembro usan arte oficial en lugar de sprites pixelados. Las tarjetas y la caja usan `PokemonIcon` en todos los juegos.
+- **Tarjetas en celular:** usan el dibujo de Dream World (SVG). Si no existe para ese Pokémon, `onError` pasa al arte oficial. Las tarjetas de Regional Forms dentro de Details quedan pixeladas (`<DexCard pixel />`).
 - **No hay arte oficial de hembra.** `official-artwork` no tiene versión hembra; la galería completa los lugares ♀ con el campo `_female` o con la variedad hembra.
 - **Arte de objetos:** la fila abierta de un objeto prueba `itemArtUrls()` en orden (gen9 → gen8 → Dream World) y, si fallan todas, usa el sprite pixelado.
 
@@ -248,6 +254,6 @@ Si cambia la forma de los datos guardados, los datos viejos tienen que seguir fu
 
 - **Probar el rediseño de Moves en un celular real.**
 - **Filtro por habilidad** en la caja del Team Planner: necesita un script nuevo que genere las habilidades de cada Pokémon. Postergado.
-- **Sincronizar entre dispositivos** (favoritos, listas y equipos): las opciones son exportar e importar un JSON, un código de sincronización con una base de datos externa, o cuentas de usuario. Sin decidir.
+- **Sincronizar entre dispositivos:** por ahora se hace con la página Backup (archivo `.json`). Un código de sincronización con una base de datos externa o cuentas de usuario siguen sin decidir.
 - **Filtro por movimiento:** descartado; los datos serían enormes.
 - El mensaje `Security Error: ... may not load or link to file:///` de la consola viene de una extensión del navegador, no del proyecto.
