@@ -7,7 +7,8 @@
  * transparentes; `PokemonIcon` lo usa para centrar y escalar al Pokémon.
  *
  * pokesprite cubre hasta el #905 y las formas de Alola, Galar e Hisui. Para los
- * que no figuran (Gen IX y formas de Paldea), `PokemonIcon` usa otra imagen.
+ * que no figuran (Gen IX y formas de Paldea), `PokemonIcon` usa el sprite de
+ * PokeAPI, que también se mide (`SPRITE_BOUNDS`).
  *
  * Depende de `src/data/pokemon-data.ts` (correr antes `fetch-pokemon-data.mjs`).
  * Si se cambia `POKESPRITE_COMMIT`, actualizar también el de `src/lib/sprites.ts`.
@@ -65,14 +66,16 @@ for (const { id, name } of entries) {
 }
 
 /**
- * Rectángulo de los pixeles no transparentes de un PNG de 8 bits sin
- * entrelazado (el formato de pokesprite), como [x, y, ancho, alto].
+ * Rectángulo de los pixeles no transparentes de un PNG sin entrelazado, de
+ * 8 bits o con paleta de 1, 2 o 4 bits (los formatos de pokesprite y de los
+ * sprites de PokeAPI), como [x, y, ancho, alto].
  */
 function opaqueBounds(png) {
   let pos = 8; // salta la firma
   let width = 0;
   let height = 0;
   let colorType = 0;
+  let depth = 8;
   let trns = null;
   const idat = [];
   while (pos < png.length) {
@@ -82,9 +85,10 @@ function opaqueBounds(png) {
     if (type === "IHDR") {
       width = data.readUInt32BE(0);
       height = data.readUInt32BE(4);
-      if (data[8] !== 8 || data[12] !== 0)
-        throw new Error("PNG no soportado (solo 8 bits sin entrelazado)");
+      depth = data[8];
       colorType = data[9];
+      if (data[12] !== 0 || (depth !== 8 && colorType !== 3))
+        throw new Error("PNG no soportado (entrelazado o de 16 bits)");
     } else if (type === "tRNS") trns = data;
     else if (type === "IDAT") idat.push(data);
     pos += 12 + len;
@@ -92,16 +96,23 @@ function opaqueBounds(png) {
 
   // Bytes por pixel según el tipo de color: gris, RGB, paleta, gris+alfa, RGBA
   const bpp = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[colorType];
-  const alphaOf = (px, i) => {
+  const alphaOf = (px, x) => {
+    const i = x * bpp;
     if (colorType === 6) return px[i + 3];
     if (colorType === 4) return px[i + 1];
-    if (colorType === 3) return trns && px[i] < trns.length ? trns[px[i]] : 255;
+    if (colorType === 3) {
+      // Con paletas de menos de 8 bits, varios pixeles comparten un byte
+      const bit = x * depth;
+      const index =
+        (px[bit >> 3] >> (8 - depth - (bit & 7))) & ((1 << depth) - 1);
+      return trns && index < trns.length ? trns[index] : 255;
+    }
     return 255; // sin canal alfa
   };
 
   // Deshace los filtros de cada fila (especificación PNG, sección 9)
   const raw = inflateSync(Buffer.concat(idat));
-  const stride = width * bpp;
+  const stride = Math.ceil((width * bpp * depth) / 8);
   let prev = new Uint8Array(stride);
   let x0 = width;
   let y0 = height;
@@ -129,7 +140,7 @@ function opaqueBounds(png) {
       cur[i] = (line[i] + pred) & 0xff;
     }
     for (let x = 0; x < width; x++) {
-      if (alphaOf(cur, x * bpp) > 0) {
+      if (alphaOf(cur, x) > 0) {
         if (x < x0) x0 = x;
         if (x > x1) x1 = x;
         if (y < y0) y0 = y;
@@ -156,12 +167,29 @@ await Promise.all(
   }),
 );
 
-/** "archivo:xxyywwhh" (rectángulo con dos dígitos por valor). */
-const entryOf = (file) =>
-  `${file}:${bounds
-    .get(file)
-    .map((v) => String(v).padStart(2, "0"))
-    .join("")}`;
+// Los que no tienen ícono usan el sprite de PokeAPI (pixel art de 96×96; los
+// de la Gen IX los hizo la comunidad). Se miden igual, para escalarlos parejo.
+const SPRITE_URL =
+  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon";
+const spriteBounds = new Map();
+const spriteQueue = missing.map((m) => Number(m.split(" ")[0]));
+console.log(`Midiendo ${spriteQueue.length} sprites...`);
+await Promise.all(
+  Array.from({ length: CONCURRENCY }, async () => {
+    for (let id = spriteQueue.pop(); id; id = spriteQueue.pop()) {
+      const r = await fetch(`${SPRITE_URL}/${id}.png`);
+      if (!r.ok)
+        throw new Error(`No se pudo descargar el sprite ${id} (${r.status})`);
+      spriteBounds.set(id, opaqueBounds(Buffer.from(await r.arrayBuffer())));
+    }
+  }),
+);
+
+/** Rectángulo como "xxyywwhh" (dos dígitos por valor). */
+const digits = (box) => box.map((v) => String(v).padStart(2, "0")).join("");
+
+/** "archivo:xxyywwhh". */
+const entryOf = (file) => `${file}:${digits(bounds.get(file))}`;
 
 // Formato compacto: las especies 1 a 905 van en orden en un solo texto y las
 // formas en un objeto aparte.
@@ -171,6 +199,9 @@ for (let id = 1; id <= 905; id++)
 const forms = Object.entries(icons)
   .filter(([id]) => Number(id) > 905)
   .map(([id, file]) => `  ${id}: "${entryOf(file)}",`);
+const sprites = [...spriteBounds]
+  .sort(([a], [b]) => a - b)
+  .map(([id, box]) => `  ${id}: "${digits(box)}",`);
 
 writeFileSync(
   OUT,
@@ -191,9 +222,17 @@ export const SPECIES_ICONS =
 export const FORM_ICONS: Record<number, string> = {
 ${forms.join("\n")}
 };
+
+/**
+ * Rectángulo "xxyywwhh" del Pokémon dentro de su sprite de PokeAPI (96×96),
+ * para los que no tienen ícono de PC (Gen IX y formas de Paldea).
+ */
+export const SPRITE_BOUNDS: Record<number, string> = {
+${sprites.join("\n")}
+};
 `,
 );
 
 const total = species.filter(Boolean).length + forms.length;
-console.log(`${total} con ícono, ${missing.length} sin ícono:`);
+console.log(`${total} con ícono, ${missing.length} con sprite:`);
 console.log(missing.join(", "));

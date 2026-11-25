@@ -48,12 +48,6 @@ const faqs: { q: string; a: ReactNode }[] = [
         If you see a difference it is because I had an original idea or plan to
         use a specific sprite but it did not load or exist and I am using a
         backup.
-        <br />
-        <br />
-        For example in the lists and teamplanners and other parts of the site I
-        wanted to use the sprites used when accessing your boxes on the games
-        "PC", however recent games and their mons don't always have this sprite.
-        As such I have to have somre workarounds.
       </>
     ),
   },

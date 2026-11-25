@@ -1,5 +1,4 @@
-import { FORM_ICONS, SPECIES_ICONS } from "../data/box-icons";
-
+import { FORM_ICONS, SPECIES_ICONS, SPRITE_BOUNDS } from "../data/box-icons";
 /**
  * Carpeta de íconos de PC de pokesprite (estilo Gen VIII) en jsDelivr, en una
  * versión fija. Debe coincidir con `POKESPRITE_COMMIT` de `scripts/fetch-box-icons.mjs`.
@@ -52,12 +51,24 @@ export function boxIconUrl(id: number): string {
 /** Rectángulo que ocupa el Pokémon dentro del lienzo del ícono, en px. */
 export type IconBounds = { x: number; y: number; w: number; h: number };
 
-/** Rectángulo del Pokémon dentro de su ícono de PC, o undefined si no tiene. */
-export function boxIconBounds(id: number): IconBounds | undefined {
-  const box = iconEntry(id)?.split(":")[1];
+/** Convierte "xxyywwhh" (dos dígitos por valor) en un rectángulo. */
+function parseBounds(box: string | undefined): IconBounds | undefined {
   if (!box) return undefined;
   const [x, y, w, h] = [0, 2, 4, 6].map((i) => Number(box.slice(i, i + 2)));
   return { x, y, w, h };
+}
+
+/** Rectángulo del Pokémon dentro de su ícono de PC, o undefined si no tiene. */
+export function boxIconBounds(id: number): IconBounds | undefined {
+  return parseBounds(iconEntry(id)?.split(":")[1]);
+}
+
+/**
+ * Rectángulo del Pokémon dentro de su sprite de PokeAPI (96×96). Solo está
+ * medido para los que no tienen ícono de PC (Gen IX y formas de Paldea).
+ */
+export function spriteBounds(id: number): IconBounds | undefined {
+  return parseBounds(SPRITE_BOUNDS[id]);
 }
 
 /** Unown animado que se muestra mientras carga un sprite. */

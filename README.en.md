@@ -48,6 +48,7 @@ npm run lint      # ESLint
 | TanStack Query 5               | PokéAPI requests with caching                       |
 | Tailwind CSS 4                 | styles, together with custom CSS in `src/index.css` |
 | PokéAPI + sprites on jsDelivr  | data and images                                     |
+| pokesprite (jsDelivr)          | Pokémon box icons                                   |
 | Web3Forms                      | sends the Feedback form by email                    |
 
 ## Pages and routes
@@ -64,6 +65,7 @@ npm run lint      # ESLint
 | `/favorites`                              | `Favorites`                  | Favorites, with a search box to add more and filters                                                                                              |
 | `/lists` · `/lists/:listId`               | `Lists` · `ListDetail`       | Custom lists (up to 20)                                                                                                                           |
 | `/team-planner` · `/team-planner/:teamId` | `TeamPlanner` · `TeamEditor` | Per-game teams (up to 30): analysis, stats, Showdown export and import                                                                            |
+| `/backup`                                 | `Backup`                     | Exports favorites, lists and teams to a `.json` file and imports them on another device                                                           |
 | `/faq`                                    | `FAQ`                        | Frequently asked questions                                                                                                                        |
 | `/disclaimer`                             | `Disclaimer`                 | Legal notice and thanks                                                                                                                           |
 | `/feedback`                               | `Feedback`                   | Form to send feedback by email                                                                                                                    |
@@ -93,27 +95,25 @@ src/
     lists/                Pieces shared by the three tables: LetterStrip, RowParts, PokemonLink
     collection/           Pieces shared by Lists and Team Planner: toolbar, selectable card, rename form
     team/                 Everything in the Team Planner
-    (loose)               DexCard, Navbar, Footer, SearchBar, SpriteImg, AddToListButton,
-                          LoadMoreButton, NotFoundMessage...
+        (loose)               DexCard, Navbar, Footer, SearchBar, SpriteImg, PokemonIcon,
+                          AddToListButton, LoadMoreButton, NotFoundMessage...
   pages/                  One per route
 ```
 
 The most important files in `src/lib`:
 
-| File              | What's in it                                                                           |
-| ----------------- | -------------------------------------------------------------------------------------- |
-| `api.ts`          | Every PokéAPI request. `getPokemonFull` throws `NotFoundError` on a 404                |
-| `sprites.ts`      | Image URLs: `cdnSprite`, box icons, official artwork, Dream World, item art            |
-| `regional.ts`     | Display names ("Alolan Raichu") and regional forms                                     |
-| `evolution.ts`    | Walking the evolution chain and building the requirements                              |
-| `dexOrder.ts`     | Pokédex number (regional forms use their species') and ordering                        |
-| `games.ts`        | Game list, what each game has, tag colors and which image to use                       |
-| `teamRules.ts`    | Per-game rules: abilities, moves, items, Megas, natures and stat formulas              |
-| `typeChart.ts`    | Type chart by generation and abilities that change damage                              |
-| `teamTransfer.ts` | Moving members to another game, dropping what isn't valid there (Duplicate and Import) |
-| `showdown.ts`     | Export and import of the Pokémon Showdown text format                                  |
-| `collections.ts`  | Sort options shared by lists and teams                                                 |
-| `daily.ts`        | Pokémon of the day                                                                     |
+| File              | What's in it                                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------ | --- | ------------- | -------------------------------------------------- |
+| `api.ts`          | Every PokéAPI request. `getPokemonFull` throws `NotFoundError` on a 404                                            |
+| `sprites.ts`      | Image URLs: `cdnSprite`, pokesprite icons and their measurements, sprites, official artwork, Dream World, item art |     | `regional.ts` | Display names ("Alolan Raichu") and regional forms |
+| `evolution.ts`    | Walking the evolution chain and building the requirements                                                          |
+| `dexOrder.ts`     | Pokédex number (regional forms use their species') and ordering                                                    |
+| `games.ts`        | Game list, what each game has, tag colors and which image to use                                                   |
+| `teamRules.ts`    | Per-game rules: abilities, moves, items, Megas, natures and stat formulas                                          |
+| `typeChart.ts`    | Type chart by generation and abilities that change damage                                                          |
+| `teamTransfer.ts` | Moving members to another game, dropping what isn't valid there (Duplicate and Import)                             |
+| `showdown.ts`     | Export and import of the Pokémon Showdown text format                                                              |
+| `backup.ts`       | Export and import favorites, lists and teams (Backup page)                                                         |     | `daily.ts`    | Pokémon of the day                                 |
 
 Shared hooks worth knowing:
 
@@ -138,23 +138,24 @@ There are two sources:
 | `pokemon-stats.ts` | The 6 base stats of each entry                                                                                 | `fetch-stats.mjs`        |
 | `pokemon-games.ts` | Which Pokémon are in each game group                                                                           | `fetch-games.mjs`        |
 | `regional-dex.ts`  | Each game's regional Pokédex, in order                                                                         | `fetch-regional-dex.mjs` |
-| `held-items.ts`    | Holdable items, their category and the generation they appeared in                                             | `fetch-items.mjs`        |
+| `box-icons.ts`     | Each Pokémon's pokesprite icon and where it's drawn; measurements of the Gen IX sprites                        | `fetch-box-icons.mjs`    |
 
 ## Data scripts
 
 Run them from the project root, e.g. `node scripts/fetch-stats.mjs`. Each one fetches from PokéAPI and rewrites its file in `src/data/`. They can take several minutes. Each script's header says what it generates and what it depends on.
 
-**Order:** `fetch-stats` and `fetch-games` read `pokemon-data.ts`, so whenever that file changes, run them in this order:
+**Order:** `fetch-stats`, `fetch-games` and `fetch-box-icons` read `pokemon-data.ts`, so whenever that file changes, run them in this order:
 
 1. `fetch-pokemon-data.mjs`. When it finishes it prints what was added, removed or changed compared to the previous file.
 2. `fetch-stats.mjs`
 3. `fetch-games.mjs`
+4. `fetch-box-icons.mjs`
 
 `fetch-regional-dex.mjs` and `fetch-items.mjs` don't depend on anything; run them when needed (for example, when a new game comes out).
 
 ## What is stored in the browser
 
-Everything lives in `localStorage`; there is no server and no accounts. Data doesn't sync between devices.
+Everything lives in `localStorage`; there is no server and no accounts. Data doesn't sync between devices on its own: the Backup page (`/backup`, logic in `lib/backup.ts`) exports favorites, lists and teams to a `.json` file and imports it on another device, merging with or replacing what's there.
 
 | Key               | What it stores                        | Handled in                       |
 | ----------------- | ------------------------------------- | -------------------------------- |
@@ -177,6 +178,7 @@ If the shape of stored data changes, old data must keep working. For example, `l
 - To reset state when a value changes (for example, closing a menu when the route changes), compare against the previous value during render instead of calling `setState` inside a `useEffect`. See `Navbar.tsx`.
 - Every PokéAPI sprite goes through `cdnSprite()` or is built with the helpers in `sprites.ts` (see technical notes).
 - To show sprites, use `SpriteImg`: it shows the loading Unown, retries on GitHub if jsDelivr fails, and only downloads near the screen (`loading="lazy"`).
+- For Pokémon icons in cards, grids and search results, use `PokemonIcon` (see technical notes).
 - Buttons: `btn-primary` (red) and `btn-ghost` (white pill) in `index.css` hold colors and states; size, padding and radius go in each use with Tailwind classes.
 - A new page is added to `App.tsx` with `lazy`, and to `Navbar.tsx` or `Footer.tsx`.
 
@@ -192,8 +194,8 @@ If the shape of stored data changes, old data must keep working. For example, `l
 **Images**
 
 - **jsDelivr, not GitHub.** Sprites from `raw.githubusercontent.com` returned 429 (too many requests). `cdnSprite()` rewrites those URLs to jsDelivr. If a jsDelivr image fails, `SpriteImg` retries it once from GitHub before calling its `onError`.
-- **Box icons** exist for 1 to 809 (`MAX_ICON_ID`) and for the Alolan forms. There are no Gen VIII icons; Gen IX ones aren't pixel art. Beyond that, the normal sprite is used (`iconOrSprite`).
-- **Switch games** (`ARTWORK_GROUPS` in `games.ts`): the Team Planner uses official artwork instead of pixel sprites.
+- **Pokémon icons (`PokemonIcon`):** they use the box icons from [pokesprite](https://github.com/msikma/pokesprite) (Gen VIII style, from a pinned version on jsDelivr), which cover up to #905 plus the Alolan, Galarian and Hisuian forms. Gen IX and the Paldean forms use the PokeAPI sprite (community-made pixel art). `fetch-box-icons` measures where each Pokémon is drawn, and `PokemonIcon` centers it and scales it along a gentle curve: big ones look bigger, without sharp jumps (`CURVE` in `PokemonIcon.tsx`).
+- **Switch games** (`ARTWORK_GROUPS` in `games.ts`): the team editor slots and the member panel use official artwork instead of pixel sprites. Cards and the box use `PokemonIcon` in every game.
 - **Cards on mobile** use the Dream World drawing (SVG). If it doesn't exist for that Pokémon, `onError` switches to the official artwork. The Regional Forms cards inside Details stay pixel (`<DexCard pixel />`).
 - **No female official artwork.** `official-artwork` has no female version; the gallery fills the ♀ slots from the `_female` field or from the female variety.
 - **Item art:** the open item row tries `itemArtUrls()` in order (gen9 → gen8 → Dream World) and falls back to the pixel sprite.
@@ -237,6 +239,7 @@ If the shape of stored data changes, old data must keep working. For example, `l
 - `PokemonLink` lives in its own file because it pulls in `pokemon-data` (~138 kB): if it were in `RowParts`, Items would download it too. After changes, check that `SpriteImg-*.js` stays around 2 kB and `pokemon-data-*.js` stays separate in the build output.
 - **Tailwind also reads comments:** a word in a comment that matches a class name (for example "invisible") generates that class in the CSS. It's harmless but adds a few bytes.
 - Images under 4 kB (like `pokeball1.webp`) are inlined into the code instead of being separate files.
+- `box-icons.ts` is part of the initial load (about 10 kB gzipped) because the Home strip uses it.
 
 **API data that doesn't help**
 
@@ -247,8 +250,6 @@ If the shape of stored data changes, old data must keep working. For example, `l
 
 - **Test the Moves redesign on a real phone.**
 - **Ability filter** in the Team Planner box: needs a new script that generates each Pokémon's abilities. Postponed.
-- **Sync between devices** (favorites, lists and teams): options are a JSON export/import, a sync code with an external database, or user accounts. Undecided.
-- **ESLint:** the three contexts export a component and a context from the same file, which breaks fast refresh in development. Move each `createContext` to its own file.
-- **`useIsMobile`** duplicates `useMediaQuery`; it can become `useMediaQuery("(max-width: 639px)")`.
+- **Sync between devices:** for now, through the Backup page (a `.json` file). A sync code with an external database or user accounts are still undecided.
 - **Move filter:** dropped; the data would be huge.
 - The `Security Error: ... may not load or link to file:///` console message comes from a browser extension, not from the project.

@@ -36,6 +36,11 @@ const thanks = [
     url: "https://pokemonshowdown.com",
     note: "Team format",
   },
+  {
+    name: "PokéSprite",
+    url: "https://github.com/msikma/pokesprite",
+    note: "Box icons",
+  },
 ];
 
 /** Página Disclaimer & Thanks (`/disclaimer`): aviso legal y agradecimientos. */
@@ -62,6 +67,7 @@ export function Disclaimer() {
             <li>The Pokemon Database</li>
             <li>Serebii</li>
             <li>The Bulbagarden websites</li>
+            <li>PokéSprite</li>
           </ul>
           As also mentioned in the FAQ's, this website used AI in its
           development. I rather be upfront about it since I have been lied and
