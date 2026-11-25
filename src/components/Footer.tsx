@@ -45,7 +45,7 @@ export function Footer() {
           </p>
           <p>
             The Pokémon API is the backbone of the website. Please use The
-            Pokemon Database, Serebii and The Bulbagarden websites for more
+            Pokémon Database, Serebii and The Bulbagarden websites for more
             expansive Pokémon databases and pages.
           </p>
         </div>

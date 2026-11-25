@@ -22,7 +22,7 @@ const thanks = [
     note: "Inspiration and OG",
   },
   {
-    name: "The Pokemon Company",
+    name: "The Pokémon Company",
     url: "https://www.pokemon.com/us",
     note: "For their amazing work and creativity",
   },
@@ -64,7 +64,7 @@ export function Disclaimer() {
           inspired by the work of already existing Pokémon databases and I would
           like to thank them;
           <ul className="list-disc pl-6 my-2">
-            <li>The Pokemon Database</li>
+            <li>The Pokémon Database</li>
             <li>Serebii</li>
             <li>The Bulbagarden websites</li>
             <li>PokéSprite</li>
@@ -94,7 +94,7 @@ export function Disclaimer() {
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-bold">Thanks to</h2>
         <p className="text-gray-600 leading-relaxed">
-          Thank you to the minds behindn the Pokemon games, to the fans who
+          Thank you to the minds behindn the Pokémon games, to the fans who
           developed the databases the fandom has relied on in the past, and to
           you for using this website
         </p>

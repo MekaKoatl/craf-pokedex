@@ -102,21 +102,20 @@ src/
 
 The most important files in `src/lib`:
 
-| File              | What's in it                                                                                                       |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------ | --- | ------------- | -------------------------------------------------- |
-| `api.ts`          | Every PokéAPI request. `getPokemonFull` throws `NotFoundError` on a 404                                            |
-| `sprites.ts`      | Image URLs: `cdnSprite`, pokesprite icons and their measurements, sprites, official artwork, Dream World, item art |     | `regional.ts` | Display names ("Alolan Raichu") and regional forms |
-| `regional.ts`     | Display names ("Alolan Raichu") and regional forms                                                                 |
-| `evolution.ts`    | Walking the evolution chain and building the requirements                                                          |
-| `dexOrder.ts`     | Pokédex number (regional forms use their species') and ordering                                                    |
-| `games.ts`        | Game list, what each game has, tag colors and which image to use                                                   |
-| `teamRules.ts`    | Per-game rules: abilities, moves, items, Megas, natures and stat formulas                                          |
-| `typeChart.ts`    | Type chart by generation and abilities that change damage                                                          |
-| `teamTransfer.ts` | Moving members to another game, dropping what isn't valid there (Duplicate and Import)                             |
-| `showdown.ts`     | Export and import of the Pokémon Showdown text format                                                              |
-| `backup.ts`       | Export and import favorites, lists and teams (Backup page)                                                         |
-| `collections.ts`  | Sort options shared by lists and teams                                                                             |
-| `daily.ts`        | Pokémon of the day                                                                                                 |
+| File | What's in it |
+| --- | --- || `api.ts` | Every PokéAPI request. `getPokemonFull` throws `NotFoundError` on a 404 |
+| `sprites.ts` | Image URLs: `cdnSprite`, pokesprite icons and their measurements, sprites, official artwork, Dream World, item art | | `regional.ts` | Display names ("Alolan Raichu") and regional forms |
+| `regional.ts` | Display names ("Alolan Raichu") and regional forms |
+| `evolution.ts` | Walking the evolution chain and building the requirements |
+| `dexOrder.ts` | Pokédex number (regional forms use their species') and ordering |
+| `games.ts` | Game list, what each game has, tag colors and which image to use |
+| `teamRules.ts` | Per-game rules: abilities, moves, items, Megas, natures and stat formulas |
+| `typeChart.ts` | Type chart by generation and abilities that change damage |
+| `teamTransfer.ts` | Moving members to another game, dropping what isn't valid there (Duplicate and Import) |
+| `showdown.ts` | Export and import of the Pokémon Showdown text format |
+| `backup.ts` | Export and import favorites, lists and teams (Backup page) |
+| `collections.ts` | Sort options shared by lists and teams |
+| `daily.ts` | Pokémon of the day |
 
 Shared hooks worth knowing:
 
