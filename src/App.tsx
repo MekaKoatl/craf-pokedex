@@ -4,6 +4,7 @@ import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { AnnouncementBar } from "./components/AnnouncementBar";
 import { BackToTop } from "./components/BackToTop";
+import { Analytics } from "@vercel/analytics/react";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { Home } from "./pages/Home";
 
@@ -97,6 +98,8 @@ function App() {
       </main>
       <Footer />
       <BackToTop />
+      {/* Visitas a la página (Vercel Web Analytics) */}
+      <Analytics />
     </div>
   );
 }
