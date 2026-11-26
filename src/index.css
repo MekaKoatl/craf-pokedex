@@ -959,6 +959,85 @@
   }
 }
 
+/* ── BARRA DE AVISOS ─────────────────────────── */
+/* Debajo del navbar; usa la animación ticker-scroll de la tira de Home */
+.announce-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  background: #b91c1c;
+  color: #fee2e2;
+  font-size: 12px;
+}
+/* Los bordes se desvanecen; a la derecha deja lugar para la ✕ */
+.announce-mask {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  margin-right: 32px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 2rem,
+    #000 calc(100% - 2rem),
+    transparent
+  );
+}
+.announce-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll linear infinite;
+}
+/* Cada copia ocupa al menos el ancho de la pantalla, para que la vuelta
+   sea continua aunque el texto sea corto */
+.announce-group {
+  display: flex;
+  gap: 80rem;
+  min-width: 100vw;
+  padding-right: 80rem;
+  white-space: nowrap;
+}
+@media (hover: hover) {
+  .announce-bar:hover .announce-track {
+    animation-play-state: paused;
+  }
+}
+/* Sin animación si el sistema pide reducir el movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .announce-track {
+    animation: none;
+  }
+  .announce-group[aria-hidden="true"] {
+    display: none;
+  }
+}
+.announce-close {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.announce-close:hover {
+  opacity: 1;
+}
+/* 28px visibles con un área táctil de 46px */
+.announce-close::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+}
+
 /* ── WHO'S THAT POKÉMON ─────────────────────── */
 .wtp-sprite-box {
   position: relative;

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
+import { AnnouncementBar } from "./components/AnnouncementBar";
 import { BackToTop } from "./components/BackToTop";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { Home } from "./pages/Home";
@@ -57,12 +58,13 @@ const Feedback = lazy(() =>
   import("./pages/Feedback").then((m) => ({ default: m.Feedback })),
 );
 
-/** Estructura de la app: barra de navegación, rutas, pie de página y botón de volver arriba. */
+/** Estructura de la app: barra de navegación, avisos, rutas, pie de página y botón de volver arriba. */
 function App() {
   return (
     // min-h-screen + flex-1 en main: el footer queda al fondo en páginas cortas
     <div className="min-h-screen flex flex-col">
       <Navbar />
+      <AnnouncementBar />
       <main className="flex-1">
         {/* Indicador de carga mientras se descarga una página */}
         <Suspense

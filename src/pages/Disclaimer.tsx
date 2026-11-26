@@ -41,6 +41,11 @@ const thanks = [
     url: "https://github.com/msikma/pokesprite",
     note: "Box icons",
   },
+  {
+    name: "KingOfThe-X-Roads",
+    url: "https://www.deviantart.com/kingofthe-x-roads/art/Gen-9-Sprites-Pokemon-Scarlet-and-Violet-908341834",
+    note: "Gen IX sprites",
+  },
 ];
 
 /** Página Disclaimer & Thanks (`/disclaimer`): aviso legal y agradecimientos. */
@@ -68,6 +73,7 @@ export function Disclaimer() {
             <li>Serebii</li>
             <li>The Bulbagarden websites</li>
             <li>PokéSprite</li>
+            <li>KingOfThe-X-Roads</li>
           </ul>
           As also mentioned in the FAQ's, this website used AI in its
           development. I rather be upfront about it since I have been lied and
