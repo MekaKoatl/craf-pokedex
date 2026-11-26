@@ -18,7 +18,10 @@ const MOBILE_QUERY = "(max-width: 639px)";
 /** Posición del menú flotante en la pantalla. */
 type Pos = { left: number; top?: number; bottom?: number };
 
-/** Opción del menú (Favorites o una lista), marcada si el Pokémon está guardado ahí. */
+/**
+ * Fila del menú (Favorites o una lista): el nombre y, a la derecha, "Add" o ✓
+ * según si el Pokémon está guardado ahí. Toda la fila cambia el estado.
+ */
 function Option({
   label,
   checked,
@@ -34,22 +37,36 @@ function Option({
   big?: boolean;
 }) {
   return (
-    <label
-      className={`flex items-center rounded-lg hover:bg-gray-50 cursor-pointer ${
-        big ? "min-h-[45px] gap-3 px-2" : "gap-2 px-2 py-1.5"
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-pressed={checked}
+      aria-label={checked ? `Remove from ${label}` : `Add to ${label}`}
+      className={`group w-full flex items-center rounded-lg hover:bg-gray-50 cursor-pointer text-left ${
+        big ? "min-h-[45px] gap-3 px-2" : "gap-2 px-2 py-1"
       }`}
     >
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onToggle}
-        className={`accent-red-600 ${big ? "w-5 h-5" : ""}`}
-      />
-      <span className="flex-1 truncate text-gray-700">{label}</span>
+      <span
+        className={`flex-1 truncate text-gray-800 ${big ? "text-base" : ""}`}
+      >
+        {label}
+      </span>
       {count !== undefined && (
         <span className="text-xs text-gray-400">{count}</span>
       )}
-    </label>
+      {/* Estado: "Add" con borde si no está guardado, ✓ rojo si lo está */}
+      <span
+        className={`flex-none flex items-center justify-center rounded-lg border-[1.5px] font-semibold transition ${
+          big ? "w-14 h-8 text-sm" : "w-11 h-6 text-[11px]"
+        } ${
+          checked
+            ? "bg-red-600 border-red-600 text-white"
+            : "bg-white border-red-200 text-red-600 group-hover:border-red-400"
+        }`}
+      >
+        {checked ? "✓" : "Add"}
+      </span>
+    </button>
   );
 }
 
@@ -196,7 +213,7 @@ export function AddToListButton({
         }
       >
         <Option
-          label="♥ Favorites"
+          label="Favorites"
           checked={isFavorite(id)}
           onToggle={() => toggleFavorite(id)}
           count={details || big ? favorites.length : undefined}

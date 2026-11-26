@@ -6,6 +6,24 @@
  */
 @import "tailwindcss";
 
+/* ── FUENTES ─────────────────────────── */
+/* Se cargan desde Google Fonts en index.html. --font-sans es la fuente de
+   todo el texto; --font-display y --font-pixel crean las clases
+   font-display y font-pixel de Tailwind */
+@theme {
+  --font-sans:
+    "Varela Round", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "League Spartan", ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: "Pixelify Sans", ui-monospace, monospace;
+}
+
+/* Títulos de página y de sección (incluye el nombre del sitio en el navbar) */
+h1,
+h2 {
+  font-family: var(--font-display);
+}
+
 /* ── BOTONES ─────────────────────────── */
 /* Colores y estados compartidos. El tamaño, el padding y el borde
    redondeado se definen en cada uso con clases de Tailwind. */
@@ -192,6 +210,7 @@
   z-index: 10;
 }
 .form-badge {
+  font-family: var(--font-pixel);
   font-size: 10px;
   font-weight: 600;
   padding: 2px 5px;
