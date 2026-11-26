@@ -47,8 +47,8 @@ h2 {
   background-color: #f9fafb;
   border: 2px solid #e5e7eb;
   border-radius: 0.75rem;
-  /* Arriba queda lugar para las insignias y, en celular, el + */
-  padding: 1.9rem 0.5rem 1rem;
+  /* Arriba queda lugar para el + y las insignias */
+  padding: 2.4rem 0.5rem 1rem;
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -131,15 +131,16 @@ h2 {
 
 /* ── TYPE BADGES ─────────────────────────── */
 .type-badge {
+  display: inline-block;
+  flex: 0 0 70px;
+  width: 70px;
   font-size: 0.65rem;
   font-weight: 600;
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.25rem;
   color: #fff;
   text-transform: uppercase;
-  min-width: 50px;
-  flex: 1;
-  max-width: 60px;
   text-align: center;
+  white-space: nowrap;
 }
 
 .type-fire {
@@ -1758,12 +1759,10 @@ h2 {
   .dex-card {
     padding: 2.6rem 0.25rem 0.85rem;
   }
-  /* El + pasa arriba a la izquierda y crece */
+  /* El + crece */
   .dex-card .add-btn {
     top: 6px;
     left: 6px;
-    bottom: auto;
-    right: auto;
     width: 34px;
     height: 34px;
     font-size: 1.1rem;
